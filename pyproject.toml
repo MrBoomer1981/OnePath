@@ -1,0 +1,30 @@
+[project]
+name = "onepath"
+version = "0.1.0"
+description = "Personal research app: a 5-7 minute report and the follow-ups after it (GPT Researcher + DeepSeek)"
+requires-python = ">=3.12"
+# Shared by every part (my_browser/common); each part's own packages are in its group below.
+dependencies = [
+    "httpx>=0.28.1",
+    "python-dotenv>=1.2.4",
+]
+
+[dependency-groups]
+core = ["nicegui>=3.18.0", "markdown2>=2.5"]  # markdown2 comes with NiceGUI; core imports it itself (ui/kit.markdown)
+worker = ["gpt-researcher>=0.16.1", "langchain-mcp-adapters>=0.3.2", "fastapi>=0.143.3", "uvicorn>=0.54.0"]
+search = ["gpt-researcher>=0.16.1", "json-repair>=0.64.0", "fastapi>=0.143.3", "uvicorn>=0.54.0"]
+
+[tool.uv]
+# app.py runs every part in one process, so `uv run` installs all groups; an image for a single
+# part would use `uv sync --no-default-groups --group <part>`.
+default-groups = ["core", "worker", "search"]
+
+# my_browser is installed into the environment (editable), so `python -m my_browser.<part>` works from
+# any folder of the repository, not only from its root. The Dockerfile skips it (--no-install-project):
+# the image runs from /app, the code's own directory.
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["my_browser"]

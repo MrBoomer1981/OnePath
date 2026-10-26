@@ -1,0 +1,29 @@
+{
+  "name": "OnePath",
+  "short_name": "OnePath",
+  "description": "Исследования: отчёт на 5–7 минут и продолжения после него · made by aven",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#14100E",
+  "theme_color": "#14100E",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

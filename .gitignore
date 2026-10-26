@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.env
+reports/
+outputs/
+logs/
+*.log
+
+# Local brand reference (positioning, launch plan): not for the public repo
+aven-brandbook.pdf
+
+# Cloudflare Worker (proxy/): wrangler's local state
+.wrangler/
+
+# Addresses of the live app (Railway, the Worker) and the like: local notes, never in the public repo
+PRIVATE.md

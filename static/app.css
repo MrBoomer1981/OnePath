@@ -1,0 +1,442 @@
+/* DEEper web app, AVEN brand (see aven-brandbook.pdf and DESIGN_HANDOFF.md).
+   Fonts: WOFF2 subsets (Latin, Cyrillic, punctuation) of the TTFs next to them; the PDF uses the TTFs. */
+@font-face { font-family: 'Onest'; src: url('fonts/Onest.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Unbounded'; src: url('fonts/Unbounded.woff2') format('woff2'); font-weight: 700 900; font-display: swap; }  /* the web needs 700 and 900 only */
+@font-face { font-family: 'JetBrains Mono'; src: url('fonts/JetBrainsMono.woff2') format('woff2'); font-weight: 100 800; font-display: swap; }
+/* The graffiti stays invisible until its font arrives: in a fallback script font, wider and taller, a marker word
+   overlapped the mascot and its neighbours for a moment. */
+@font-face { font-family: 'Permanent Marker'; src: url('fonts/PermanentMarker.woff2') format('woff2'); font-display: block; }
+@font-face { font-family: 'Amatic SC'; src: url('fonts/AmaticSC-Bold.woff2') format('woff2'); font-weight: 700; font-display: block; }
+/* Icons come from NiceGUI's Material Icons cut to DEEper's (dev/icons.py: 5 KB, not 129), declared as «DEEper
+   Icons» in core/web.py with its version in the address. */
+.material-icons { font-family: 'DEEper Icons' !important; }
+
+:root {
+  /* бренд AVEN */
+  --night: #14100E; --night-2: #1D1916; --paper: #F2EBE1; --bordo: #7A2A35; --amber: #E8A24A;
+  --paper-80: rgba(242,235,225,.8); --paper-60: rgba(242,235,225,.6); --paper-40: rgba(242,235,225,.4);
+  --line: rgba(242,235,225,.1); --surface: rgba(242,235,225,.035); --surface-2: rgba(242,235,225,.06);
+  /* редизайн */
+  --bordo-dark: #5A1F28;           /* тени маскота, тёмная часть бордо */
+  --muted: #8C8379;                /* второстепенный текст: 5.0:1 на --night */
+  --icon-off: #7A7067;             /* неактивные иконки навигации: 3.9:1 на --night */
+  --hairline: rgba(242,235,225,.06);
+  --text-body: #D9D0C4;            /* основной текст отчёта */
+  --mark: rgba(232,162,74,.18);    /* выделение в отчёте */
+  --graffiti: #FFFFFF;             /* только граффити-слой */
+  --radius-pill: 30px; --radius-card: 22px; --radius-chip: 14px;
+  --gutter: 24px;                  /* боковой отступ экранов */
+  --nav-h: 72px;
+}
+
+html, body { background: var(--night); }
+/* iOS 26 home-screen apps (WebKit bug 301108): with viewport-fit=cover and the translucent status bar, a page
+   shorter than the screen gets a viewport shorter by the status bar's height (about 59 pt), so the tab bar floated
+   that high above the bottom on short screens and jumped between short and long ones. A root at least as tall as
+   the screen gets the full viewport; min() keeps such a page from scrolling where the status bar is opaque. */
+@media (display-mode: standalone) {
+  html { min-height: min(100lvh, calc(100% + env(safe-area-inset-top))); }
+}
+body {
+  color: var(--paper); font-family: 'Onest', system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent; text-size-adjust: 100%; -webkit-text-size-adjust: 100%;
+}
+a, button, .q-btn, [role="button"] { touch-action: manipulation; }
+
+/* Moving between screens. The tab bar's sections are one page (core/ui/tabs.py), switched by app.js at once; a
+   section enters with a short rise. Other screens (a report, a research) are pages of their own: the old one
+   fades into the new (cross-document view transitions, Safari 18.2+, Chrome 126+), with the tab bar in place.
+   Where that does not happen (an older browser, a navigation started by a script, a page slower than 4 s), the
+   new page enters with the same rise; html.vt (an inline script in web.py's head) marks a page a view transition
+   brought, which needs no entrance of its own. A fade is fine with «reduce motion» too; the rise is not. */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .25s; }
+.tab-screen { display: none; }
+.tab-screen.on { display: block; width: 100%; min-width: 0; }  /* a flex item of NiceGUI's column: else a long unbroken line (the latest topic in «Продолжить») widened the whole section */
+.tab-screen.on > .screen, .screen.reading, .screen.job, .screen.login { animation: screen-in .28s cubic-bezier(.2, .7, .2, 1) both; }
+.tab-screen.on > .pill, .tab-screen.on > .home-glow { animation: fade-in .28s ease both; }  /* fixed: no transform on their parents */
+html.vt .screen { animation: none; }
+@keyframes screen-in { from { opacity: 0; transform: translateY(10px) } }
+@keyframes fade-in { from { opacity: 0 } }
+@media (prefers-reduced-motion: reduce) {
+  .tab-screen.on > .screen, .screen.reading, .screen.job, .screen.login { animation-name: fade-in; }
+}
+
+/* A tap answers at once: the installed app has no browser chrome, and the next screen or sheet takes a round
+   trip to the server. app.js shows a thin line at the top while the next screen loads (html.nav-pending). */
+.li, .tab, .icon-btn, .ttab, .toc-button, .continue, .more-link, .avatar, .profile-card { transition: opacity .2s ease; }
+.li:not(.disabled):active, .tab:active, .icon-btn:active, .ttab:active, .toc-button:active, .continue:active, .more-link:active,
+.avatar:active, .profile-card:active { opacity: .5; transition: none; }
+/* Safari stops every animation of a page once it starts leaving it, so the line is drawn at a third of the
+   width at once; where animations go on (Chrome) it keeps growing. */
+html.nav-pending body::after { content: ''; position: fixed; z-index: 6000; top: env(safe-area-inset-top); left: 0; right: 0; height: 2px;
+  background: var(--amber); transform: scaleX(.3); transform-origin: left; pointer-events: none;
+  animation: nav-progress 3s cubic-bezier(.08, .6, .3, 1) both; }
+@keyframes nav-progress { from { transform: scaleX(.3) } to { transform: scaleX(.92) } }
+
+/* ---- Quasar под бренд и общее оформление текста отчётов ---- */
+.q-notification { color: var(--paper) !important; font-family: 'Onest', sans-serif; }
+.q-btn { text-transform: none; font-weight: 500; letter-spacing: 0; }
+.body--dark .q-field__native, .body--dark .q-field__input { color: var(--paper); }
+.body--dark textarea::placeholder, .body--dark input::placeholder { color: var(--muted) !important; opacity: 1; }
+.q-toggle__label { color: var(--paper-80); }
+::selection { background: rgba(232,162,74,.35); }
+
+.score { font-family: 'JetBrains Mono', monospace; font-size: 11px; border-radius: 999px; padding: 1px 8px; flex: none;
+         border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.score-3 { background: var(--bordo); border-color: var(--bordo); color: var(--paper); }
+.score-2 { border-color: var(--paper-40); color: var(--paper-80); }
+.url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+
+.report ul { list-style: disc; padding-left: 1.4em; }
+.report ol { list-style: decimal; padding-left: 1.4em; }
+.report li::marker { color: var(--muted); }
+.report strong { color: var(--paper); font-weight: 650; }
+.report a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--amber); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.report table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-collapse: collapse; margin: 1.2em 0; font-size: .9em; }
+.report th, .report td { border: 1px solid var(--line); padding: 7px 11px; vertical-align: top; min-width: 96px; }
+.report th { background: var(--surface-2); font-weight: 600; color: var(--paper); }
+.report blockquote { border-left: 3px solid var(--bordo); padding-left: 14px; margin-left: 0; color: var(--paper-80); }
+.report code { font-family: 'JetBrains Mono', monospace; font-size: .88em; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+.report pre { overflow-x: auto; }
+.report hr { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
+.report.compact { font-size: 15.5px; }
+.report sup.fc-mark a { background: var(--bordo); color: var(--paper); text-decoration: none; border-radius: 999px;
+                        font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 1px 6px; margin-left: 3px; }
+
+/* ---- редизайн: каркас (DESIGN_HANDOFF.md §3) ---- */
+.nicegui-content { padding: 0 !important; gap: 0 !important; }
+.q-page-container, .q-layout, .q-page { background: transparent !important; }
+.screen { width: 100%; max-width: 720px; margin: 0 auto; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;
+          padding: calc(env(safe-area-inset-top) + 16px) var(--gutter) calc(var(--nav-h) + env(safe-area-inset-bottom) + 32px); }
+.screen.with-pill { padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 120px); }
+.screen.no-nav { padding-bottom: calc(env(safe-area-inset-bottom) + 40px); }
+.screen.no-nav.with-pill { padding-bottom: calc(env(safe-area-inset-bottom) + 112px); }
+
+.h1 { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 30px; line-height: 1.15; letter-spacing: -.01em; color: var(--paper); margin: 0; }
+.h1.home { font-weight: 700; font-size: 34px; }
+.sub-text { font-size: 14px; color: var(--muted); }
+.mono-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+.amber { color: var(--amber) !important; }
+
+/* нижняя навигация: на телефоне снизу, от 1024 px колонкой слева */
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 2000; display: flex; justify-content: space-around; align-items: center;
+          height: calc(var(--nav-h) + env(safe-area-inset-bottom)); padding: 0 8px env(safe-area-inset-bottom); background: var(--night);
+          view-transition-name: tabbar; }
+.tabbar .tab { width: 64px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+               color: var(--icon-off); text-decoration: none; border-radius: 14px; }
+.tabbar .tab .q-icon { font-size: 26px; }
+.tabbar .tab .dot { width: 4px; height: 4px; border-radius: 2px; }
+.tabbar .tab.active { color: var(--paper); }
+.tabbar .tab.active .dot { background: var(--amber); }
+.tabbar .tab:focus-visible, .icon-btn:focus-visible, .li:focus-visible, .ttab:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+@media (min-width: 1024px) {
+  .tabbar { top: 0; right: auto; width: 88px; height: auto; flex-direction: column; justify-content: center; gap: 14px; padding: 0;
+            border-right: 1px solid var(--hairline); }
+  body.has-nav .q-page-container { padding-left: 88px !important; }
+  .screen, .screen.with-pill { padding-top: 48px; }
+  .screen { padding-bottom: 48px; }
+  .screen.with-pill { padding-bottom: 136px; }
+}
+
+/* кнопки */
+.icon-btn { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; flex: none; border-radius: 50%;
+            background: none; border: 0; padding: 0; color: var(--paper); text-decoration: none; cursor: pointer; }
+.icon-btn .q-icon { font-size: 22px; }
+.btn-primary.q-btn { border-radius: var(--radius-pill); min-height: 52px;
+                     padding: 0 24px; font-weight: 600; font-size: 16px; }
+.btn-outline.q-btn { border-radius: var(--radius-pill); min-height: 52px; padding: 0 24px; font-size: 16px; }
+.btn-outline.q-btn:before { border-color: rgba(242,235,225,.24) !important; }
+
+/* нижний лист */
+.q-dialog__inner--bottom { padding: 0 !important; }
+.q-dialog__inner--bottom > .sheet { width: 100%; max-width: 720px; }
+.sheet { box-sizing: border-box; background: var(--night-2); color: var(--paper); border-radius: 22px 22px 0 0; max-height: 86vh; overflow-y: auto;
+         padding: 12px var(--gutter) calc(env(safe-area-inset-bottom) + 24px); display: flex; flex-direction: column; gap: 14px; }
+.sheet::before { content: ''; display: block; flex: none; width: 40px; height: 4px; border-radius: 2px; background: var(--line); margin: 0 auto 6px; }
+.sheet-title { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 18px; }
+.sheet-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+
+/* строки списка */
+.list { display: flex; flex-direction: column; width: 100%; }
+.li { display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 18px 0; box-sizing: border-box; width: 100%;
+       border-bottom: 1px solid var(--hairline); color: var(--paper); text-decoration: none; cursor: pointer; }
+.list > .li:last-child { border-bottom: none; }
+.li-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.li-title { font-size: 16px; line-height: 1.4; color: var(--paper); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; }
+.li-title.lines-1 { -webkit-line-clamp: 1; } .li-title.lines-2 { -webkit-line-clamp: 2; } .li-title.lines-3 { -webkit-line-clamp: 3; }
+.li-sub { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+.li-sub.accent { color: var(--amber); }
+.li-value { color: var(--muted); font-size: 15px; flex: none; }
+.li-chev { color: var(--muted); font-size: 22px; flex: none; }
+
+/* вкладки словами */
+.ttabs { display: flex; gap: 24px; }
+.ttab { position: relative; background: none; border: 0; padding: 12px 0 14px; min-height: 44px; cursor: pointer; font: 400 15px 'Onest', sans-serif; color: var(--muted); }
+.ttab.on { color: var(--paper); font-weight: 600; }
+.ttab.on::after { content: ''; position: absolute; left: -2px; right: -2px; bottom: 0; height: 2px; background: var(--amber); }
+body:not(.graffiti-off) .ttab.on::after { height: 9px; bottom: -2px; background: no-repeat center / 100% 100%
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 15 2, 25 13, 37 7 S 60 3, 72 8 S 97 12, 117 5' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E"); }
+
+/* граффити-слой: декор, белый маркер; выключается в «Фокусе» */
+.graffiti { pointer-events: none; user-select: none; -webkit-user-select: none; }
+.graffiti svg { display: block; width: 100%; height: 100%; overflow: visible; fill: none; stroke: var(--graffiti); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.graffiti.g-star svg { stroke-width: 2.5; }
+.marker { display: inline-block; font-family: 'Permanent Marker', cursive; font-size: 26px; line-height: 1; color: var(--graffiti); transform: rotate(-8deg); white-space: nowrap; }
+.marker.cyr { font-family: 'Amatic SC', cursive; font-weight: 700; font-size: 36px; }
+body.graffiti-off .graffiti { display: none !important; }
+
+/* Дип-Диггер */
+.dip-wrap { flex: none; line-height: 0; }
+.dip-wrap svg { width: 100%; height: auto; overflow: visible; }
+.dip .dip-body  { transform-origin: 0 60px; animation: dip-bob 2.4s ease-in-out infinite; }
+.dip .dip-eyes  { transform-origin: 0 -14px; animation: dip-blink 4.8s infinite; }
+/* The shovel and its sticker outline (two layers of the sticker, under and over the body's ring) swing as one;
+   their transform-origin is in the SVG's own coordinates, the top of the handle. */
+.dip--dig .dip-tool, .dip--dig .dip-tool-sticker { transform-origin: 34px -18px; animation: dip-dig .9s ease-in-out infinite; }
+.dip--dig .dip-lamp, .dip--dig .dip-beam { animation: dip-flicker 1.8s infinite; }
+.dip--found .dip-sparkles { transform-box: fill-box; transform-origin: center; animation: dip-twinkle 1.2s ease-in-out infinite; }
+.dip--sleep .dip-zzz { animation: dip-float 2.6s ease-in-out infinite; }
+@keyframes dip-bob     { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+@keyframes dip-blink   { 0%,92%,100% { transform: scaleY(1) } 95% { transform: scaleY(.1) } }
+@keyframes dip-dig     { 0%,100% { transform: rotate(0) } 50% { transform: rotate(12deg) } }
+@keyframes dip-flicker { 0%,100% { opacity: 1 } 45% { opacity: .75 } 50% { opacity: .95 } }
+@keyframes dip-twinkle { 0%,100% { opacity: .5; transform: scale(.9) } 50% { opacity: 1; transform: scale(1.1) } }
+@keyframes dip-float   { 0% { transform: translateY(4px); opacity: 0 } 40% { opacity: 1 } 100% { transform: translateY(-6px); opacity: 0 } }
+@media (prefers-reduced-motion: reduce) {
+  .dip *, .job-stage, .recent .r0, html.nav-pending body::after { animation: none !important; }
+  .bar > div { transition: none !important; }
+}
+
+/* пустые экраны */
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; padding: 48px 0 24px; }
+.empty .sub-text { max-width: 280px; }
+
+/* заголовки экранов с граффити */
+.title-row { display: flex; align-items: center; gap: 14px; flex-wrap: nowrap; min-height: 44px; }
+.title-row .marker { font-size: 24px; margin-top: 8px; }
+.graffiti.g-cross { display: inline-block; width: 26px; height: 26px; transform: rotate(8deg); flex: none; }
+.made-by { text-align: center; margin-top: 24px; }
+.li.compact { min-height: 48px; padding: 6px 0; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* логотип и вход */
+.logo-row { position: relative; display: inline-flex; flex: none; }
+.logo { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: .01em; color: var(--paper); line-height: 1; }
+.graffiti.logo-crown { position: absolute; left: 1px; top: -13px; width: 24px; height: 13px; transform: rotate(-9deg); }
+.graffiti.logo-crown svg { stroke-width: 2.5; }
+.screen.login { min-height: 100vh; justify-content: center; align-items: center; text-align: center; gap: 24px; max-width: 380px; }
+.screen.login .logo { font-size: 34px; }
+.screen.login .logo-crown { width: 44px; height: 24px; top: -24px; }
+.field { width: 100%; background: var(--night-2); border-radius: var(--radius-pill); padding: 2px 20px; box-sizing: border-box; }
+.field input { font-size: 16px !important; color: var(--paper) !important; }
+.screen.login .btn-primary { width: 100%; }
+
+/* поле-пилюля (DESIGN_HANDOFF.md §3.2): над навигацией, а при открытой клавиатуре — над ней */
+.pill { position: fixed; z-index: 1900; left: 16px; right: 16px; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 16px);
+        max-width: 688px; margin: 0 auto; box-sizing: border-box; display: flex; align-items: flex-end; gap: 2px;
+        background: var(--night-2); border-radius: var(--radius-pill); padding: 6px 6px 6px 20px; box-shadow: 0 10px 32px rgba(0,0,0,.45); }
+.pill.bottom { bottom: calc(env(safe-area-inset-bottom) + 14px); }
+.pill.inline { position: static; box-shadow: none; padding-left: 18px; background: var(--night); }
+.pill-input { flex: 1; min-width: 0; align-self: center; }
+.pill-input .q-field__control, .pill-input .q-field__native { min-height: 0 !important; height: auto; padding: 0 !important; }
+.pill-input .q-field__control:before, .pill-input .q-field__control:after { display: none; }
+.pill-input textarea, .pill-input input { font-family: 'Onest', sans-serif; font-size: 16px !important; line-height: 1.4 !important;
+        color: var(--paper) !important; padding: 11px 0 !important; max-height: 132px; resize: none; }
+/* At least one line: Quasar's autogrow measures the textarea when it mounts, and in a section of the tab bar's page
+   that is hidden then (tabs.py) it measured 0 px, which hid the field and its placeholder. */
+.pill-input textarea.q-field__native { min-height: 1.4em !important; }  /* beats the min-height: 0 above */
+.pill-input textarea::placeholder, .pill-input input::placeholder { color: var(--muted) !important; opacity: 1; }
+.pill-opt { flex: none; height: 48px; padding: 0 10px; background: none; border: 0; cursor: pointer; color: var(--amber); font: 500 15px 'Onest', sans-serif; }
+.pill .send { width: 48px; height: 48px; background: var(--amber); color: var(--night); }
+.pill .send .q-icon { font-size: 24px; }
+body.kb-open .tabbar { display: none; }
+body.kb-open .pill { bottom: calc(var(--kb, 0px) + 10px); }
+@media (min-width: 1024px) { body.has-nav .pill { left: 104px; } .pill { bottom: 28px; } }
+
+/* переключатели в нижнем листе */
+.seg.q-btn-toggle, .seg.q-btn-group { width: 100%; box-shadow: none; background: var(--night); border-radius: 999px; padding: 3px; gap: 2px; flex-wrap: nowrap; }
+.seg .q-btn { flex: 1; min-height: 40px; border-radius: 999px !important; font-size: 15px; }
+.seg.wrap { flex-wrap: wrap; border-radius: 20px; }
+.seg.wrap .q-btn { flex: 1 1 auto; }
+.question { font-size: 16px; font-weight: 500; margin-top: 4px; }
+
+/* «Поиск» */
+.home-glow { position: fixed; top: -180px; right: -160px; width: 520px; height: 420px; pointer-events: none; z-index: 0;
+             background: radial-gradient(closest-side, rgba(122,42,53,.30), transparent); }
+.screen.home { position: relative; z-index: 1; }
+.home-top { display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin-top: 10px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bordo); color: var(--paper); text-decoration: none;
+          display: flex; align-items: center; justify-content: center; font: 600 15px 'Onest', sans-serif; margin-right: 4px; }
+.home-hero { display: flex; flex-direction: column; gap: 18px; margin-top: clamp(36px, 11vh, 120px); }
+.dip-row { display: flex; align-items: center; gap: 4px; }
+.dip-marker { margin: -56px 0 0 -2px; }
+.continue { display: flex; align-items: center; gap: .3em; min-width: 0; max-width: 100%; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; }
+.continue .continue-topic { overflow: hidden; text-overflow: ellipsis; min-width: 0; color: var(--muted); }
+.continue > :first-child, .continue > :last-child { flex: none; }
+.continue > .continue-topic { flex: 0 1 auto; }  /* the topic gives way, also when it is the row's last child (report.py) */
+.continue.linked { gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.continue.linked a { color: var(--muted); text-decoration: none; }
+.continue.linked .icon-btn { width: 36px; height: 36px; color: var(--muted); }
+
+/* «Исследование идёт» (DESIGN_HANDOFF.md §4.2) */
+.screen.job { min-height: 100vh; min-height: 100dvh; gap: 12px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; margin: 0 -10px; }
+.job-topic { font-size: 15px; line-height: 1.45; color: var(--muted); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.job-main { display: flex; flex-direction: column; gap: 10px; }
+.job-stage { display: flex; align-items: flex-start; gap: 0; margin-top: 18px; }
+.job-marker { margin: 22px 0 0 -6px; }
+.job-error { font-size: 16px; line-height: 1.5; color: var(--paper); }
+.pct-row { display: flex; align-items: baseline; gap: 4px; margin-top: 6px; }
+.pct { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 72px; line-height: 1; color: var(--paper); letter-spacing: -.02em; }
+.pct-sign { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 34px; color: var(--muted); }
+.job-status { font-size: 16px; color: var(--paper); margin-top: 4px; }
+.job-sub { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); min-height: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar { height: 2px; background: #2A2420; border-radius: 1px; overflow: hidden; margin-top: 4px; }
+.bar > div { height: 100%; background: var(--amber); transform: scaleX(0); transform-origin: left; transition: transform .6s ease; }  /* job.py sets the scale: no layout per frame */
+.recent { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; min-height: 64px; }
+.recent > div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recent .r0 { color: var(--paper); } .recent .r1 { color: var(--muted); } .recent .r2 { color: #5E564F; }
+.recent .r0 { animation: recent-in .4s ease both; }  /* the newest source slides in; the list is rebuilt when it changes */
+@keyframes recent-in { from { opacity: 0; transform: translateY(-6px) } }
+.job-stage { animation: stage-in .35s ease both; }  /* Дип changes (digging, found, error) with a fade, not a cut */
+@keyframes stage-in { from { opacity: 0; transform: scale(.97) } }
+.more-link { align-self: flex-start; background: none; border: 0; padding: 10px 0; cursor: pointer; color: var(--muted); font: 14px 'Onest', sans-serif;
+             text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; }
+.job-bottom { margin-top: auto; padding-top: 28px; display: flex; flex-direction: column; gap: 10px; }
+.job-head { display: flex; flex-direction: column; gap: 10px; }
+/* While the text is written (job.py): Дип and the sources make room for it, the percent stays on top, smaller */
+.screen.job.writing .job-stage, .screen.job.writing .recent { display: none; }
+.screen.job.writing .job-head { position: sticky; top: 0; z-index: 10; background: var(--night); gap: 4px;
+                                padding: calc(env(safe-area-inset-top) + 8px) var(--gutter) 10px;
+                                margin: 0 calc(-1 * var(--gutter)); }
+.screen.job.writing .pct { font-size: 40px; }
+.screen.job.writing .pct-sign { font-size: 20px; }
+.report.draft { margin-top: 6px; }
+.ready-bar { display: none; position: fixed; z-index: 1900; left: 16px; right: 16px; bottom: calc(env(safe-area-inset-bottom) + 16px);
+             min-height: 52px; border: 0; border-radius: var(--radius-pill); background: var(--amber); color: var(--night);
+             font: 600 16px 'Onest', sans-serif; cursor: pointer; box-shadow: 0 10px 32px rgba(0,0,0,.45); }
+.ready-bar.on { display: block; animation: fade-in .25s ease both; }
+.job-caption { text-align: center; font-size: 12px; color: var(--muted); }
+.plain-list { display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: var(--paper-80); }
+.li.source { gap: 12px; }
+.li .url { font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+.job-log { font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.5; color: var(--muted); white-space: pre-wrap; word-break: break-word;
+           background: var(--night); border-radius: 14px; padding: 12px 14px; max-height: 40vh; overflow-y: auto; }
+.plain-link { color: var(--paper); text-decoration: underline; text-decoration-color: var(--amber); text-underline-offset: 4px; }
+
+/* «Отчёт» (DESIGN_HANDOFF.md §4.3) */
+.screen.reading { gap: 10px; }
+.topbar.sticky { position: sticky; top: 0; z-index: 10; background: var(--night); padding: calc(env(safe-area-inset-top) + 4px) 10px 4px;
+                 margin: calc(-1 * env(safe-area-inset-top) - 16px) calc(-1 * var(--gutter)) 0; }
+.toc-button { background: none; border: 0; cursor: pointer; padding: 10px 12px; min-height: 44px; }
+.toc-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+.report { max-width: 720px; font-size: 16px; line-height: 1.7; color: var(--text-body); overflow-wrap: anywhere; }
+.report h1 { font-family: 'Onest', sans-serif; font-weight: 700; font-size: 26px; line-height: 1.25; margin: 12px 0 18px; color: var(--paper); letter-spacing: -.01em; }
+.report h2 { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 22px; line-height: 1.3; margin: 1.9em 0 .6em; color: var(--paper);
+             scroll-margin-top: calc(env(safe-area-inset-top) + 64px); }
+.report h3 { font-family: 'Onest', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.35; margin: 1.4em 0 .4em; color: var(--paper); }
+.sheet-title.long { font-family: 'Onest', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.35; }
+body:not(.graffiti-off) .report.main h2:first-of-type { padding-bottom: 12px; background: no-repeat left bottom / 150px 11px
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 15 2, 25 13, 37 7 S 60 3, 72 8 S 97 12, 117 5' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.report p, .report li { margin: .55em 0; }
+.report sup.cite { line-height: 0; margin-left: 1px; color: var(--muted); font-size: 10px; }
+.report sup.cite a { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--amber); text-decoration: none; padding: 0 1px; }
+.report ::selection { background: var(--mark); }
+.end-block { display: flex; flex-direction: column; gap: 10px; margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--hairline); }
+/* The end blocks' anchors (#factcheck, #next) stop below the sticky top bar. Not «a[id]»: NiceGUI gives every element
+   an id, and that rule moved the blocks' link rows 80 px up, over the labels and the mascot above them. */
+.end-block .anchor { display: block; scroll-margin-top: calc(env(safe-area-inset-top) + 72px); }
+.next-head { display: flex; align-items: flex-end; justify-content: space-between; }
+.next-dip { display: flex; align-items: center; gap: 0; margin-right: 6px; }
+.next-marker { font-size: 20px; margin: -40px 0 0 -4px; }
+.cite-no { flex: none; width: 26px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--amber); text-align: center; }
+.li-text.plain { text-decoration: none; color: inherit; }
+.icon-btn.done { color: var(--bordo); pointer-events: none; }
+.ask-pill .pill-input textarea { max-height: 110px; }
+/* A report's short version (?short=1): the note above it, and the wait while the worker writes it. */
+.report-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 14px; min-height: 20px; }
+.route-chip { background: none; border: 0; padding: 4px 0; min-height: 44px; cursor: pointer; display: flex; align-items: center; }
+.route-chip > div { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--paper-80); border: 1px solid var(--line);
+                    border-radius: var(--radius-chip); padding: 4px 10px; }
+.version-note { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 4px; }
+.version-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--paper); flex: none;
+                text-decoration: underline; text-decoration-color: var(--amber); text-underline-offset: 4px; }
+.short-wait { display: flex; align-items: center; gap: 14px; }
+/* Under the pill at the bottom of a report: the text fades out instead of showing below the pill and around its corners. */
+.pill-scrim { position: fixed; z-index: 1850; left: 0; right: 0; bottom: 0; height: calc(env(safe-area-inset-bottom) + 96px);
+              pointer-events: none; background: linear-gradient(to top, var(--night) 58%, rgba(20,16,14,0)); }
+
+/* тулбар выделения */
+.sel-bar { position: fixed; z-index: 3000; display: none; gap: 2px; padding: 4px; border-radius: 999px; background: var(--paper);
+           box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+.sel-bar.on { display: flex; }
+.sel-bar.docked { left: 50%; transform: translateX(-50%); top: auto; bottom: calc(env(safe-area-inset-bottom) + 84px); }
+.sel-bar button { border: 0; background: none; color: var(--night); font: 600 14px 'Onest', sans-serif; padding: 10px 14px; border-radius: 999px; cursor: pointer; min-height: 40px; }
+.sel-bar button:hover { background: rgba(20,16,14,.08); }
+
+/* «Библиотека» (DESIGN_HANDOFF.md §4.5) */
+.title-row.spread { justify-content: space-between; }
+.title-row.spread .icon-btn { margin-right: -10px; }
+.pill.search-pill { margin: 0; padding-left: 18px; background: var(--night-2); min-height: 52px; align-items: center; }
+.li-note { font-size: 13px; line-height: 1.45; color: var(--muted); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.li.quote { align-items: flex-start; }
+.li.quote .icon-btn { margin: -8px -10px 0 0; color: var(--muted); }
+.quote-text { font-size: 16px; line-height: 1.55; color: var(--paper); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; }
+
+/* «Фокус» (DESIGN_HANDOFF.md §4.6) */
+.li.disabled { cursor: default; }
+.li.disabled .li-title { color: var(--muted); }
+.li.choice .li-check { color: var(--amber); font-size: 22px; flex: none; }
+.li.choice.on .li-title { color: var(--paper); font-weight: 600; }
+.profile-card { background: var(--bordo); border-radius: var(--radius-card); padding: 22px 20px; display: flex; flex-direction: column; gap: 10px;
+                cursor: pointer; margin-top: 12px; }
+.profile-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #E5C9C2; }
+.profile-text { font-size: 16px; line-height: 1.5; color: #E5C9C2; }
+.profile-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #E5C9C2; }
+.field.q-textarea, .field.q-input { margin: 0; }
+.field textarea { font-size: 16px !important; color: var(--paper) !important; padding: 12px 0 !important; }
+
+/* «Радар» (DESIGN_HANDOFF.md §4.4) */
+.story-card { background: var(--bordo); border-radius: var(--radius-card); padding: 24px 20px 20px; display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
+.story-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #E5C9C2; }
+.story-title { font-family: 'Onest', sans-serif; font-weight: 600; font-size: 20px; line-height: 1.35; color: var(--paper); }
+.story-why { font-size: 14px; line-height: 1.5; color: #E5C9C2; }
+.story-card .btn-primary { align-self: flex-start; margin-top: 6px; }
+/* «Радар»: news stories (core/ui/radar.py). A row opens the story as a research topic; its arrow, the source. */
+.story-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 18px; margin-top: 6px; }
+.story-actions .btn-primary { margin-top: 0; }
+.story-src { font-size: 14px; }
+.news-row { align-items: flex-start; }
+.radar-part { display: flex; flex-direction: column; gap: 16px; }  /* a tab of «Радар»: the screen's own rhythm */
+.news-row a.li-text { color: inherit; text-decoration: none; }
+.li-note { font-size: 14px; line-height: 1.5; color: var(--text-body); overflow: hidden; display: -webkit-box;
+           -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.li-src { flex: none; width: 44px; height: 44px; margin: -10px -10px 0 0; display: flex; align-items: center;
+          justify-content: center; color: var(--muted); text-decoration: none; }
+.li-src .q-icon { font-size: 20px; }
+/* «Радар» → «Мои»: the circle before a row marks a registration, filled in bordo when there is one (a selected
+   toggle, the brandbook's use of bordo); the tap area is 44 px, the circle 24. */
+.mark { flex: none; width: 44px; height: 44px; margin: -10px -8px 0 -10px; display: flex; align-items: center;
+        justify-content: center; background: none; border: 0; padding: 0; cursor: pointer; }
+.mark .q-icon { width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 2px solid var(--muted);
+                font-size: 16px; color: transparent; transition: background .15s ease, border-color .15s ease; }
+.mark.on .q-icon { background: var(--bordo); border-color: var(--bordo); color: var(--paper); }
+.mark:active .q-icon { border-color: var(--paper); }
+.mark:focus-visible { outline: 2px solid var(--amber); outline-offset: -4px; border-radius: 50%; }
+.news-row .li-text[role="button"] { cursor: pointer; }
+/* An opportunity's sheet: caption, title, what it is, the facts as label and text, where to apply, the choices. */
+.opp-title { font: 600 20px/1.35 'Onest', sans-serif; color: var(--paper); }
+.opp-text { font-size: 15px; line-height: 1.5; color: var(--text-body); }
+.opp-why { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.opp-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 16px; margin-top: 6px; }
+.opp-key { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+           color: var(--muted); padding-top: 2px; }
+.opp-value { font-size: 14px; line-height: 1.45; color: var(--paper); overflow-wrap: anywhere; }
+.link-btn { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 24px;
+            border-radius: var(--radius-pill); background: var(--amber); color: var(--night); font: 600 16px 'Onest', sans-serif;
+            text-decoration: none; }
+.link-btn .q-icon { font-size: 18px; }
+.opp-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.opp-actions .btn-outline { flex: 1 1 auto; }
+.opp-more { display: flex; flex-wrap: wrap; gap: 0 24px; }

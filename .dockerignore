@@ -1,0 +1,13 @@
+.venv/
+.git/
+.env
+reports/
+outputs/
+logs/
+__pycache__/
+*.log
+eval/
+dev/
+proxy/
+**/.claude/
+aven-brandbook.pdf

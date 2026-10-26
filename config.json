@@ -1,0 +1,20 @@
+{
+  "FAST_LLM": "deepseek:deepseek-flash",
+  "SMART_LLM": "deepseek:deepseek-v4-pro",
+  "STRATEGIC_LLM": "deepseek:deepseek-flash",
+  "LLM_KWARGS": {"extra_body": {"thinking": {"type": "disabled"}, "max_tokens": 32000}, "stream_usage": true},
+  "SMART_TOKEN_LIMIT": 32000,
+
+  "RETRIEVER": "searx,arxiv,openalex",
+  "PROMPT_FAMILY": "deeper",
+  "CONTEXT_FILTER": "keyword",
+  "MAX_SEARCH_RESULTS_PER_QUERY": 8,
+
+  "LANGUAGE": "russian",
+  "TOTAL_WORDS": 1500,
+  "MAX_SUBTOPICS": 4,
+
+  "DEEP_RESEARCH_BREADTH": 4,
+  "DEEP_RESEARCH_DEPTH": 2,
+  "DEEP_RESEARCH_CONCURRENCY": 4
+}
