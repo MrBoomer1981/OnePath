@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="64" height="64" role="img" aria-label="OnePath">
+  <!-- static/icon.svg for a browser tab: the same door, larger, without its small details; favicon.png -->
+  <rect width="120" height="120" fill="#46606D"/>
+  <rect y="96" width="120" height="24" fill="#2F4B54"/>
+  <path d="M34 104 L72 104 L96 120 L14 120 Z" fill="#EBD88E"/>
+  <rect x="24" y="8" width="72" height="96" fill="#B2C1CE"/>
+  <rect x="34" y="18" width="52" height="86" fill="#F7E49C"/>
+  <path d="M86 18 L63 27 L63 102 L86 104 Z" fill="#8FA3B3"/>
+</svg>

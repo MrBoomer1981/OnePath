@@ -1,4 +1,4 @@
-/* DEEper web app, AVEN brand (see aven-brandbook.pdf and DESIGN_HANDOFF.md).
+/* OnePath's web app: DEEper's AVEN design (aven-brandbook.pdf, DESIGN_HANDOFF.md) in OnePath's own colors (:root).
    Fonts: WOFF2 subsets (Latin, Cyrillic, punctuation) of the TTFs next to them; the PDF uses the TTFs. */
 @font-face { font-family: 'Onest'; src: url('fonts/Onest.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
 @font-face { font-family: 'Unbounded'; src: url('fonts/Unbounded.woff2') format('woff2'); font-weight: 700 900; font-display: swap; }  /* the web needs 700 and 900 only */
@@ -12,17 +12,19 @@
 .material-icons { font-family: 'DEEper Icons' !important; }
 
 :root {
-  /* бренд AVEN */
-  --night: #14100E; --night-2: #1D1916; --paper: #F2EBE1; --bordo: #7A2A35; --amber: #E8A24A;
-  --paper-80: rgba(242,235,225,.8); --paper-60: rgba(242,235,225,.6); --paper-40: rgba(242,235,225,.4);
-  --line: rgba(242,235,225,.1); --surface: rgba(242,235,225,.035); --surface-2: rgba(242,235,225,.06);
+  /* Цвета OnePath — с картинки «дверь, открытая в грозу» (27.10.2026); имена ролей остались от AVEN и DEEper:
+     night — грозовое небо, paper — рама двери, amber — свет в проёме, bordo — книга под мышкой у путника. */
+  --night: #111B20; --night-2: #19262C; --paper: #E6ECEF; --bordo: #6E3F46; --amber: #F4DE90;
+  --paper-80: rgba(230,236,239,.8); --paper-60: rgba(230,236,239,.6); --paper-40: rgba(230,236,239,.4);
+  --line: rgba(230,236,239,.1); --surface: rgba(230,236,239,.035); --surface-2: rgba(230,236,239,.06);
   /* редизайн */
-  --bordo-dark: #5A1F28;           /* тени маскота, тёмная часть бордо */
-  --muted: #8C8379;                /* второстепенный текст: 5.0:1 на --night */
-  --icon-off: #7A7067;             /* неактивные иконки навигации: 3.9:1 на --night */
-  --hairline: rgba(242,235,225,.06);
-  --text-body: #D9D0C4;            /* основной текст отчёта */
-  --mark: rgba(232,162,74,.18);    /* выделение в отчёте */
+  --bordo-dark: #4D2B31;           /* тени маскота, тёмная часть бордо */
+  --on-bordo: #E8D9D6;             /* текст на бордовых карточках: 6.2:1 */
+  --muted: #8A9AA4;                /* второстепенный текст: 6.0:1 на --night */
+  --icon-off: #6E7E88;             /* неактивные иконки навигации: 4.2:1 на --night */
+  --hairline: rgba(230,236,239,.06);
+  --text-body: #CDD6DB;            /* основной текст отчёта */
+  --mark: rgba(244,222,144,.18);   /* выделение в отчёте */
   --graffiti: #FFFFFF;             /* только граффити-слой */
   --radius-pill: 30px; --radius-card: 22px; --radius-chip: 14px;
   --gutter: 24px;                  /* боковой отступ экранов */
@@ -80,7 +82,7 @@ html.nav-pending body::after { content: ''; position: fixed; z-index: 6000; top:
 .body--dark .q-field__native, .body--dark .q-field__input { color: var(--paper); }
 .body--dark textarea::placeholder, .body--dark input::placeholder { color: var(--muted) !important; opacity: 1; }
 .q-toggle__label { color: var(--paper-80); }
-::selection { background: rgba(232,162,74,.35); }
+::selection { background: rgba(244,222,144,.35); }
 
 .score { font-family: 'JetBrains Mono', monospace; font-size: 11px; border-radius: 999px; padding: 1px 8px; flex: none;
          border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
@@ -146,7 +148,7 @@ html.nav-pending body::after { content: ''; position: fixed; z-index: 6000; top:
 .btn-primary.q-btn { border-radius: var(--radius-pill); min-height: 52px;
                      padding: 0 24px; font-weight: 600; font-size: 16px; }
 .btn-outline.q-btn { border-radius: var(--radius-pill); min-height: 52px; padding: 0 24px; font-size: 16px; }
-.btn-outline.q-btn:before { border-color: rgba(242,235,225,.24) !important; }
+.btn-outline.q-btn:before { border-color: rgba(230,236,239,.24) !important; }
 
 /* нижний лист */
 .q-dialog__inner--bottom { padding: 0 !important; }
@@ -186,25 +188,33 @@ body:not(.graffiti-off) .ttab.on::after { height: 9px; bottom: -2px; background:
 .marker.cyr { font-family: 'Amatic SC', cursive; font-weight: 700; font-size: 36px; }
 body.graffiti-off .graffiti { display: none !important; }
 
-/* Дип-Диггер */
-.dip-wrap { flex: none; line-height: 0; }
-.dip-wrap svg { width: 100%; height: auto; overflow: visible; }
-.dip .dip-body  { transform-origin: 0 60px; animation: dip-bob 2.4s ease-in-out infinite; }
-.dip .dip-eyes  { transform-origin: 0 -14px; animation: dip-blink 4.8s infinite; }
-/* The shovel and its sticker outline (two layers of the sticker, under and over the body's ring) swing as one;
-   their transform-origin is in the SVG's own coordinates, the top of the handle. */
-.dip--dig .dip-tool, .dip--dig .dip-tool-sticker { transform-origin: 34px -18px; animation: dip-dig .9s ease-in-out infinite; }
-.dip--dig .dip-lamp, .dip--dig .dip-beam { animation: dip-flicker 1.8s infinite; }
-.dip--found .dip-sparkles { transform-box: fill-box; transform-origin: center; animation: dip-twinkle 1.2s ease-in-out infinite; }
-.dip--sleep .dip-zzz { animation: dip-float 2.6s ease-in-out infinite; }
-@keyframes dip-bob     { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
-@keyframes dip-blink   { 0%,92%,100% { transform: scaleY(1) } 95% { transform: scaleY(.1) } }
-@keyframes dip-dig     { 0%,100% { transform: rotate(0) } 50% { transform: rotate(12deg) } }
-@keyframes dip-flicker { 0%,100% { opacity: 1 } 45% { opacity: .75 } 50% { opacity: .95 } }
-@keyframes dip-twinkle { 0%,100% { opacity: .5; transform: scale(.9) } 50% { opacity: 1; transform: scale(1.1) } }
-@keyframes dip-float   { 0% { transform: translateY(4px); opacity: 0 } 40% { opacity: 1 } 100% { transform: translateY(-6px); opacity: 0 } }
+/* Тропыч, the mascot (static/mascot, drawn by dev/mascot.py): a graffiti piece whose spray, shines and Zs move.
+   At rest (reduced motion) each drawing is whole: the arrow drawn, the spray and the Zs shown. */
+.mascot { flex: none; line-height: 0; }
+.mascot svg { width: 100%; height: auto; overflow: visible; }
+.walker .w-body { animation: w-bob 2.6s ease-in-out infinite; }
+.walker .w-star, .walker .w-glint { animation: w-twinkle 2.2s ease-in-out infinite; }
+/* hello: the arrow underfoot is sprayed anew every 5 s, while the can puffs */
+.walker--hello .w-path { animation: w-fade 5s linear infinite; }
+.walker--hello .w-stroke { stroke-dasharray: 200; animation: w-draw 5s ease-in-out infinite; }
+.walker--hello .w-head { animation: w-head 5s ease-out infinite; }
+.walker--hello .w-spray { animation: w-spray 5s ease-out infinite; }
+/* sleep: a slow breath, the moustache snoring, the Zs rising one after another */
+.walker--sleep .w-body { animation-duration: 3.6s; }
+.walker--sleep .w-stache { transform-box: fill-box; transform-origin: center; animation: w-snore 3.6s ease-in-out infinite; }
+.walker--sleep .w-z { animation: w-float 3.6s ease-in-out infinite; }
+.walker--sleep .w-z2 { animation-delay: .6s; }
+.walker--sleep .w-z3 { animation-delay: 1.2s; }
+@keyframes w-bob     { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-2px) } }
+@keyframes w-twinkle { 0%,100% { opacity: 1 } 50% { opacity: .3 } }
+@keyframes w-draw    { 0% { stroke-dashoffset: 200 } 40%,100% { stroke-dashoffset: 0 } }
+@keyframes w-head    { 0%,36% { opacity: 0 } 44%,100% { opacity: 1 } }
+@keyframes w-fade    { 0%,90% { opacity: 1 } 100% { opacity: 0 } }
+@keyframes w-spray   { 0% { opacity: 0; transform: translateX(-3px) } 6%,34% { opacity: 1 } 46%,100% { opacity: 0; transform: translateX(4px) } }
+@keyframes w-snore   { 0%,100% { transform: scale(1) } 50% { transform: scale(1.08, .88) } }
+@keyframes w-float   { 0% { transform: translateY(5px); opacity: 0 } 25%,75% { opacity: 1 } 100% { transform: translateY(-7px); opacity: 0 } }
 @media (prefers-reduced-motion: reduce) {
-  .dip *, .job-stage, .recent .r0, html.nav-pending body::after { animation: none !important; }
+  .walker *, .job-stage, .recent .r0, html.nav-pending body::after { animation: none !important; }
   .bar > div { transition: none !important; }
 }
 
@@ -223,11 +233,11 @@ body.graffiti-off .graffiti { display: none !important; }
 /* логотип и вход */
 .logo-row { position: relative; display: inline-flex; flex: none; }
 .logo { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: .01em; color: var(--paper); line-height: 1; }
-.graffiti.logo-crown { position: absolute; left: 1px; top: -13px; width: 24px; height: 13px; transform: rotate(-9deg); }
-.graffiti.logo-crown svg { stroke-width: 2.5; }
+.graffiti.logo-hat { position: absolute; left: -3px; top: -12px; width: 26px; height: 14px; transform: rotate(-12deg); }
+.graffiti.logo-hat svg { stroke-width: 2.5; }
 .screen.login { min-height: 100vh; justify-content: center; align-items: center; text-align: center; gap: 24px; max-width: 380px; }
 .screen.login .logo { font-size: 34px; }
-.screen.login .logo-crown { width: 44px; height: 24px; top: -24px; }
+.screen.login .logo-hat { width: 46px; height: 25px; left: -7px; top: -21px; }
 .field { width: 100%; background: var(--night-2); border-radius: var(--radius-pill); padding: 2px 20px; box-sizing: border-box; }
 .field input { font-size: 16px !important; color: var(--paper) !important; }
 .screen.login .btn-primary { width: 100%; }
@@ -263,7 +273,7 @@ body.kb-open .pill { bottom: calc(var(--kb, 0px) + 10px); }
 
 /* «Поиск» */
 .home-glow { position: fixed; top: -180px; right: -160px; width: 520px; height: 420px; pointer-events: none; z-index: 0;
-             background: radial-gradient(closest-side, rgba(122,42,53,.30), transparent); }
+             background: radial-gradient(closest-side, rgba(110,63,70,.30), transparent); }
 .screen.home { position: relative; z-index: 1; }
 .home-top { display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin-top: 10px; }
 .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bordo); color: var(--paper); text-decoration: none;
@@ -292,11 +302,11 @@ body.kb-open .pill { bottom: calc(var(--kb, 0px) + 10px); }
 .pct-sign { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 34px; color: var(--muted); }
 .job-status { font-size: 16px; color: var(--paper); margin-top: 4px; }
 .job-sub { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); min-height: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.bar { height: 2px; background: #2A2420; border-radius: 1px; overflow: hidden; margin-top: 4px; }
+.bar { height: 2px; background: #24323A; border-radius: 1px; overflow: hidden; margin-top: 4px; }
 .bar > div { height: 100%; background: var(--amber); transform: scaleX(0); transform-origin: left; transition: transform .6s ease; }  /* job.py sets the scale: no layout per frame */
 .recent { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; min-height: 64px; }
 .recent > div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.recent .r0 { color: var(--paper); } .recent .r1 { color: var(--muted); } .recent .r2 { color: #5E564F; }
+.recent .r0 { color: var(--paper); } .recent .r1 { color: var(--muted); } .recent .r2 { color: #56656E; }
 .recent .r0 { animation: recent-in .4s ease both; }  /* the newest source slides in; the list is rebuilt when it changes */
 @keyframes recent-in { from { opacity: 0; transform: translateY(-6px) } }
 .job-stage { animation: stage-in .35s ease both; }  /* Дип changes (digging, found, error) with a fade, not a cut */
@@ -365,7 +375,7 @@ body:not(.graffiti-off) .report.main h2:first-of-type { padding-bottom: 12px; ba
 .short-wait { display: flex; align-items: center; gap: 14px; }
 /* Under the pill at the bottom of a report: the text fades out instead of showing below the pill and around its corners. */
 .pill-scrim { position: fixed; z-index: 1850; left: 0; right: 0; bottom: 0; height: calc(env(safe-area-inset-bottom) + 96px);
-              pointer-events: none; background: linear-gradient(to top, var(--night) 58%, rgba(20,16,14,0)); }
+              pointer-events: none; background: linear-gradient(to top, var(--night) 58%, rgba(17,27,32,0)); }
 
 /* тулбар выделения */
 .sel-bar { position: fixed; z-index: 3000; display: none; gap: 2px; padding: 4px; border-radius: 999px; background: var(--paper);
@@ -373,7 +383,7 @@ body:not(.graffiti-off) .report.main h2:first-of-type { padding-bottom: 12px; ba
 .sel-bar.on { display: flex; }
 .sel-bar.docked { left: 50%; transform: translateX(-50%); top: auto; bottom: calc(env(safe-area-inset-bottom) + 84px); }
 .sel-bar button { border: 0; background: none; color: var(--night); font: 600 14px 'Onest', sans-serif; padding: 10px 14px; border-radius: 999px; cursor: pointer; min-height: 40px; }
-.sel-bar button:hover { background: rgba(20,16,14,.08); }
+.sel-bar button:hover { background: rgba(17,27,32,.08); }
 
 /* «Библиотека» (DESIGN_HANDOFF.md §4.5) */
 .title-row.spread { justify-content: space-between; }
@@ -391,17 +401,17 @@ body:not(.graffiti-off) .report.main h2:first-of-type { padding-bottom: 12px; ba
 .li.choice.on .li-title { color: var(--paper); font-weight: 600; }
 .profile-card { background: var(--bordo); border-radius: var(--radius-card); padding: 22px 20px; display: flex; flex-direction: column; gap: 10px;
                 cursor: pointer; margin-top: 12px; }
-.profile-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #E5C9C2; }
-.profile-text { font-size: 16px; line-height: 1.5; color: #E5C9C2; }
-.profile-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #E5C9C2; }
+.profile-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--on-bordo); }
+.profile-text { font-size: 16px; line-height: 1.5; color: var(--on-bordo); }
+.profile-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--on-bordo); }
 .field.q-textarea, .field.q-input { margin: 0; }
 .field textarea { font-size: 16px !important; color: var(--paper) !important; padding: 12px 0 !important; }
 
 /* «Радар» (DESIGN_HANDOFF.md §4.4) */
 .story-card { background: var(--bordo); border-radius: var(--radius-card); padding: 24px 20px 20px; display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
-.story-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #E5C9C2; }
+.story-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--on-bordo); }
 .story-title { font-family: 'Onest', sans-serif; font-weight: 600; font-size: 20px; line-height: 1.35; color: var(--paper); }
-.story-why { font-size: 14px; line-height: 1.5; color: #E5C9C2; }
+.story-why { font-size: 14px; line-height: 1.5; color: var(--on-bordo); }
 .story-card .btn-primary { align-self: flex-start; margin-top: 6px; }
 /* «Радар»: news stories (core/ui/radar.py). A row opens the story as a research topic; its arrow, the source. */
 .story-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 18px; margin-top: 6px; }

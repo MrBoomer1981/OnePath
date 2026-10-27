@@ -5,7 +5,7 @@ Core is OnePath's web app (NiceGUI): the opportunities the radar found, the user
 ## What core does
 
 - `core/web.py` (NiceGUI 3) sets the app up and imports the screens:
-  - the head (manifest, iPhone meta with the title «OnePath», font preloads, `app.css`/`app.js` and the icon font with a `?v=` content hash of all three, `asset_version()`);
+  - the head (manifest, iPhone meta with the title «OnePath», font preloads, `app.css`/`app.js`, the icon font, the manifest and the iPhone's icon (`apple-touch-icon.png`, which Safari takes from its cache when the app is added to the home screen) with a `?v=` content hash of them all, `asset_version()`);
   - static files with a 7-day cache;
   - auth: `AuthMiddleware` is active when it listens publicly (`kit.PUBLIC`: `PORT` is set, as on Railway, unless `PUBLIC=0`) or when `APP_PASSWORD` is set;
   - `NICEGUI_STORAGE_PATH` and the storage secret in `reports/` (the volume), so logins survive redeploys;
@@ -22,7 +22,7 @@ Core is OnePath's web app (NiceGUI): the opportunities the radar found, the user
     - Every choice goes to `POST /opps/{id}/status`; both sections are then fetched and redrawn.
   - `settings.py`: «Настройки» (`/settings`), what DEEper's Telegram bot set for the radar: «Профиль» (a sheet with the profile's text; a new one has the open opportunities read again, which the toast says), «Что показывать» (a switch per type), «Источники» (a sheet: a field to add a channel, a feed or a program's page, and the sources grouped «С ошибкой», «Молчат», «Работают», «Выключены», each switched off or on with its button), «Поиск по вебу» (on or off), «Граффити» (per browser, `kit.prefs()`), «Выйти»; under them «Состояние» (when the list was updated and will be, the sources' health, the model's spend this month and what waits to be read, and a warning when the loop has not ticked for three minutes). A refused value shows the radar's own message (422 `detail`).
   - `kit.py`: what the screens share: the shell with the tab bar (`NAV`, `TAB_TITLES`), bottom sheets, list rows, buttons, the mascot, the graffiti layer, `research_url()`, and the page's own settings per browser (`prefs()`: only the graffiti now).
-  - `login.py` `/login`: the logo «One**Path**» under the crown, one shared password, rate-limited per IP.
+  - `login.py` `/login`: the logo «One**Path**» with Тропыч's hat drawn on its O and Тропыч below tipping his own, one shared password, rate-limited per IP.
 
 ## Run and check it alone
 
@@ -66,4 +66,5 @@ uv run ../../app.py                  # core with the radar's loop in one process
 | what a section shows of an opportunity, or a status it sets | the fields come from `news/opps_delivery.board()`, `soon()` and `dressed()` and `news/opps.listing()`; the statuses are `news/opps_delivery.STATUSES`, so a new one starts in the radar |
 | what «Настройки» changes | the setting must exist in `news/config.Settings` (with its `LABELS`); a source's routes are the radar's `/sources` |
 | a section or its address | `kit.NAV` and `TAB_TITLES`, `tabs.SECTIONS` and its pages, `SECTIONS` in `static/app.js` |
+| the mascot (`kit.mascot(state, width)`: `hello` on the sign-in screen, `sleep` in an empty list) | `dev/mascot.py` draws `static/mascot/{state}.svg` (`uv run dev/mascot.py`); its moving parts are `w-*` classes animated in app.css |
 | an icon the app did not show before, or a NiceGUI upgrade | `uv run dev/icons.py` cuts `static/fonts/icons.woff2` anew (the `check-project` skill runs `dev/icons.py --check`); write icon names as literals |

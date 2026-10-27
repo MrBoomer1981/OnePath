@@ -135,7 +135,7 @@ def _opps_view(board: dict, kind: str, on_kind, on_open) -> None:
     items = board.get("items") or []
     if not items:
         with ui.element("div").classes("empty"):
-            kit.mascot("sleep", 120)
+            kit.mascot("sleep", 170)
             ui.label("Новых возможностей пока нет. Список обновляется каждое утро"
                      + (f", следующий раз — {board['next']}." if board.get("next") else ".")).classes("sub-text")
         _awaited(board)
@@ -199,7 +199,7 @@ def _event_day(opp: dict) -> str:
 def _mine_view(items: list[dict], on_open, on_mark) -> None:
     if not items:
         with ui.element("div").classes("empty"):
-            kit.mascot("sleep", 120)
+            kit.mascot("sleep", 170)
             ui.label("Здесь будут возможности, которые ты выберешь: открой любую во «Возможностях» и нажми «В мои». "
                      "Зарегистрируешься — отметь кружком. За две недели до дедлайна она появится наверху "
                      "«Возможностей».").classes("sub-text")

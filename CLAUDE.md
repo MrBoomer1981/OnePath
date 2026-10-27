@@ -12,12 +12,16 @@ OnePath was split from DEEper (github.com/MrBoomer1981/DEEper, the user's resear
 uv run app.py                              # everything in one process: the web app at 127.0.0.1:8501 and the radar's loop
 uv run python -m my_browser.core           # or each part on its own: core (the web app, PORT=8501),
 uv run python -m my_browser.news           #   news (the radar: its API on NEWS_PORT=8504 + the loop); set NEWS_URL for core
-uv run dev/mock_llm.py                     # a fake OpenAI-compatible LLM on :8765 for free end-to-end runs; point any command at it:
+uv run dev/mock_llm.py [--port N]          # a fake OpenAI-compatible LLM (default :8765) for free end-to-end runs; point any command at it:
 FAST_LLM=openai:mock SMART_LLM=openai:mock STRATEGIC_LLM=openai:mock OPENAI_API_KEY=mock \
   OPENAI_BASE_URL=http://127.0.0.1:8765/v1 uv run app.py
 uv run eval/opps/run_extract.py            # how well the model reads announcements, on labeled real posts (≈1 ₽)
 uv run dev/icons.py                        # after the web app names a new icon: cuts static/fonts/icons.woff2 anew (--check only checks)
+uv run --with playwright dev/app_icon.py   # after a change of static/icon.svg or favicon.svg: draws the app's icon PNGs
+uv run dev/mascot.py                       # after a change of the mascot's drawing: writes static/mascot/hello.svg and sleep.svg
 docker compose up -d                       # a local SearXNG on 127.0.0.1:8080 for the weekly web search (needs SEARXNG_SECRET in .env)
+curl -X POST -H "Authorization: Bearer $(cat $REPORTS_DIR/.service_token)" http://127.0.0.1:$NEWS_PORT/opps/run
+                                           # one step of the loop now, on a radar run as its own part: /collect, /dedup, /opps/run, /opps/update
 ```
 
 The commands work from any folder of the repository: uv finds the project upward, and `my_browser` is installed into the environment as an editable package. Don't name a module after a stdlib one: `python -m` puts the current folder first on `sys.path`.
@@ -43,7 +47,7 @@ There is deliberately no test suite (the user's call, as in DEEper). Verify with
   - The app reads `GET /opps/board` (with «Скоро дедлайн», the user's tracked deadlines of the next two weeks) and `GET /opps?status=tracked,applied` before its page is built, and sets statuses with `POST /opps/{id}/status`. «Настройки» reads and changes `/settings`, `/sources` and `/status`.
 - The LLM: DeepSeek Flash through gpt-researcher's `create_chat_completion` with `Config(CONFIG_PATH)` (`config.json`: models, `LLM_KWARGS`); `common/costs.py` patches gpt-researcher's provider to meter every call in rubles. An environment variable or a `.env` line beats `config.json`: that is how the mock LLM takes over a run. gpt-researcher is only the LLM client here (its research is DEEper's).
 - Dependencies: `[project]` holds what both parts need (httpx, python-dotenv), dependency groups `core`/`news` the rest, `dev` the icon cutter's fontTools; `tool.uv.default-groups` installs all three, the Dockerfile's `uv sync --no-dev` the first two.
-- Other folders: `eval/opps/` measures the reading, `dev/` holds the mock LLM and the icon cutter, `proxy/` is the Cloudflare Worker for access from Russia, `static/` the web app's assets, fonts and icons, `searxng/` the local SearXNG's settings.
+- Other folders: `eval/opps/` measures the reading, `dev/` holds the mock LLM, the icon cutter and the drawers of the app's icon and mascot, `proxy/` is the Cloudflare Worker for access from Russia, `static/` the web app's assets, fonts and icons, `searxng/` the local SearXNG's settings.
 
 ## Working in one part
 
@@ -57,13 +61,15 @@ The user may start separate Claude Code sessions in one folder (`my_browser/core
 - **Before committing**, run the `check-project` skill.
 - **Pushing.** A push to `main` deploys to Railway at once (see Deployment). If the new code fails to start, the app is down: with the volume, the old deployment has already stopped. Revert rather than fix forward: `git revert <sha>`, then push.
 
-## Design (AVEN brandbook)
+## Design (AVEN's rules, OnePath's colors)
 
-The UI follows the user's brandbook (`aven-brandbook.pdf`, kept locally and gitignored, shared with DEEper; `DESIGN_HANDOFF.md` has its tokens, screens, the Дип-Диггер mascot in `static/mascot/` and the graffiti layer). OnePath still wears DEEper's face (its icon «Корона + D», the mascot): its own is an open question (`plan.md`).
-- Dark only. Background is night `#14100E`, text is paper `#F2EBE1` (never `#FFF`), bordo `#7A2A35` only for fills (buttons, selected toggles, the circle of a registered opportunity), amber `#E8A24A` the single accent per screen (one action, the tab underline, link underlines). No fifth color: no blue, green, neon or gradients; that is why an opportunity's caption says «из РФ: да», not a green mark. The graffiti layer may be pure white `#FFFFFF`, as decoration (`aria-hidden`, no pointer events) that the user can switch off in «Настройки».
+The UI follows the rules of the user's brandbook (`aven-brandbook.pdf`, kept locally and gitignored, shared with DEEper; `DESIGN_HANDOFF.md` has its screens and the graffiti layer, and DEEper's mascot, which OnePath no longer uses) in OnePath's own colors, taken on 27.10.2026 from a picture the user chose: a man in a hat stepping out of a lit door that stands in a stormy field (someone else's illustration: keep it out of the repository).
+- The icon is that door, flat: `static/icon.svg` (the light from the doorway makes a path, «1» on the door's plate, a seagull), and `static/favicon.svg`, the same without its small details for a browser tab. `uv run --with playwright dev/app_icon.py` draws the PNGs from them.
+- The mascot is Тропыч (27.10.2026), the picture's walker as a graffiti character: no face, only glasses glowing with the doorway's light and a handlebar moustache under a fedora, a spray can in hand. He is painted as a wall piece (a dark outline, a slate 3D block, a light outer line, fades with bubbles, drips, shines, overspray) in two poses: `static/mascot/hello.svg` on the sign-in screen (tips his hat; the arrow underfoot is sprayed anew in a loop) and `sleep.svg` in an empty list (snoring under his hat, Zs rising). `dev/mascot.py` draws both (`uv run dev/mascot.py`); app.css animates their `w-*` classes, and at rest (reduced motion) each is whole. His hat is also the graffiti on the logo's O.
+- Dark only. The roles keep AVEN's names (the CSS variables, `kit.BRAND_COLORS`, props like `color=bordo`), so DEEper's styles still apply: background night `#111B20` (the storm), text paper `#E6ECEF` (the door's frame; never `#FFF`), bordo `#6E3F46` (the book under the walker's arm) only for fills (buttons, selected toggles, the circle of a registered opportunity), amber `#F4DE90` (the light in the doorway) the single accent per screen (one action, the tab underline, link underlines). No fifth color: no green (the picture's leaves stay out), neon or gradients; that is why an opportunity's caption says «из РФ: да», not a green mark. The graffiti layer may be pure white `#FFFFFF`, as decoration (`aria-hidden`, no pointer events) that the user can switch off in «Настройки».
 - Fonts are self-hosted in `static/fonts` as WOFF2 subsets: Unbounded only for 2–4 word headings, Onest for text, JetBrains Mono for labels, chips, numbers and URLs; Permanent Marker and Amatic SC only for graffiti. Icons come from `static/fonts/icons.woff2`, NiceGUI's Material Icons cut by `dev/icons.py` to the icons the code names; a name missing from it shows as the word, so write icon names as literals and rerun the script when adding one.
 - Styles and client scripts are `static/app.css` and `static/app.js`, linked with a content hash (`?v=`) so a deploy is never hidden by the browser cache. app.css still carries DEEper's styles of screens OnePath does not have (the report, the job page); they cost nothing and keep the shared ones identical.
-- Brand colors are registered as Quasar colors (`ui.colors(**BRAND_COLORS)`: `bordo`, `paper`, `amber`, `night`), so props like `color=bordo text-color=paper` work.
+- Brand colors are registered as Quasar colors (`ui.colors(**BRAND_COLORS)`: `bordo`, `paper`, `amber`, `night`), so props like `color=bordo text-color=paper` work. A color changes in three places: app.css's `:root`, `kit.BRAND_COLORS`, and the theme color in `core/web.py` and `static/manifest.webmanifest` (night); the mascot's colors are in `dev/mascot.py`.
 
 ## Deployment
 

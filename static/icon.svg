@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="1024" height="1024" role="img" aria-label="OnePath">
+  <!-- OnePath's icon (27.10.2026): a door open into a storm, the light making a path; the colors are those of the
+       picture the design comes from. The PNGs are drawn from it by dev/app_icon.py. -->
+  <!-- sky: a storm above, lighter haze near the horizon -->
+  <rect width="120" height="120" fill="#55707E"/>
+  <path d="M0 0 H120 V46 C108 42 98 49 86 46 C74 43 66 52 52 49 C38 46 30 54 16 51 C9 50 4 52 0 54 Z" fill="#46606D"/>
+  <path d="M0 0 H120 V20 C110 17 100 24 88 21 C76 18 68 26 54 23 C40 20 30 27 16 24 C9 23 4 25 0 27 Z" fill="#3B5461"/>
+  <!-- ground -->
+  <path d="M0 90 C30 88 90 88 120 90 V120 H0 Z" fill="#2F4B54"/>
+  <!-- the path of light out of the door -->
+  <path d="M41 98 L64 98 L87 120 L17 120 Z" fill="#EBD88E"/>
+  <!-- door frame -->
+  <rect x="35" y="19" width="50" height="79" fill="#B2C1CE"/>
+  <!-- the light inside -->
+  <rect x="41" y="25" width="38" height="73" fill="#F7E49C"/>
+  <!-- the door leaf, swung inward on the right hinge; its edge catches the light -->
+  <path d="M79 25 L62 31.5 L62 96.6 L79 98 Z" fill="#8FA3B3"/>
+  <path d="M62 31.5 L63.8 30.8 L63.8 96.7 L62 96.6 Z" fill="#D6D2AC"/>
+  <path d="M76.2 30.2 L66 34.3 L66 93.2 L76.2 94.3 Z" fill="none" stroke="#7B90A1" stroke-width="1.2"/>
+  <!-- the plate with «1» -->
+  <path d="M68.2 39.6 L74 37.6 L74 45.4 L68.2 47.3 Z" fill="#E4EBEF"/>
+  <path d="M70.5 40.8 L71.9 40.1 L71.9 45.3" fill="none" stroke="#33414B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- a seagull -->
+  <path d="M88 13 Q91 9.8 93.5 12.6 Q96 9.8 99 13" fill="none" stroke="#E4EBEF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

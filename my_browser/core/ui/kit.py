@@ -1,9 +1,9 @@
 """What every screen shares: navigation, bottom sheets, list rows, the mascot, the graffiti layer and the
 user's own settings of the page (kept per browser in app.storage.user). Styles are in static/app.css.
 
-Brand (AVEN, see DESIGN_HANDOFF.md): night #14100E background, paper #F2EBE1 text, bordo #7A2A35 only as a
-fill, one amber #E8A24A action per screen; white only in the graffiti layer, which is decoration
-(aria-hidden, no pointer events) and can be switched off in «Настройки».
+Brand (AVEN's rules, see DESIGN_HANDOFF.md, in OnePath's own colors): night #111B20 background, paper #E6ECEF
+text, bordo #6E3F46 only as a fill, one amber #F4DE90 action per screen; white only in the graffiti layer, which
+is decoration (aria-hidden, no pointer events) and can be switched off in «Настройки».
 """
 
 import functools
@@ -22,10 +22,10 @@ PUBLIC = os.environ.get("PUBLIC", "1" if "PORT" in os.environ else "0") != "0"
 PASSWORD = os.environ.get("APP_PASSWORD", "")
 AUTH = PUBLIC or bool(PASSWORD)
 
-BRAND_COLORS = dict(
-    primary="#7A2A35", secondary="#F2EBE1", accent="#E8A24A", dark="#1D1916", dark_page="#14100E",
-    positive="#7A2A35", negative="#7A2A35", info="#7A2A35", warning="#E8A24A",
-    night="#14100E", paper="#F2EBE1", bordo="#7A2A35", amber="#E8A24A",
+BRAND_COLORS = dict(  # static/app.css's :root, for Quasar's props
+    primary="#6E3F46", secondary="#E6ECEF", accent="#F4DE90", dark="#19262C", dark_page="#111B20",
+    positive="#6E3F46", negative="#6E3F46", info="#6E3F46", warning="#F4DE90",
+    night="#111B20", paper="#E6ECEF", bordo="#6E3F46", amber="#F4DE90",
 )
 NAV = [  # (section, route, Material icon, label for screen readers)
     ("opps", "/", "radar", "Возможности"),
@@ -177,16 +177,18 @@ def text_tabs(options: dict[str, str], value: str, on_change) -> ui.element:
 
 @functools.cache
 def _mascot_svg(state: str) -> str:
-    return (ROOT / "static" / "mascot" / f"dip-{state}.svg").read_text("utf-8")
+    return (ROOT / "static" / "mascot" / f"{state}.svg").read_text("utf-8")
 
 
 def mascot(state: str, size: int) -> ui.html:
-    """Дип-Диггер (hello, dig, found, sleep), inline so that its parts can move; `size` is his width."""
-    return ui.html(_mascot_svg(state), sanitize=False).classes("dip-wrap").style(f"width: {size}px")
+    """Тропыч, the mascot (hello, sleep; drawn by dev/mascot.py), inline so that his spray and Zs can move; `size`
+    is the drawing's width."""
+    return ui.html(_mascot_svg(state), sanitize=False).classes("mascot").style(f"width: {size}px")
 
 
 GRAFFITI = {  # white marker strokes, drawn in a 0 0 100 100-ish box each
-    "crown": '<svg viewBox="0 0 64 34"><path d="M5 30 L10 6 L22 19 L32 3 L42 19 L54 6 L59 30 Z"/></svg>',
+    "hat": '<svg viewBox="0 0 64 34"><path d="M4 27 C14 32 50 31 60 24 M14 26 C12 17 15 8 23 6 C28 5 31 9 34 8 '
+           'C38 7 42 4 46 6 C51 8 52 17 50 25 M15 21 C26 23 40 22 50 20"/></svg>',  # Тропыч's, on the logo's O
     "wave": '<svg viewBox="0 0 120 14" preserveAspectRatio="none"><path d="M3 9 C 15 2, 25 13, 37 7 S 60 3, 72 8 S 97 12, 117 5"/></svg>',
     "loop": '<svg viewBox="0 0 120 60" preserveAspectRatio="none"><path d="M18 40 C 2 20, 40 4, 70 6 C 104 8, 120 26, 100 44 C 82 58, 30 58, 14 44 C 6 36, 16 22, 30 16"/></svg>',
     "cross": '<svg viewBox="0 0 32 32"><path d="M6 7 L26 25 M25 6 L7 26"/></svg>',
@@ -195,7 +197,7 @@ GRAFFITI = {  # white marker strokes, drawn in a 0 0 100 100-ish box each
 
 
 def graffiti(kind: str, classes: str = "") -> ui.html:
-    """One marker stroke (crown, wave, loop, cross, star); position it with `classes` in app.css."""
+    """One marker stroke (hat, wave, loop, cross, star); position it with `classes` in app.css."""
     return ui.html(GRAFFITI[kind], sanitize=False, tag="span").classes(f"graffiti g-{kind} {classes}").props('aria-hidden="true"')
 
 

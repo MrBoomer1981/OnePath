@@ -4,8 +4,8 @@
   "description": "Возможности с дедлайнами: хакатоны, школы, стажировки, гранты · made by aven",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#14100E",
-  "theme_color": "#14100E",
+  "background_color": "#111B20",
+  "theme_color": "#111B20",
   "lang": "ru",
   "icons": [
     {

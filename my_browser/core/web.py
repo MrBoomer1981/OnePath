@@ -33,9 +33,10 @@ OPEN_PATHS = ("/login", "/static/", "/_nicegui", "/favicon")
 
 
 def asset_version() -> str:
-    """Changes with app.css, app.js and the icon font, so a deploy is not hidden behind the browser cache."""
+    """Changes with app.css, app.js, the icon font, the manifest and the iPhone's icon, so a deploy is not hidden
+    behind the browser cache."""
     digest = hashlib.sha1()
-    for name in ("app.css", "app.js", "fonts/icons.woff2"):
+    for name in ("app.css", "app.js", "fonts/icons.woff2", "manifest.webmanifest", "apple-touch-icon.png"):
         digest.update((ROOT / "static" / name).read_bytes())
     return digest.hexdigest()[:10]
 
@@ -46,13 +47,13 @@ VERSION = asset_version()
 # without the preload every new screen showed its icons a moment late. app.css sends .material-icons here.
 ICON_FONT = f"/static/fonts/icons.woff2?v={VERSION}"
 ui.add_head_html(f"""
-<link rel="manifest" href="/static/manifest.webmanifest">
-<link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+<link rel="manifest" href="/static/manifest.webmanifest?v={VERSION}">
+<link rel="apple-touch-icon" href="/static/apple-touch-icon.png?v={VERSION}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="OnePath">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#14100E">
+<meta name="theme-color" content="#111B20">
 <link rel="preload" href="/static/fonts/Onest.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/static/fonts/Unbounded.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/static/fonts/JetBrainsMono.woff2" as="font" type="font/woff2" crossorigin>
@@ -62,8 +63,9 @@ ui.add_head_html(f"""
 <link rel="stylesheet" href="/static/app.css?v={VERSION}">
 <script defer src="/static/app.js?v={VERSION}"></script>
 """, shared=True)
-# app.css, app.js and the icon font change their address with every change (?v=); the other fonts, the mascot and
-# the app icons hardly ever change.
+# app.css, app.js, the icon font, the manifest and the iPhone's icon change their address with every change (?v=):
+# Safari adds the app to the home screen with the icon it has cached. The other fonts and the manifest's own icons
+# hardly ever change.
 mimetypes.add_type("font/woff2", ".woff2")  # the slim Docker image does not know it and served the fonts as octet-stream
 app.add_static_files("/static", ROOT / "static", max_cache_age=7 * 24 * 3600)
 
