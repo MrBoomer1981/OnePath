@@ -1,0 +1,3681 @@
+[
+ {
+  "id": "c01",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-11-01"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech",
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "tech",
+   "title_ru": "Хакатон Nuclear IT Hack",
+   "organizer": "МИФИ и индустриальные партнёры (Hex.Team, NtechLab, Баланс-Платформа)",
+   "summary_ru": "Хакатон с задачами от индустриальных партнёров и научных лабораторий МИФИ. Участники получают призы, мерч и сертификаты, работают в командах 2–4 человека.",
+   "deadline_text": "до 1 ноября",
+   "deadline": "2026-11-01",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-11-06",
+   "ends": "2026-11-08",
+   "format": "hybrid",
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "команды 2–4 человека",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "брендированные клавиатуры, мерч, сертификаты и дипломы",
+   "apply_url": "https://hackrus.ru/1368",
+   "fit": 8,
+   "fit_reason": "Хакатон с задачами по ИИ и IT — прямо в твою тему.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c02",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": false,
+   "reason": "Только для школьников 9–15 лет",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": 0,
+   "fit_reason": "Только для школьников 9–15 лет, не для студентов.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": [
+   "opportunity",
+   "deadline",
+   "ru_access",
+   "type",
+   "closed",
+   "topic",
+   "region",
+   "city"
+  ]
+ },
+ {
+  "id": "c03",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-10-21"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech",
+    "other"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "tech",
+   "title_ru": "Молодёжный хакатон «Открой#Моспром»",
+   "organizer": "Правительство Москвы, ОЭЗ «Технополис Москва»",
+   "summary_ru": "Гибридный хакатон с пятью реальными вызовами от промышленных компаний, включая задачи по ИИ и видеоаналитике. Призовой фонд 2 500 000 рублей.",
+   "deadline_text": "до 21 октября",
+   "deadline": "2026-10-21",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-10-23",
+   "ends": "2026-10-25",
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "разработчики, инженеры, аналитики, дизайнеры, студенты и молодые специалисты",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "призовой фонд 2 500 000 рублей",
+   "apply_url": "https://hackrus.ru/1347",
+   "fit": 8,
+   "fit_reason": "Хакатон с задачами по ИИ и нейросетям, крупный призовой фонд.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c04",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "competition",
+   "topic": "tech",
+   "title_ru": "Лига ЦТФ — Всероссийская лига по кибербезопасности",
+   "organizer": "Лига ЦТФ",
+   "summary_ru": "Сезон CTF-соревнований для студентов вузов и ссузов: онлайн-раунды, рейтинги и офлайн-суперфинал в Москве. Даёт портфолио и карьерные возможности.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-11-21",
+   "ends": null,
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "студенты вузов и ссузов, команды 2–8 человек",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "призы раундов, выход в суперфинал",
+   "apply_url": "https://t.me/ligactf",
+   "fit": 6,
+   "fit_reason": "Кибербезопасность близка к IT, но не прямо твой фокус на ИИ.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c05",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition",
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-11-15"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech",
+    "other"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "competition",
+   "topic": "ai",
+   "title_ru": "Студенческий кейс-чемпионат «Код города» от МГТС",
+   "organizer": "МГТС",
+   "summary_ru": "Кейс-чемпионат с направлениями по робототехнике, ИИ в бизнес-процессах и сетевых сервисах. Призовой фонд 600 000 ₽ и фаст-трек на стажировку.",
+   "deadline_text": "до 15 ноября",
+   "deadline": "2026-11-15",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": "2026-11-26",
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "студенты бакалавриата, специалитета и магистратуры 18–25 лет из России",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "призовой фонд 600 000 ₽, фаст-трек на стажировку",
+   "apply_url": "https://hackrus.ru/1362",
+   "fit": 9,
+   "fit_reason": "Кейс-чемпионат с направлением ИИ и стажировкой — точно твой профиль.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": [
+   "topic"
+  ]
+ },
+ {
+  "id": "c06",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Санкт-Петербург"
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": false,
+   "reason": "Только для школьников 8–11 классов",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": 0,
+   "fit_reason": "Только для школьников 8–11 классов, не для студентов.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": [
+   "opportunity",
+   "deadline",
+   "ru_access",
+   "type",
+   "closed",
+   "topic",
+   "region",
+   "city"
+  ]
+ },
+ {
+  "id": "c07",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-10-16"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai",
+    "tech"
+   ],
+   "region": [
+    "ru",
+    "world"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "ai",
+   "title_ru": "О!Хакатон от Островка",
+   "organizer": "Островок",
+   "summary_ru": "Тревел-тех хакатон с двумя AI-треками: AI-агент для путешествий и переосмысление бронирования отелей. Призовой фонд — 1 000 000 ₽.",
+   "deadline_text": "до 16 октября 2026 года",
+   "deadline": "2026-10-16",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-10-23",
+   "ends": null,
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "Go/Python-разработчики, аналитики, продакт-менеджеры; команды до 5 человек",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "1 000 000 ₽",
+   "apply_url": "https://hackrus.ru/1294",
+   "fit": 8,
+   "fit_reason": "AI-задачи в тревел-техе, командный хакатон — прямо в твою тему",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c08",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition",
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-10-11"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "other",
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "competition",
+   "topic": "tech",
+   "title_ru": "Академия Финтеха",
+   "organizer": "ВТБ и Финансовый университет при Правительстве РФ",
+   "summary_ru": "Всероссийское соревнование студенческих финтех-проектов: три спринта, QA-сессии, менторство и пилотирование в ВТБ. Призовой фонд 1 500 000 ₽.",
+   "deadline_text": "до 11 октября, 23:59 МСК",
+   "deadline": "2026-10-11T23:59",
+   "deadline_tz": "Europe/Moscow",
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-10-05",
+   "ends": "2026-12-11",
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Студенты бакалавриата, специалитета, магистратуры и аспиранты российских вузов; команды 2–5 человек",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "1 500 000 ₽",
+   "apply_url": "https://hackrus.ru/1340",
+   "fit": 6,
+   "fit_reason": "Финтех-соревнование с MVP, но фокус на бизнес-кейсах, не на ML",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c09",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-10-11"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai",
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "ai",
+   "title_ru": "ИИ-хакатон «Точка сборки»",
+   "organizer": "Академия цифрового развития",
+   "summary_ru": "Продуктовый ИИ-хакатон с кейсами М.Видео, DBI и GigaCowork, доступом к мощностям Cloud.ru и обратной связью компаний. Призовой фонд 900 000 ₽.",
+   "deadline_text": "до 11 октября",
+   "deadline": "2026-10-11",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-10-13",
+   "ends": "2026-10-31",
+   "format": "hybrid",
+   "location": "Магас, Россия",
+   "city": "Магас",
+   "region": "ru",
+   "eligibility": "Продакты, разработчики, аналитики; команды 2–4 человека",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "900 000 ₽",
+   "apply_url": "https://hackrus.ru/1341",
+   "fit": 8,
+   "fit_reason": "Реальные ИИ-кейсы и вычислительные мощности — отлично для ML-практики",
+   "major": false,
+   "same_as": null
+  },
+  "missed": [
+   "city"
+  ]
+ },
+ {
+  "id": "c10",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Санкт-Петербург"
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "competition",
+   "topic": "tech",
+   "title_ru": "Турнир по кибербезопасности «НеоКВЕСТ»",
+   "organizer": "НеоКВЕСТ",
+   "summary_ru": "CTF-турнир по кибербезопасности с онлайн-отбором, офлайн-этапом в Санкт-Петербурге и ночным финалом. Призы, сертификаты и шанс на трудоустройство.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-09T12:00",
+   "ends": null,
+   "format": "hybrid",
+   "location": "Санкт-Петербург, Россия",
+   "city": "Санкт-Петербург",
+   "region": "ru",
+   "eligibility": "Участники CTF, точные требования не указаны",
+   "ru_access": "yes",
+   "cost": null,
+   "reward": "Призы, сертификаты, трудоустройство",
+   "apply_url": "https://hackrus.ru/1333",
+   "fit": 5,
+   "fit_reason": "Кибербезопасность близка к IT, но не твой основной фокус на ИИ",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c11",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Новосибирск"
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": false,
+   "reason": "Только для школьников 7–11 классов",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": 0,
+   "fit_reason": "Соревнование только для школьников, тебе не подходит",
+   "major": false,
+   "same_as": null
+  },
+  "missed": [
+   "opportunity",
+   "deadline",
+   "ru_access",
+   "type",
+   "closed",
+   "topic",
+   "region",
+   "city"
+  ]
+ },
+ {
+  "id": "c12",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition"
+   ],
+   "deadline": [
+    "2026-09-30"
+   ],
+   "ru_access": [
+    "yes",
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "competition",
+   "topic": "ai",
+   "title_ru": "Конкурс «Экспедиция DS. Комплексирование»",
+   "organizer": "Phystech.Genesis",
+   "summary_ru": "Конкурс по разработке ПО для поиска археологических объектов с помощью ML и компьютерного зрения. Призовой фонд 30 млн ₽.",
+   "deadline_text": "до 30 сентября",
+   "deadline": "2026-09-30",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "Команды 2–5 человек с навыками ML и CV; физлица и юрлица",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "30 000 000 ₽",
+   "apply_url": "https://expds-platform.upgreat.one/register",
+   "fit": 9,
+   "fit_reason": "ML и компьютерное зрение, крупный призовой фонд — точно твоя тема",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c13",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "internship"
+   ],
+   "deadline": [
+    "2026-10-31"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "internship",
+   "topic": "tech",
+   "title_ru": "Стажировка Kaspersky SafeBoard",
+   "organizer": "Kaspersky",
+   "summary_ru": "Стажировка в Kaspersky по 20+ ИТ-направлениям, включая Data Engineer (ML). Даёт реальные задачи, наставников и гибкий график от 20 часов в неделю.",
+   "deadline_text": "с 14 по 31 октября",
+   "deadline": "2026-10-31",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Студенты любого вуза, проживающие в Москве или Московской области",
+   "ru_access": "yes",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://safeboard.kaspersky.ru",
+   "fit": 7,
+   "fit_reason": "Стажировка в крупной ИТ-компании, есть ML-направление, но нужно жить в Москве",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c14",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "internship",
+    "other",
+    "education"
+   ],
+   "deadline": [
+    "2026-10-25"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "other",
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Нижний Новгород"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "internship",
+   "topic": "other",
+   "title_ru": "Студенческий проект Сбера «Созвездие»",
+   "organizer": "Сбер",
+   "summary_ru": "Проект для студентов из 9 регионов России с работой над реальными задачами Сбера и регионов. Даёт карьерную траекторию, поддержку экспертов и сообщество.",
+   "deadline_text": "до 25 октября 2026 года",
+   "deadline": "2026-10-25",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "Студенты 18–35 лет из 9 регионов России",
+   "ru_access": "yes",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://student.sber.ru/sozvezdie",
+   "fit": 5,
+   "fit_reason": "Проект Сбера с реальными задачами, но тематика не явно про ИИ и ML",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c15",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "grant"
+   ],
+   "deadline": [
+    "2026-11-15"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "other",
+    "science"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "grant",
+   "topic": "other",
+   "title_ru": "Стипендиальный конкурс Фонда Потанина 2026/27",
+   "organizer": "Фонд Потанина",
+   "summary_ru": "Стипендиальный конкурс для магистрантов и студентов специализированного высшего образования из 75 вузов. 1000 победителей получат стипендию 30 000 рублей и доступ к сообществу Фонда.",
+   "deadline_text": "до 15 ноября",
+   "deadline": "2026-11-15",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "Магистранты и студенты специализированного высшего образования из вузов-участников программы",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "Стипендия 30 000 рублей",
+   "apply_url": "https://zayavka.fondpotanin.ru/ru",
+   "fit": 5,
+   "fit_reason": "Стипендия для магистрантов, но тематика общая, не про ИИ",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c16",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "internship"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "internship",
+   "topic": "ai",
+   "title_ru": "ML-стажировки в Яндексе",
+   "organizer": "Яндекс",
+   "summary_ru": "Подборка ML-стажировок в Яндексе по направлениям: NLP/LLM, рекомендации, автономный транспорт, Yandex Cloud, игры. Даёт опыт исследования и разработки ML-моделей в продуктовых командах.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "Студенты, интересующиеся ML",
+   "ru_access": "yes",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://yandex.ru/yaintern/ml",
+   "fit": 10,
+   "fit_reason": "Прямое попадание: ML-стажировки в Яндексе по твоим интересам",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c17",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition"
+   ],
+   "deadline": [
+    "2026-11-01"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech",
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "competition",
+   "topic": "ai",
+   "title_ru": "Yandex Cup 2026",
+   "organizer": "Яндекс",
+   "summary_ru": "Чемпионат по программированию и ML с направлениями «Машинное обучение», «Аналитика» и «Алгоритм». Призы до 500 000 рублей, упрощённый отбор в штат Яндекса и очный финал в Москве.",
+   "deadline_text": "до 1 ноября",
+   "deadline": "2026-11-01",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-10-23",
+   "ends": "2026-11-01",
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Все желающие, включая студентов",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "От 100 000 до 500 000 рублей топ-5 в каждом направлении",
+   "apply_url": "https://yandex.ru/cup",
+   "fit": 10,
+   "fit_reason": "Крупное соревнование по ML и анализу данных, точно твоя тема",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c18",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition"
+   ],
+   "deadline": [
+    "2026-12-06"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "competition",
+   "topic": "tech",
+   "title_ru": "Технокубок",
+   "organizer": "VK, МФТИ, МГТУ им. Н. Э. Баумана",
+   "summary_ru": "Олимпиада I уровня РСОШ по программированию. Диплом даёт право поступить в вуз без вступительных испытаний или 100 баллов за ЕГЭ по информатике.",
+   "deadline_text": "до 6 декабря",
+   "deadline": "2026-12-06",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "Учащиеся 8–11 классов и студенты СПО",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "Диплом, призы, консультации от VK",
+   "apply_url": "https://techno-cup.ru",
+   "fit": 3,
+   "fit_reason": "Олимпиада по программированию, но только для школьников и студентов СПО",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c19",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "internship",
+    "education",
+    "school"
+   ],
+   "deadline": [
+    "2026-10-25"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "internship",
+   "topic": "ai",
+   "title_ru": "Инженерно-математическая школа VK и НИУ ВШЭ",
+   "organizer": "VK и НИУ ВШЭ",
+   "summary_ru": "Проектная школа, где студенты работают над реальными задачами VK (распознавание речи, ИИ-агенты) с кураторами; успешные участники становятся стажёрами с выплатой 40 000 ₽/мес.",
+   "deadline_text": "до 25 октября",
+   "deadline": "2026-10-25",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "студенты, прошедшие отбор",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "выплата 40 000 ₽/мес и стажировка VK",
+   "apply_url": "https://miem.hse.ru/imsit/projects_recruitment_26",
+   "fit": 9,
+   "fit_reason": "ИИ-проекты с кураторами VK и оплачиваемой стажировкой — точно твоя тема.",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c20",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition"
+   ],
+   "deadline": [
+    "2026-10-30"
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "other",
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "competition",
+   "topic": "other",
+   "title_ru": "Кейс-чемпионат «Путь профи» от РЖД",
+   "organizer": "РЖД и олимпиада «Я — профессионал»",
+   "summary_ru": "Командный кейс-чемпионат по четырём направлениям, включая ИТ; бесплатное онлайн-участие с решением реальных кейсов.",
+   "deadline_text": "до 30 октября, 23:59 (МСК)",
+   "deadline": "2026-10-30T23:59",
+   "deadline_tz": "Europe/Moscow",
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "студенты, команды",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://rsv.ru/competitions/project/1/de5c2e41-5dd7-4831-bc18-dedd30efbb0d",
+   "fit": 5,
+   "fit_reason": "Кейс-чемпионат с ИТ-треком, но фокус на бизнес-кейсах, не на ML.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c21",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech",
+    "ai",
+    "other"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "tech",
+   "title_ru": "Альфа-Будущее Хакатон",
+   "organizer": "Альфа-Банк",
+   "summary_ru": "Всероссийский командный хакатон для студентов с призовым фондом 3 млн ₽ и фаст-треком на стажировки в Альфа-Банк.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "студенты бакалавриата, магистратуры и колледжей 18–25 лет",
+   "ru_access": "yes",
+   "cost": null,
+   "reward": "призовой фонд 3 000 000 ₽, фаст-трек на стажировки",
+   "apply_url": "https://habr.com/ru/companies/alfa/news/1092378/",
+   "fit": 8,
+   "fit_reason": "Крупный хакатон с призами и стажировкой, подходит по формату и уровню.",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c22",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": false,
+   "reason": "Итоги прошедшего хакатона",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": null,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c23",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "conference",
+    "meetup"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Москва"
+   ],
+   "starts": [
+    "2026-11-19"
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "conference",
+   "topic": "tech",
+   "title_ru": "Импульс Т1",
+   "organizer": "Т1",
+   "summary_ru": "Крупная ИТ-конференция в Москве с практическими тренажёрами, 130+ спикерами и 70+ активностями для инженеров.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-11-19",
+   "ends": null,
+   "format": "offline",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "участники ИТ-отрасли, студенты",
+   "ru_access": "yes",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://hackrus.ru/1348",
+   "fit": 6,
+   "fit_reason": "ИТ-конференция с практикой, но не узко про ML и ИИ.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c24",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": false,
+   "reason": "Розыгрыш мерча, не возможность",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": null,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c25",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": false,
+   "reason": "Вебинары только для родителей школьников",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c26",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "meetup",
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech",
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Санкт-Петербург"
+   ],
+   "starts": [
+    "2026-10-27T18:00"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "tech",
+   "title_ru": "Митап по кибербезу и безопасности ИИ в ИТМО",
+   "organizer": "Альфа-Банк и ИТМО",
+   "summary_ru": "Лекции экспертов Альфа-Банка о безопасности финтеха, AppSec и защите ИИ-агентов; можно узнать о карьере в этой сфере.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-27T18:00",
+   "ends": "2026-10-27T22:00",
+   "format": "offline",
+   "location": "Санкт-Петербург, Россия",
+   "city": "Санкт-Петербург",
+   "region": "ru",
+   "eligibility": "Все желающие, регистрация",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://itmo.events/events/124472",
+   "fit": 7,
+   "fit_reason": "Тема ИИ и кибербеза близка, но это лекция, а не практика по ML.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c27",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": false,
+   "reason": "Найм опытных специалистов middle+ и senior",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c28",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null
+   ],
+   "starts": [
+    "2026-10-29"
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "ai",
+   "title_ru": "Diffusion Week 2026 от DLS",
+   "organizer": "Deep Learning School (DLS)",
+   "summary_ru": "Серия онлайн-лекций о диффузионных моделях: основы, видеодиффузия, world models, интерпретируемость и ускорение.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-29",
+   "ends": "2026-11-07",
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "Все желающие",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://dls.samcs.ru/diffusionweek",
+   "fit": 9,
+   "fit_reason": "Прямо по твоей теме ML, лекции от исследовательских команд, онлайн.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c29",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": false,
+   "reason": "Итоги прошедшего хакатона",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c30",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": false,
+   "reason": "Сборы только для школьников 7–11 классов",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c31",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": false,
+   "reason": "Поздравление с праздником, не анонс",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c32",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": false,
+   "reason": "Реклама подбора вакансий, не возможность",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c33",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture",
+    "meetup"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai",
+    "science"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ],
+   "starts": [
+    "2026-10-28T17:00"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "ai",
+   "title_ru": "Семинар AIRI: неожиданные способности LLM в химии",
+   "organizer": "Институт AIRI",
+   "summary_ru": "Научный семинар о применении больших языковых моделей в химии с офлайн-участием и трансляцией. Можно послушать исследователя и задать вопросы.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-28T17:00",
+   "ends": null,
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Все желающие, регистрация на офлайн-формат",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://airi.net/ru/events/neozhidannye-sposobnosti-llm-v-khimii",
+   "fit": 8,
+   "fit_reason": "Тема LLM и ИИ прямо в твоих интересах, формат лекции подходит",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c34",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": false,
+   "reason": "Итоги прошедшего конкурса",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c35",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": false,
+   "reason": "Новость о результатах исследования",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c36",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "fellowship"
+   ],
+   "deadline": [
+    "2026-10-28"
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "ai",
+    "science"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "fellowship",
+   "topic": "ai",
+   "title_ru": "Anthropic STEM Fellowship 2027",
+   "organizer": "Anthropic",
+   "summary_ru": "Четырёхмесячная исследовательская программа в Anthropic для учёных и инженеров: работа с Claude над научными задачами в малых группах. Оплата до $167 000.",
+   "deadline_text": "October 28, 2026",
+   "deadline": "2026-10-28",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Исследователи и инженеры в области науки и техники",
+   "ru_access": "unclear",
+   "cost": null,
+   "reward": "до $167 000",
+   "apply_url": "https://opportunitydesk.org/2026/10/24/anthropic-stem-fellowship-2027/",
+   "fit": 9,
+   "fit_reason": "Исследовательская программа по ИИ от Anthropic — точно твоя тема",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c37",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "grant"
+   ],
+   "deadline": [
+    "2027-01-15"
+   ],
+   "ru_access": [
+    "unclear",
+    "no"
+   ],
+   "closed": false,
+   "topic": [
+    "science",
+    "tech",
+    "other"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "grant",
+   "topic": "science",
+   "title_ru": "Стипендия Swedish Institute Pioneering Women in STEM 2027",
+   "organizer": "Swedish Institute",
+   "summary_ru": "Полная стипендия на магистратуру в Швеции для женщин в STEM. Покрывает обучение и проживание, но только для женщин.",
+   "deadline_text": "January 15, 2027",
+   "deadline": "2027-01-15",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "offline",
+   "location": "Швеция",
+   "city": null,
+   "region": "world",
+   "eligibility": "женщины, поступающие на магистратуру в Швеции",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": "полная стипендия на обучение и проживание",
+   "apply_url": "https://opportunitydesk.org/2026/10/24/si-pioneering-women-in-stem-scholarship-2027/",
+   "fit": 3,
+   "fit_reason": "STEM и магистратура близки, но только для женщин и не про AI/ML напрямую",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c38",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "fellowship"
+   ],
+   "deadline": [
+    "2026-10-30"
+   ],
+   "ru_access": [
+    "no"
+   ],
+   "closed": false,
+   "topic": [
+    "science"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "fellowship",
+   "topic": "science",
+   "title_ru": "IDM-Africa Fellowship Programme 2027",
+   "organizer": "IDM-Africa",
+   "summary_ru": "Исследовательская программа по моделированию инфекционных заболеваний для учёных из стран Африки южнее Сахары.",
+   "deadline_text": "October 30, 2026",
+   "deadline": "2026-10-30",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "учёные из стран Африки южнее Сахары",
+   "ru_access": "no",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://opportunitydesk.org/2026/10/24/idm-africa-fellowship-programme-2027/",
+   "fit": 2,
+   "fit_reason": "Моделирование болезней далеко от твоих интересов, и только для Африки",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c39",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "internship",
+    "fellowship"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "no",
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "science",
+    "tech"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "internship",
+   "topic": "science",
+   "title_ru": "NIST Summer Undergraduate Research Fellowship (SURF) 2027",
+   "organizer": "National Institute of Standards and Technology (NIST)",
+   "summary_ru": "Оплачиваемая летняя исследовательская стажировка в США для бакалавров в области STEM с работой в лабораториях NIST.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "offline",
+   "location": "США",
+   "city": null,
+   "region": "world",
+   "eligibility": "бакалавры STEM, граждане США (по USAJOBS)",
+   "ru_access": "no",
+   "cost": "бесплатно",
+   "reward": "оплачиваемая стажировка",
+   "apply_url": "https://nist.gov/surf",
+   "fit": 4,
+   "fit_reason": "STEM-исследования близки, но гражданство США и не про AI/ML",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c40",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "grant",
+    "education"
+   ],
+   "deadline": [
+    "2026-11-07"
+   ],
+   "ru_access": [
+    "no"
+   ],
+   "closed": false,
+   "topic": [
+    "other",
+    "science",
+    "tech"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "grant",
+   "topic": "science",
+   "title_ru": "Магистерские стипендии UKUDLA 2027 в ЮАР",
+   "organizer": "UKUDLA / DAAD",
+   "summary_ru": "Стипендия DAAD на магистратуру в ЮАР по прикладной data science в сельском хозяйстве и продовольственных системах.",
+   "deadline_text": "7 November 2026",
+   "deadline": "2026-11-07",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2027-02-01",
+   "ends": null,
+   "format": "offline",
+   "location": "ЮАР",
+   "city": null,
+   "region": "world",
+   "eligibility": "африканские кандидаты на магистратуру",
+   "ru_access": "no",
+   "cost": "бесплатно",
+   "reward": "стипендия на обучение",
+   "apply_url": "https://ukudla-coe.ac.za/2026/10/12/call-for-masters-scholarship-applications",
+   "fit": 3,
+   "fit_reason": "Data science есть, но узкая агротематика и только для Африки",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c41",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "grant",
+    "education"
+   ],
+   "deadline": [
+    "2027-01-15"
+   ],
+   "ru_access": [
+    "no",
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "tech",
+    "science",
+    "other"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "grant",
+   "topic": "other",
+   "title_ru": "Стипендии Adlerbert в Chalmers University of Technology",
+   "organizer": "Chalmers University of Technology / Adlerbert Foundations",
+   "summary_ru": "Стипендия с полным покрытием tuition на магистратуру в Швеции для граждан 143 стран.",
+   "deadline_text": "15 Jan 2027",
+   "deadline": "2027-01-15",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "offline",
+   "location": "Швеция",
+   "city": null,
+   "region": "world",
+   "eligibility": "граждане 143 развивающихся стран, поступающие на магистратуру",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": "полное покрытие стоимости обучения",
+   "apply_url": "https://chalmers.se/en/education/application-and-admission/scholarships-for-fee-paying-students",
+   "fit": 4,
+   "fit_reason": "Магистратура в Швеции подходит, но тема не ограничена AI/ML",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c42",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "internship"
+   ],
+   "deadline": [
+    "2026-11-08"
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "other"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "internship",
+   "topic": "other",
+   "title_ru": "Young Global Professionals Program — Spring 2027",
+   "organizer": "Atlantic Council GeoEconomics Center",
+   "summary_ru": "Стажировка в аналитическом центре на стыке экономики, финансов и внешней политики.",
+   "deadline_text": "November 8, 2026",
+   "deadline": "2026-11-08",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "молодые специалисты и студенты",
+   "ru_access": "unclear",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://opportunitydesk.org/2026/10/24/geoeconomics-center-young-global-professionals-program-spring-2027/",
+   "fit": 2,
+   "fit_reason": "Экономика и внешняя политика — не твоя тема",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c43",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "internship"
+   ],
+   "deadline": [
+    "2026-10-31"
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "other",
+    "science"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "internship",
+   "topic": "science",
+   "title_ru": "Стажировка PATH Global Health Strategy 2026",
+   "organizer": "PATH",
+   "summary_ru": "Стажировка в офисе президента PATH по глобальной стратегии здравоохранения с оплатой до $1000. Даёт опыт стратегического планирования в международной НКО.",
+   "deadline_text": "October 31, 2026",
+   "deadline": "2026-10-31",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Студенты и молодые специалисты в области здравоохранения",
+   "ru_access": "unclear",
+   "cost": null,
+   "reward": "до $1,000",
+   "apply_url": "https://opportunitydesk.org/2026/10/23/path-global-health-strategy-internship-2026/",
+   "fit": 2,
+   "fit_reason": "Тема глобального здравоохранения, а не ИИ и ML — не твой профиль",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c44",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-10-30"
+   ],
+   "ru_access": [
+    "unclear",
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "ai",
+   "title_ru": "Nebius x NVIDIA Global AI Hackathon",
+   "organizer": "Nebius, NVIDIA (Devpost)",
+   "summary_ru": "Онлайн-хакатон по машинному обучению и ИИ с призовым фондом $50 000. Отличная возможность попрактиковаться в ML и побороться за крупные призы.",
+   "deadline_text": "Oct 30, 2026",
+   "deadline": "2026-10-30",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-08-26",
+   "ends": "2026-10-30",
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Открыт для всех, beginner friendly",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": "$50,000",
+   "apply_url": "https://nebiusglobalaihackathon.devpost.com/",
+   "fit": 9,
+   "fit_reason": "Хакатон по ИИ и ML с крупным призовым фондом — точно твоя тема",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c45",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-11-12"
+   ],
+   "ru_access": [
+    "unclear",
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "ai",
+   "title_ru": "PayPal AI Hackathon",
+   "organizer": "PayPal (Devpost)",
+   "summary_ru": "Онлайн-хакатон по ИИ и low/no-code с призовым фондом $67 500. Шанс поработать над реальными задачами и получить крупные призы.",
+   "deadline_text": "Nov 12, 2026",
+   "deadline": "2026-11-12",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-10-01",
+   "ends": "2026-11-12",
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Открыт для всех",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": "$67,500",
+   "apply_url": "https://paypalaihackathon.devpost.com/",
+   "fit": 9,
+   "fit_reason": "Крупный хакатон по ИИ от PayPal — прямо в твою тему",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c46",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition",
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-10-27"
+   ],
+   "ru_access": [
+    "unclear",
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "ai",
+   "title_ru": "OpenCV AI Competition 2026, powered by AWS",
+   "organizer": "OpenCV, AWS (Devpost)",
+   "summary_ru": "Онлайн-соревнование по компьютерному зрению и ИИ с призовым фондом $20 250. Хорошая возможность показать навыки в CV и ML.",
+   "deadline_text": "Oct 27, 2026",
+   "deadline": "2026-10-27",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-08-26",
+   "ends": "2026-10-27",
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Открыт для всех",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": "$20,250",
+   "apply_url": "https://opencv26.devpost.com/",
+   "fit": 9,
+   "fit_reason": "Соревнование по CV и ИИ от OpenCV — идеально под твои интересы",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c47",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-11-07"
+   ],
+   "ru_access": [
+    "unclear",
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "ai",
+   "title_ru": "Redshifted Cortex - AI built by High Schoolers",
+   "organizer": "Redshifted (Devpost)",
+   "summary_ru": "Онлайн-хакатон по ИИ, ориентированный на школьников, без призового фонда. Для студента вуза пользы мало.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-11-07",
+   "ends": null,
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Школьники (high schoolers)",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://redshifted-cortex.devpost.com/",
+   "fit": 3,
+   "fit_reason": "Хакатон по ИИ, но для школьников и без призов — не твой уровень",
+   "major": false,
+   "same_as": null
+  },
+  "missed": [
+   "deadline"
+  ]
+ },
+ {
+  "id": "c48",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-10-28"
+   ],
+   "ru_access": [
+    "unclear",
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech",
+    "science",
+    "other"
+   ],
+   "region": [
+    "world"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "other",
+   "title_ru": "2026 International CodeTheCure Hackathon",
+   "organizer": "CodeTheCure (Devpost)",
+   "summary_ru": "Международный онлайн-хакатон на стыке образования и здоровья, без призового фонда. Больше про социальные задачи, чем про ML.",
+   "deadline_text": "Oct 28, 2026",
+   "deadline": "2026-10-28",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2026-10-10",
+   "ends": "2026-10-28",
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Открыт для всех, beginner friendly",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://codethecure-hackathon-26.devpost.com/",
+   "fit": 4,
+   "fit_reason": "Хакатон про здоровье и образование, а не про ИИ и ML",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c49",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "school"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "school",
+   "topic": "ai",
+   "title_ru": "Northern Lights Deep Learning Winter School 2027",
+   "organizer": "UiT The Arctic University of Norway",
+   "summary_ru": "Пятидневная зимняя школа по ML, GenAI, CV и RAI с туториалами и практикой в Тромсё, 2.5 ECTS.",
+   "deadline_text": "TBA",
+   "deadline": null,
+   "deadline_tz": "Europe/Oslo",
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2027-01-11",
+   "ends": "2027-01-15",
+   "format": "offline",
+   "location": "Тромсё, Норвегия",
+   "city": "Тромсё",
+   "region": "world",
+   "eligibility": "Студенты и исследователи в ML",
+   "ru_access": "unclear",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://www.nldl.org/program/winter-school",
+   "fit": 8,
+   "fit_reason": "Зимняя школа по ML и GenAI — точно твоя тема, но за рубежом.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c50",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "school"
+   ],
+   "deadline": [
+    "2026-11-29"
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "ai",
+    "tech"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "school",
+   "topic": "ai",
+   "title_ru": "IAPR/IEEE Winter School on Biometrics 2027",
+   "organizer": "Hong Kong Baptist University, CAS Institute of Automation, SUSTech",
+   "summary_ru": "Зимняя школа по биометрии и CV: мультимодальные модели, GenAI, защита от атак; есть студенческие гранты.",
+   "deadline_text": "29 November 2026 (GMT+8)",
+   "deadline": "2026-11-29T23:59",
+   "deadline_tz": "Asia/Shanghai",
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2027-01-17",
+   "ends": "2027-01-21",
+   "format": "offline",
+   "location": "Шэньчжэнь, Китай",
+   "city": "Шэньчжэнь",
+   "region": "world",
+   "eligibility": "Студенты и исследователи",
+   "ru_access": "unclear",
+   "cost": "4500 CNY для студентов (ранняя регистрация)",
+   "reward": "Студенческие гранты IAPR и IEEE Biometrics Council",
+   "apply_url": "https://www.comp.hkbu.edu.hk/wsb2027/",
+   "fit": 7,
+   "fit_reason": "Школа по CV и GenAI подходит, но биометрия — узкая тема.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c51",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "school"
+   ],
+   "deadline": [
+    "2027-01-28"
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "school",
+   "topic": "ai",
+   "title_ru": "GeMAIHc — школа по генеративному и мультимодальному ИИ в медицине",
+   "organizer": "IRDTA и Human Technopole",
+   "summary_ru": "Первая международная школа по GenAI и мультимодальному ИИ для биомедицины, с симпозиумом и хакатоном.",
+   "deadline_text": "28 January 2027 (Europe/Rome)",
+   "deadline": "2027-01-28T23:59",
+   "deadline_tz": "Europe/Rome",
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": "2027-02-01",
+   "ends": "2027-02-05",
+   "format": "offline",
+   "location": "Милан, Италия",
+   "city": "Милан",
+   "region": "world",
+   "eligibility": "Студенты, PhD и исследователи",
+   "ru_access": "unclear",
+   "cost": "от 340 EUR (ранняя) до 670 EUR",
+   "reward": null,
+   "apply_url": "https://gemaihc.irdta.eu/2027/",
+   "fit": 7,
+   "fit_reason": "GenAI и ML в медицине — интересно, но уклон в healthcare.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c52",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "school"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "school",
+   "topic": "ai",
+   "title_ru": "Generative Modeling Spring School (GeMSS) 2027",
+   "organizer": "Universidad Carlos III de Madrid, Inria, DTU",
+   "summary_ru": "Весенняя школа по глубоким генеративным моделям: VAE, диффузия, flow-модели, авторегрессия.",
+   "deadline_text": "TBA",
+   "deadline": null,
+   "deadline_tz": "Europe/Madrid",
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2027-03-15",
+   "ends": "2027-03-19",
+   "format": "offline",
+   "location": "Мадрид, Испания",
+   "city": "Мадрид",
+   "region": "world",
+   "eligibility": "Студенты, PhD, индустрия",
+   "ru_access": "unclear",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://gemss.ai/2027/",
+   "fit": 8,
+   "fit_reason": "Генеративные модели — ядро ML, школа прямо по твоей теме.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c53",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "fellowship"
+   ],
+   "deadline": [
+    "2026-09-06",
+    null
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": true,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "fellowship",
+   "topic": "ai",
+   "title_ru": "MATS Program — Winter 2027",
+   "organizer": "MATS Program",
+   "summary_ru": "Исследовательская программа по AI safety с менторами из Anthropic, OpenAI, DeepMind; стипендия $19.2k и compute.",
+   "deadline_text": "Winter 2027 applications are closed",
+   "deadline": "2026-09-06",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": true,
+   "starts": "2027-01-19",
+   "ends": null,
+   "format": "offline",
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Исследователи и field-builders, любой уровень",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": "Стипендия $19.2k, compute $24k, жильё и питание",
+   "apply_url": "https://www.matsprogram.org/apply",
+   "fit": 9,
+   "fit_reason": "Топовая программа по AI safety — точно твоя тема, но приём закрыт.",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c54",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "fellowship"
+   ],
+   "deadline": [
+    "2026-11-01",
+    null
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "fellowship",
+   "topic": "ai",
+   "title_ru": "SPAR — исследовательская программа по рискам ИИ",
+   "organizer": "SPAR (sparai.org)",
+   "summary_ru": "Part-time удалённая исследовательская программа по AI safety и policy с менторами, 3 месяца и Demo Day.",
+   "deadline_text": "Apply by November 1",
+   "deadline": "2026-11-01",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Студенты и специалисты с техническим или policy-бэкграундом",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://sparai.org/",
+   "fit": 9,
+   "fit_reason": "AI safety-ресёрч с менторами, удалённо — отлично подходит тебе.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c55",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "school"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "unclear",
+    "yes"
+   ],
+   "closed": true,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "school",
+   "topic": "ai",
+   "title_ru": "EEML Summer School 2026",
+   "organizer": "Eastern European Machine Learning (EEML)",
+   "summary_ru": "Летняя школа по машинному обучению в Черногории с лекциями ведущих исследователей (DeepMind, MIT, Oxford). Даёт глубокое погружение в ML и нетворкинг.",
+   "deadline_text": "The deadline for applications has passed",
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": true,
+   "starts": "2026-07-27",
+   "ends": "2026-08-01",
+   "format": "offline",
+   "location": "Cetinje, Montenegro",
+   "city": "Цетине",
+   "region": "world",
+   "eligibility": "Студенты и исследователи в ML",
+   "ru_access": "unclear",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://www.eeml.eu/",
+   "fit": 9,
+   "fit_reason": "Летняя школа ML с сильным составом лекторов — точно твоя тема",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c56",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "fellowship"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "fellowship",
+   "topic": "ai",
+   "title_ru": "LASR Labs",
+   "organizer": "London AI Safety Research (LASR) Labs",
+   "summary_ru": "13-недельная исследовательская программа по AI safety в Лондоне со стипендией £15 000. Работа в команде с супервайзером от проекта до публикации.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2027-06-01",
+   "ends": "2027-09-30",
+   "format": "offline",
+   "location": "London, UK",
+   "city": "Лондон",
+   "region": "world",
+   "eligibility": "Исследователи и специалисты в AI safety",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": "Стипендия £15 000, питание, офис, перелёт",
+   "apply_url": "https://www.lasrlabs.org/",
+   "fit": 9,
+   "fit_reason": "AI safety research с публикациями и стипендией — сильный матч",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c57",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "fellowship"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "unclear"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "fellowship",
+   "topic": "ai",
+   "title_ru": "Astra Fellowship",
+   "organizer": "Constellation Institute",
+   "summary_ru": "5-месячная очная программа по AI safety в Беркли с менторами и карьерной поддержкой. Полное финансирование, эмпирический и policy-трек.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "offline",
+   "location": "Berkeley, USA",
+   "city": "Беркли",
+   "region": "world",
+   "eligibility": "Специалисты, желающие перейти в AI safety",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": "Полное финансирование",
+   "apply_url": "https://constellation.org/programs/astra",
+   "fit": 8,
+   "fit_reason": "AI safety fellowship с менторами, но приём ещё не открыт",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c58",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "school"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "unclear",
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "school",
+   "topic": "ai",
+   "title_ru": "M2L Summer School 2027",
+   "organizer": "Mediterranean Machine Learning (M2L)",
+   "summary_ru": "5-дневная летняя школа по ML в Барселоне: лекции, практика, постерная сессия. Отбор по заслугам, ориентирована на докторантов и сильных магистрантов.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2027-08-30",
+   "ends": "2027-09-03",
+   "format": "offline",
+   "location": "Barcelona, Spain",
+   "city": "Барселона",
+   "region": "world",
+   "eligibility": "Докторанты, сильные магистранты, практики",
+   "ru_access": "unclear",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://www.m2lschool.org/",
+   "fit": 8,
+   "fit_reason": "ML-школа с отбором и постерами — хорошо подходит, но для магистров/докторов",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c59",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": false,
+   "reason": "Вакансии для опытных специалистов",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": null,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c60",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": false,
+   "reason": "Вакансия контрактора для специалистов",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": null,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c61",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "conference",
+    "other"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "science"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Санкт-Петербург"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "conference",
+   "topic": "science",
+   "title_ru": "VI Конгресс молодых ученых",
+   "organizer": "ИТМО / организаторы Конгресса молодых учёных",
+   "summary_ru": "Ключевое событие Десятилетия науки и технологий в Санкт-Петербурге: более 200 мероприятий — лекции, дискуссии, кинопоказы, интеллектуальные игры. Участие по заявке с утверждением.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-12-02",
+   "ends": "2026-12-04",
+   "format": "offline",
+   "location": "Санкт-Петербург, Россия",
+   "city": "Санкт-Петербург",
+   "region": "ru",
+   "eligibility": "Молодые учёные и студенты, заявка с утверждением",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://forms.yandex.ru/u/6adf4fcdc45c0717440f46ee",
+   "fit": 7,
+   "fit_reason": "Крупный научный форум с лекциями и дискуссиями, близок к твоим интересам к науке и технологиям.",
+   "major": true,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c62",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "meetup",
+    "lecture",
+    "talk"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ],
+   "starts": [
+    "2026-10-22T18:30",
+    "2026-10-22T18:00",
+    "2026-10-22"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "meetup",
+   "topic": "ai",
+   "title_ru": "ИИшница AIRI: митап про ИИ-агентов",
+   "organizer": "AIRI, Сбер",
+   "summary_ru": "Офлайн-митап о ИИ-агентах: шесть докладов в формате печа-куча от специалистов Сбера, MWS AI, Авито, AIRI. Можно предложить свой доклад.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-22T18:30",
+   "ends": null,
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Все желающие по регистрации; для доклада — заявка на event@airi.net",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://airi.net/ru/events/iishnitsa-skolko-nuzhno-agentov",
+   "fit": 9,
+   "fit_reason": "Прямо про ИИ-агентов и ML, офлайн-митап с сильными спикерами — точно твоя тема.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c63",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture",
+    "festival",
+    "talk"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "science"
+   ],
+   "region": [
+    "ru"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "science",
+   "title_ru": "Научные битвы Science Slam (Хабаровск, Москва, Пермь)",
+   "organizer": "Science Slam Russia",
+   "summary_ru": "Серия научно-популярных выступлений учёных в формате Science Slam в разных городах: нейросети, ИИ, физика, история. Вход по регистрации.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "offline",
+   "location": "Хабаровск, Москва, Пермь, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Все желающие по регистрации",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://forms.yandex.ru/cloud/6ace1ec71f1eb56a1500030e",
+   "fit": 6,
+   "fit_reason": "Научпоп-слэмы с докладами про ИИ и нейросети — интересно, но не про твою активную учёбу.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c64",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "science",
+    "other"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Санкт-Петербург"
+   ],
+   "starts": [
+    "2026-11-14T19:00"
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "science",
+   "title_ru": "Лекция «Ведьмы среди нас!» — Константин Образцов",
+   "organizer": "Лекторий Medio Modo",
+   "summary_ru": "Научно-популярная лекция филолога и писателя об истории «охоты на ведьм», мифах и клише. Билеты платные.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-11-14T19:00",
+   "ends": null,
+   "format": "offline",
+   "location": "Санкт-Петербург, Россия",
+   "city": "Санкт-Петербург",
+   "region": "ru",
+   "eligibility": "Все желающие по билету",
+   "ru_access": "yes",
+   "cost": "по билету",
+   "reward": null,
+   "apply_url": "https://mediomodo.ru/obrazcov-spb",
+   "fit": 3,
+   "fit_reason": "Историко-филологическая лекция, далека от ИИ и технологий.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c65",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "science"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Москва"
+   ],
+   "starts": [
+    "2026-10-31T19:00"
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "science",
+   "title_ru": "Лекция «Золотая маска в боспорском кургане» — Александр Бутягин",
+   "organizer": "Лекторий Medio Modo",
+   "summary_ru": "Лекция археолога Эрмитажа о загадке золотой маски из керченского захоронения. Есть онлайн-трансляция, билеты платные.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-31T19:00",
+   "ends": null,
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Все желающие по билету",
+   "ru_access": "yes",
+   "cost": "по билету",
+   "reward": null,
+   "apply_url": "https://mediomodo.ru/butyagin-msk-zolotaya-maska",
+   "fit": 2,
+   "fit_reason": "Археология и история — не твоя тема.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c66",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "science",
+    "other"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Красноярск"
+   ],
+   "starts": [
+    "2026-10-29T19:30"
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "science",
+   "title_ru": "Лекция «Фауст 21 века» — Василий Бейнарович",
+   "organizer": "Лекторий Medio Modo",
+   "summary_ru": "Лекция психиатра о развитии личности ребёнка и отклонениях, для осознанных родителей. Билеты платные.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-29T19:30",
+   "ends": null,
+   "format": "offline",
+   "location": "Красноярск, Россия",
+   "city": "Красноярск",
+   "region": "ru",
+   "eligibility": "Все желающие по билету",
+   "ru_access": "yes",
+   "cost": "по билету",
+   "reward": null,
+   "apply_url": "https://mediomodo.ru/faust-krasnoyarsk",
+   "fit": 2,
+   "fit_reason": "Психология и воспитание — не твой профиль.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c67",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": false,
+   "reason": "Подборка книг, не анонс события",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c68",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "other",
+    "science"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Санкт-Петербург"
+   ],
+   "starts": [
+    "2026-10-29T19:00"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "other",
+   "title_ru": "Лекция «Эдвард Мунк: художник, изображавший невидимое»",
+   "organizer": "Планетарий 1",
+   "summary_ru": "Лекция об Эдварде Мунке и его картинах, о том, как цвет и пространство передают чувства. Можно прийти слушателем по билету.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-29T19:00",
+   "ends": null,
+   "format": "offline",
+   "location": "Санкт-Петербург, Россия",
+   "city": "Санкт-Петербург",
+   "region": "ru",
+   "eligibility": "Все желающие",
+   "ru_access": "yes",
+   "cost": "по билету",
+   "reward": null,
+   "apply_url": "https://munch.ticketscloud.org/",
+   "fit": 2,
+   "fit_reason": "Искусство, не твоя тема ИИ и технологий",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c69",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": false,
+   "reason": "Концерт, не научное событие",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ }
+]

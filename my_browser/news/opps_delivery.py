@@ -10,10 +10,13 @@ when it is due:
 - The window (in_window()): the registration deadline, else the event's start (effective()), at most opps_window_days
   (92) ahead, an especially big one (`major`, read by opps.py) opps_major_window_days (183). A further one waits and
   comes in as new on the morning it enters the window; undated ones and ones open all year are always in it.
-- board() is what the app shows: the tracked deadlines of the next SOON_DAYS («Скоро дедлайн», instead of DEEper's
-  reminders in Telegram: 14, 3 and 1 days before), the released ones within the window, the new first, how many open
-  ones lie beyond the window, when the list was updated and when it will be next.
-Only the types on in opps_types are shown (all are read); the user's own ones always are.
+- board() is what the app shows: the tracked deadlines of the next SOON_DAYS and the user's lectures, meetups and
+  festivals of the next SOON_EVENT_DAYS («Скоро», instead of DEEper's reminders in Telegram: 14, 3 and 1 days before),
+  the released ones within the window, the new first, how many open ones lie beyond the window, when the list was
+  updated and when it will be next.
+Only the types on in opps_types are shown (all are read), and no lecture, meetup or festival held offline in another
+city than the user's (elsewhere()); the user's own ones always are. Each opportunity carries its area for the app's
+filter (area(): the user's city, Russia and the CIS, the world) and its topic.
 """
 
 import logging
@@ -29,18 +32,23 @@ logger = logging.getLogger(__name__)
 UPDATE_LATE_HOURS = 6
 OVER_DAYS = 30  # «Мои»: an opportunity without the event's dates is past this long after its deadline
 MONTHS_FROM_DAYS = 60  # «через 2 месяца» instead of «через 61 день»
-SOON_DAYS = 14  # «Скоро дедлайн»: a tracked deadline this close (DEEper's bot reminded 14, 3 and 1 days before)
+SOON_DAYS = 14  # «Скоро»: a tracked deadline this close (DEEper's bot reminded 14, 3 and 1 days before)…
+SOON_EVENT_DAYS = 7  # …and the day of a lecture, meetup or festival of «Мои»
 MOVED_DAYS = 14  # a moved deadline is said in the lists this long; the sheet always says it
 ONE = {"hackathon": "Хакатон", "competition": "Соревнование", "school": "Школа", "internship": "Стажировка",
        "fellowship": "Программа", "education": "Поступление", "conference": "Конференция", "grant": "Грант",
-       "talk": "Выступление", "exam": "Экзамен", "other": "Возможность"}
+       "talk": "Выступление", "exam": "Экзамен", "lecture": "Лекция", "meetup": "Митап", "festival": "Фестиваль",
+       "other": "Возможность"}
 PLAIN_ACCESS = {"yes": "из РФ: да", "unclear": "из РФ: неясно", "no": "из РФ: нет"}  # no colored marks: the brandbook
 ACCESS_WORDS = {"yes": "да", "unclear": "неясно", "no": "нет"}
 SHORT = {"hackathon": "хакатоны", "competition": "соревнования", "school": "школы", "internship": "стажировки",
          "fellowship": "программы", "education": "поступление", "conference": "конференции", "grant": "гранты",
-         "talk": "выступления", "exam": "экзамены", "other": "другое"}  # the app's filter: a phone's width
+         "talk": "выступления", "exam": "экзамены", "lecture": "лекции", "meetup": "митапы", "festival": "фестивали",
+         "other": "другое"}  # the app's filter: a phone's width
+AREAS = {"ru": "СНГ", "world": "мир"}  # the app's filter, after the user's city (config.city_short())
 FORMATS = {"online": "онлайн", "offline": "офлайн", "hybrid": "гибрид"}
 MONTHS = ("янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек")
+DAYS = ("пн", "вт", "ср", "чт", "пт", "сб", "вс")
 WEEKDAY = {"mon": 0, "tue": 1, "wed": 2, "thu": 3, "fri": 4, "sat": 5, "sun": 6}
 
 
@@ -110,10 +118,14 @@ def span(opp: dict) -> str | None:
 
 
 def event_when(opp: dict, now: float, zone: ZoneInfo) -> str | None:
-    """The event itself, which matters once one is registered: «6–8 ноя (через 12 дней)», «(идёт)», «(прошло)»."""
+    """The event itself, which matters once one is registered and for a lecture: «6–8 ноя (через 12 дней)», a single
+    day with its weekday and time when known, «сб 14 ноя, 19:00 (через 18 дней)», «(идёт)», «(прошло)»."""
     start, end = _dates(opp)
     if not start:
         return None
+    dates = span(opp)
+    if not end:  # a single day: its weekday, and the time when known
+        dates = f"{DAYS[start.weekday()]} {dates}" + (f", {opp['start_time']}" if opp.get("start_time") else "")
     today = datetime.fromtimestamp(now, zone).date()
     if today < start:
         days = (start - today).days
@@ -122,7 +134,7 @@ def event_when(opp: dict, now: float, zone: ZoneInfo) -> str | None:
         left = "идёт" if end else "сегодня"
     else:
         left = "прошло"
-    return f"{span(opp)} ({left})"
+    return f"{dates} ({left})"
 
 
 def over(opp: dict, now: float, zone: ZoneInfo) -> bool:
@@ -132,6 +144,26 @@ def over(opp: dict, now: float, zone: ZoneInfo) -> bool:
     if start:
         return (end or start) < datetime.fromtimestamp(now, zone).date()
     return bool(opp["deadline_at"]) and opp["deadline_at"] < now - OVER_DAYS * 86400
+
+
+def area(opp: dict, settings: config.Settings) -> str:
+    """Where it is, for the app's filter: `city` (offline or hybrid in the user's city), `ru` (Russia and the CIS, or
+    online in Russian), `world`; "" for one read before the region existed."""
+    if opp.get("format") != "online" and config.same_city(opp.get("city"), settings.opps_city):
+        return "city"
+    return opp.get("region") or ""
+
+
+def areas(settings: config.Settings) -> dict[str, str]:
+    """The app's filter by area, in its order: the user's city first, when set («СПб»), «СНГ», «мир»."""
+    return {**({"city": config.city_short(settings.opps_city)} if settings.opps_city else {}), **AREAS}
+
+
+def elsewhere(opp: dict, settings: config.Settings) -> bool:
+    """A lecture, meetup or festival held offline only, in another city than the user's: not shown (MedioModo announces
+    the lectures of every city in one channel). Without the user's city, or the event's, it is."""
+    return (opp["opp_type"] in config.EVENT_TYPES and opp.get("format") in ("offline", None) and bool(opp.get("city"))
+            and bool(settings.opps_city) and not config.same_city(opp["city"], settings.opps_city))
 
 
 def _types(settings: config.Settings) -> tuple[str, list[str]]:
@@ -227,7 +259,7 @@ def release(conn, settings: config.Settings, now: float, zone: ZoneInfo) -> int:
     goes into the app's list (sent_at); how many."""
     on, types = _types(settings)
     waiting = [o for o in _rows(conn, f"o.status = 'open' AND o.sent_at IS NULL AND {on}", types)
-               if in_window(o, now, zone, settings)]
+               if in_window(o, now, zone, settings) and not elsewhere(o, settings)]
     _mark_sent(conn, waiting, now)
     return len(waiting)
 
@@ -241,13 +273,22 @@ def _moment(at: float, now: float, zone: ZoneInfo) -> str:
 
 
 def soon(now: float | None = None) -> list[dict]:
-    """«Скоро дедлайн»: the tracked opportunities whose deadline (exact or approximate) is at most SOON_DAYS ahead, the
-    nearest first; DEEper's bot sent these as reminders. The app shows them above everything else."""
+    """«Скоро»: the tracked opportunities whose deadline (exact or approximate) is at most SOON_DAYS ahead, and the
+    lectures, meetups and festivals of «Мои» (tracked or applied) whose day is at most SOON_EVENT_DAYS ahead, the
+    nearest first; DEEper's bot sent the deadlines as reminders. The app shows them above everything else."""
     now = now or time.time()
+    zone = _zone(config.load())
+    today = datetime.fromtimestamp(now, zone).date()
+    marks = ",".join("?" * len(config.EVENT_TYPES))
     with db.connect() as conn:
         rows = _rows(conn, "o.status = 'tracked' AND o.deadline_at > ? AND o.deadline_at <= ? "
                            "AND o.deadline_kind IN ('exact', 'approximate')", [now, now + SOON_DAYS * 86400])
-    return dressed(sorted(rows, key=lambda o: o["deadline_at"]))
+        events = _rows(conn, f"o.status IN ('tracked', 'applied') AND o.opp_type IN ({marks}) AND o.starts >= ? "
+                             f"AND o.starts <= ?", [*config.EVENT_TYPES, today.isoformat(),
+                                                    (today + timedelta(days=SOON_EVENT_DAYS)).isoformat()])
+    known = {o["story_id"] for o in rows}
+    rows += [o for o in events if o["story_id"] not in known]
+    return dressed(sorted(rows, key=lambda o: effective(o, zone) or 0))
 
 
 def board(now: float | None = None) -> dict:
@@ -255,13 +296,13 @@ def board(now: float | None = None) -> dict:
     new ones (released by the latest update) first, by how soon and fit (order()), then the rest by how soon
     (by_date()); `later`: open ones beyond the window, which come in when they enter it; `updated` and `next`: when the
     list was updated and will be, as the app writes it; `expected`: the annual events awaited and not found yet
-    (annual.py)."""
+    (annual.py); `topics` and `areas`: the filter's choices, named and in their order."""
     settings = config.load()
     zone, now = _zone(settings), now or time.time()
     at = (db.get_state("opps_update") or {}).get("at")
     on, types = _types(settings)
     with db.connect() as conn:
-        rows = _rows(conn, f"o.status = 'open' AND {on}", types)
+        rows = [o for o in _rows(conn, f"o.status = 'open' AND {on}", types) if not elsewhere(o, settings)]
     inside = [o for o in rows if in_window(o, now, zone, settings)]
     shown = [o for o in inside if o["sent_at"]]
     for o in shown:
@@ -271,7 +312,7 @@ def board(now: float | None = None) -> dict:
             "updated": _moment(at, now, zone) if at else None,
             "next": _moment(next_update(settings, datetime.fromtimestamp(now, zone)).timestamp(), now, zone),
             "window_days": settings.opps_window_days, "major_window_days": settings.opps_major_window_days,
-            "expected": annual.expected(now)}
+            "expected": annual.expected(now), "topics": config.TOPICS, "areas": areas(settings)}
 
 
 def _mark_sent(conn, opps: list[dict], now: float) -> None:
@@ -303,19 +344,37 @@ def by_date(rows: list[dict]) -> list[dict]:
                                        -(o["fit"] or 0)))
 
 
+def place_words(opp: dict) -> str | None:
+    """«онлайн», «СПб», «Москва и онлайн», «офлайн»: the city when the source names one."""
+    city = config.city_short(opp["city"]) if opp.get("city") else None
+    if opp["format"] == "online":
+        return "онлайн"
+    if city:
+        return f"{city} и онлайн" if opp["format"] == "hybrid" else city
+    return FORMATS.get(opp["format"], opp["format"]) if opp["format"] else None
+
+
 def meta(opp: dict, now: float, zone: ZoneInfo) -> str:
-    """The caption: «Хакатон · дедлайн 12 ноя (через 18 дней) · онлайн · из РФ: да»;
-    once applied, the event's dates instead of the deadline: «Хакатон · 6–8 ноя (через 12 дней) · онлайн · из РФ: да»."""
-    event = event_when(opp, now, zone) if opp["status"] == "applied" else None
+    """The caption: «Хакатон · дедлайн 12 ноя (через 18 дней) · онлайн · из РФ: неясно»; a lecture, meetup or festival,
+    and one applied for, by the event's dates instead of the deadline: «Лекция · сб 14 ноя, 19:00 (через 18 дней) ·
+    СПб», with «регистрация до 12 ноя» when an event has a deadline still ahead. Access from Russia goes without saying
+    for one in Russia and the CIS that is open to it."""
+    by_event = opp["status"] == "applied" or opp["opp_type"] in config.EVENT_TYPES
+    event = event_when(opp, now, zone) if by_event else None
     parts = [ONE.get(opp["opp_type"], "Возможность"), event or when(opp, now, zone)]
-    if opp["format"]:
-        parts.append(FORMATS.get(opp["format"], opp["format"]))
-    parts.append(PLAIN_ACCESS.get(opp["ru_access"] or "unclear", PLAIN_ACCESS["unclear"]))
+    if event and opp["status"] != "applied" and (opp["deadline_at"] or 0) > now:  # a meetup to register for by a day
+        parts.append(f"регистрация до {day(opp['deadline_at'], zone)}")
+    if place_text := place_words(opp):
+        parts.append(place_text)
+    if not (opp.get("region") == "ru" and opp["ru_access"] == "yes"):
+        parts.append(PLAIN_ACCESS.get(opp["ru_access"] or "unclear", PLAIN_ACCESS["unclear"]))
     return " · ".join(parts)
 
 
 def details(opp: dict, now: float, zone: ZoneInfo) -> list[list[str]]:
-    """The app's sheet of one opportunity: [label, text] pairs of what is known, plain text."""
+    """The app's sheet of one opportunity: [label, text] pairs of what is known, plain text. A lecture, meetup or
+    festival says when it is first, and its deadline only when it has one."""
+    event = opp["opp_type"] in config.EVENT_TYPES and event_when(opp, now, zone)
     if opp["deadline_kind"] == "rolling":
         deadline = "приём круглый год"
     elif opp["deadline_at"]:
@@ -325,15 +384,19 @@ def details(opp: dict, now: float, zone: ZoneInfo) -> list[list[str]]:
                     f"{'' if approximate else f', {moment:%H:%M}'} ({_left(moment, now, zone)})")
     else:
         deadline = "не указан"
-    facts = [["Дедлайн", deadline]]
+    facts = [["Когда", event]] if event else []
+    if not (event and deadline == "не указан"):
+        facts.append(["Дедлайн", deadline])
     if opp.get("deadline_moved_from"):
         facts.append(["Перенесён", f"был {day(opp['deadline_moved_from'], zone)}, срок сдвинул новый анонс"])
     if opp["deadline_text"]:
         facts.append(["В анонсе", opp["deadline_text"]])
-    if dates := span(opp):
+    if not event and (dates := span(opp)):
         facts.append(["Даты", dates])
-    if place := ", ".join(filter(None, (FORMATS.get(opp["format"] or ""), opp["location"]))):
-        facts.append(["Формат", place])
+    if place_text := ", ".join(filter(None, (FORMATS.get(opp["format"] or ""), opp["location"]))):
+        facts.append(["Формат", place_text])
+    if opp.get("topic") in config.TOPICS:
+        facts.append(["Тема", config.TOPICS[opp["topic"]]])
     if opp["eligibility"]:
         facts.append(["Кто может", opp["eligibility"]])
     facts.append(["Из России", ACCESS_WORDS.get(opp["ru_access"] or "unclear", "неясно")])
@@ -353,9 +416,10 @@ def moved(opp: dict, now: float, zone: ZoneInfo) -> str | None:
 
 def dressed(rows: list[dict]) -> list[dict]:
     """Opportunities with what the app shows, written here (the screens format nothing themselves): `meta` (the
-    caption), `type_name` and `type_short`, `apply` (where to apply, else the latest post), `details` (the sheet's
-    [label, text] pairs; an especially big one says so), `over` (the event is behind), `moved` (a recent move of the
-    deadline, or None) and `major` as a bool."""
+    caption), `type_name` and `type_short`, `topic_name`, `area` (the app's filter: city, ru, world; board() names
+    them), `is_event` (a lecture, meetup or festival), `apply` (where to apply, else the latest post), `details` (the
+    sheet's [label, text] pairs; an especially big one says so), `over` (the event is behind), `moved` (a recent move
+    of the deadline, or None) and `major` as a bool."""
     settings = config.load()
     zone, now = _zone(settings), time.time()
     with db.connect() as conn:
@@ -364,6 +428,9 @@ def dressed(rows: list[dict]) -> list[dict]:
             row["meta"] = meta(row, now, zone)
             row["type_name"] = config.OPP_TYPES.get(row["opp_type"], row["opp_type"])
             row["type_short"] = SHORT.get(row["opp_type"], row["type_name"])
+            row["topic_name"] = config.TOPICS.get(row.get("topic") or "", "")
+            row["area"] = area(row, settings)
+            row["is_event"] = row["opp_type"] in config.EVENT_TYPES
             row["apply"] = row["apply_url"] or row["link"]
             row["details"], row["over"], row["moved"] = details(row, now, zone), over(row, now, zone), moved(row, now, zone)
             row["major"] = bool(row.get("major"))

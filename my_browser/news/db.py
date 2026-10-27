@@ -4,7 +4,8 @@
   owner, so a story counts independent sources, not channels.
 - items: the posts read from them, one row per post and source.
 - stories: posts about the same opportunity, merged (dedup.py).
-- opportunities: what the LLM read in each story (opps.py): type, deadline, conditions, fit, the user's status.
+- opportunities: what the LLM read in each story (opps.py): type, topic, deadline, place, conditions, fit, the user's
+  status.
 - settings: the user's settings (config.py); state: what the loop remembers; opps_spend: LLM cost per day.
 
 The file and its columns are DEEper's (its news part read AI news too): `lane` is `opps` on every row OnePath writes,
@@ -108,7 +109,11 @@ CREATE TABLE IF NOT EXISTS opportunities (
     major INTEGER,                   -- especially big (prepared for months ahead): the app shows it within the longer window;
                                      -- NULL: read before the field existed, so read again
     deadline_moved_from TEXT,        -- a tracked one's deadline before a new post moved it (ISO), and when that was read:
-    deadline_moved_at REAL           --   the app says so in «Скоро дедлайн», «Мои» and the sheet
+    deadline_moved_at REAL,          --   the app says so in «Скоро», «Мои» and the sheet
+    topic TEXT,                      -- config.TOPICS: ai | tech | science | other; NULL: read before it existed, so read again
+    region TEXT,                     -- ru (Russia and the CIS, or online in Russian) | world
+    city TEXT,                       -- where it takes place offline, as the model names it («Санкт-Петербург»), or NULL
+    start_time TEXT                  -- the event's start time («19:00») when the source gives it: lectures
 );
 CREATE TABLE IF NOT EXISTS opps_spend (day TEXT PRIMARY KEY, rub REAL DEFAULT 0, calls INTEGER DEFAULT 0);
 """
@@ -119,7 +124,7 @@ ADDED_COLUMNS: dict[str, dict[str, str]] = {
     "stories": {"title_ru": "TEXT", "primary_url": "TEXT", "scored_count": "INTEGER", "scored_at": "REAL",
                 "update_sent": "INTEGER DEFAULT 0", "sent_count": "INTEGER", "lane": "TEXT DEFAULT 'opps'"},
     "opportunities": {"tz_assumed": "INTEGER DEFAULT 0", "major": "INTEGER", "deadline_moved_from": "TEXT",
-                      "deadline_moved_at": "REAL"},
+                      "deadline_moved_at": "REAL", "topic": "TEXT", "region": "TEXT", "city": "TEXT", "start_time": "TEXT"},
 }
 
 # Run once when a column is added to an older file: posts stored before digests were recognized get the flag.

@@ -15,7 +15,7 @@ import time
 import httpx
 
 from my_browser.common import memory
-from my_browser.news import collectors, db, dedup, discover, items, opps, opps_delivery, sources
+from my_browser.news import collectors, config, db, dedup, discover, items, opps, opps_delivery, sources
 
 logger = logging.getLogger(__name__)
 
@@ -121,6 +121,7 @@ def tick() -> None:
 def run_forever(stop: threading.Event | None = None) -> None:
     """Tick until stopped; meant for its own thread."""
     stop = stop or threading.Event()
+    config.upgrade()
     if added := sources.seed():
         logger.info("Sources: %d starting sources added", added)
     if single := items.refresh_digests():

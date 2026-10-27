@@ -36,15 +36,19 @@ def answer(prompt: str) -> str:
                                                   f"студентов, регистрация до {soon}.", "url": None} for k in (1, 2)]}
                            for n in posts], ensure_ascii=False)
     if STEPS["extract"] in prompt:  # the first due soon, every fourth not one; the third big and five months ahead
-        # (inside the app's longer window), the fifth four months (beyond it)
+        # (inside the app's longer window), the fifth four months (beyond it); the second a lecture in Petersburg in a
+        # week at 19:00, the sixth one in Moscow (not shown to a user of Petersburg)
         ids = [int(n) for n in re.findall(r"^\[id (\d+)\]", prompt, re.M)]
         return json.dumps([{"id": n, "is_opportunity": False, "reason": "тестовая новость"} if n % 4 == 0 else
+                           _lecture(n) if n in (2, 6) else
                            {"id": n, "is_opportunity": True, "reason": None, "opp_type": "hackathon" if n == 1 else "school",
-                            "title_ru": f"Тестовая возможность {n}", "organizer": "Тестовый организатор",
+                            "topic": ("ai", "tech", "science", "other")[n % 4], "title_ru": f"Тестовая возможность {n}",
+                            "organizer": "Тестовый организатор",
                             "summary_ru": "Тестовая возможность: что это и что даёт.", "deadline_text": "тестовый дедлайн",
                             "deadline": (date.today() + timedelta(days={1: 5, 3: 150, 5: 120}.get(n, 30))).isoformat(),
                             "deadline_tz": None,
                             "deadline_kind": "exact", "starts": None, "ends": None, "format": "online", "location": None,
+                            "city": None, "region": "world" if n % 3 == 0 else "ru",
                             "eligibility": "студенты", "ru_access": "yes" if n == 1 else "unclear", "cost": "бесплатно",
                             "reward": None, "apply_url": "https://example.org/apply", "fit": 8 if n == 1 else 5,
                             "fit_reason": "тестовая причина", "major": n == 3, "same_as": None} for n in ids], ensure_ascii=False)
@@ -52,6 +56,17 @@ def answer(prompt: str) -> str:
         return json.dumps(["хакатон по искусственному интеллекту для студентов регистрация",
                            "machine learning summer school applications open"], ensure_ascii=False)
     return "[]"
+
+
+def _lecture(n: int) -> dict:
+    city = "Санкт-Петербург" if n == 2 else "Москва"
+    return {"id": n, "is_opportunity": True, "reason": None, "opp_type": "lecture", "topic": "science",
+            "title_ru": f"Тестовая лекция {n}", "organizer": "Тестовый лекторий", "summary_ru": "Научно-популярная лекция.",
+            "deadline_text": None, "deadline": None, "deadline_tz": None, "deadline_kind": "unknown", "closed": False,
+            "starts": f"{date.today() + timedelta(days=7)}T19:00", "ends": None, "format": "offline", "location": city,
+            "city": city, "region": "ru", "eligibility": "все", "ru_access": "yes", "cost": "билет 800 ₽", "reward": None,
+            "apply_url": "https://example.org/tickets", "fit": 6, "fit_reason": "тестовая причина", "major": False,
+            "same_as": None}
 
 
 class Handler(BaseHTTPRequestHandler):

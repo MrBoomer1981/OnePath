@@ -2,7 +2,7 @@
 
 The list was checked in DEEper on 25.10.2026 (news/CLAUDE.md lists the ones refused) and grew on 26.10.2026:
 aggregators of hackathons and competitions, companies' student programs, the university, research programs and
-schools, conferences and grants. Pages without a feed (kind `page`) are read once a day. Sources the user adds in
+schools, conferences and grants; and on 27.10.2026 by lectures and events (a lecture hall, two venues). Pages without a feed (kind `page`) are read once a day. Sources the user adds in
 «Настройки» go to the same table (manage.py).
 
 Defaults are offered once: a source the user removed does not come back, and a source added to DEFAULTS later
@@ -126,6 +126,11 @@ DEFAULTS = [
     _opp_tg("confsci", "Научные конференции", "conference"),
     _opp_tg("rosmolodezgrants", "Росмолодёжь.Гранты", "program", owner="tg:rosmolodez"),
     _opp_tg("icpcnews", "ICPC News", "program", lang="en"),
+    # Lectures, meetups and festivals (27.10.2026, the user's request: MedioModo's lectures were missing). A lecture
+    # hall of several cities and two Petersburg venues; one offline in another city than the user's is not shown.
+    _opp_tg("mediomodo", "Лекторий Medio Modo", "community"),
+    _opp_tg("newhollandsp", "Новая Голландия", "community"),
+    _opp_tg("planetarium1", "Планетарий 1", "community"),
 ]
 
 

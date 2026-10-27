@@ -1,0 +1,979 @@
+[
+ {
+  "id": "c02",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "tech",
+   "title_ru": "II Всероссийский хакатон по визуальному программированию",
+   "organizer": "Детский технопарк «Кванториум» (Ханты-Мансийск)",
+   "summary_ru": "Хакатон по визуальному программированию для школьников 9–15 лет: команды разрабатывают и защищают проект по одному из четырёх направлений.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-11-07",
+   "ends": null,
+   "format": "hybrid",
+   "location": "Ханты-Мансийск, Россия",
+   "city": "Ханты-Мансийск",
+   "region": "ru",
+   "eligibility": "Школьники 9–15 лет, команды по 2 человека",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://hackrus.ru/1344",
+   "fit": 1,
+   "fit_reason": "Ты студент вуза, а хакатон только для школьников 9–15 лет",
+   "major": false,
+   "same_as": null
+  },
+  "missed": [
+   "city"
+  ]
+ },
+ {
+  "id": "c06",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Санкт-Петербург"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "tech",
+   "title_ru": "Инженерный хакатон «#000000 по #ffffff»",
+   "organizer": "СПбГЭТУ «ЛЭТИ» и «Росатом»",
+   "summary_ru": "Инженерный хакатон для школьников: команды решают реальную задачу от «Росатома» по электронике и программированию с наставниками и защитой перед жюри.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-30",
+   "ends": null,
+   "format": "offline",
+   "location": "Санкт-Петербург, Россия",
+   "city": "Санкт-Петербург",
+   "region": "ru",
+   "eligibility": "Учащиеся 8–11 классов от 14 лет",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": "Призы от ПАО «Газпром», мерч",
+   "apply_url": "https://hackrus.ru/1354",
+   "fit": 2,
+   "fit_reason": "Тема инженерии близка, но участвовать могут только школьники 8–11 классов",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c11",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "competition"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Новосибирск"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "competition",
+   "topic": "tech",
+   "title_ru": "NSK CTF School 2026",
+   "organizer": "Организаторы NSK CTF School (Новосибирск)",
+   "summary_ru": "Онлайн-CTF для школьников в формате Jeopardy: задачи по web, OSINT, реверсу, криптографии, форензике и пентесту, команды 3–5 человек.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-11-07",
+   "ends": null,
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "Школьники 7–11 классов, команды 3–5 человек (основной зачёт — Новосибирская область)",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://hackrus.ru/99103",
+   "fit": 2,
+   "fit_reason": "Кибербезопасность близка к IT, но соревнование только для школьников",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c23",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "conference",
+    "meetup"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Москва"
+   ],
+   "starts": [
+    "2026-11-19"
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "conference",
+   "topic": "tech",
+   "title_ru": "ИТ-конференция «Импульс Т1»",
+   "organizer": "Т1",
+   "summary_ru": "Крупная ИТ-конференция с 5 направлениями, 130+ спикерами и практическими тренажёрами по программированию, архитектуре и доступности.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-11-19",
+   "ends": null,
+   "format": "offline",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Участники ИТ-отрасли, программисты, инженеры, архитекторы",
+   "ru_access": "yes",
+   "cost": null,
+   "reward": null,
+   "apply_url": "https://hackrus.ru/1348",
+   "fit": 6,
+   "fit_reason": "Полезная ИТ-конференция с практикой, но фокус на инженерии, а не на ML",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c25",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": false,
+   "reason": "Вебинары для родителей школьников",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": null,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c26",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "meetup",
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "tech",
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Санкт-Петербург"
+   ],
+   "starts": [
+    "2026-10-27T18:00"
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "meetup",
+   "topic": "tech",
+   "title_ru": "Митап по кибербезу в ИТМО с экспертами Альфа-Банка",
+   "organizer": "Альфа-Банк и Университет ИТМО",
+   "summary_ru": "Митап о безопасности финтеха и ИИ-агентов: лекции экспертов по AppSec, DevSecOps и защите ИИ, плюс советы по карьере.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-27T18:00",
+   "ends": "2026-10-27T22:00",
+   "format": "offline",
+   "location": "Санкт-Петербург, Россия",
+   "city": "Санкт-Петербург",
+   "region": "ru",
+   "eligibility": "Все желающие, интересующиеся кибербезопасностью и ИИ",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://itmo.events/events/124472",
+   "fit": 7,
+   "fit_reason": "Тема ИИ и безопасности близка, полезно для карьеры и нетворкинга",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c28",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null
+   ],
+   "starts": [
+    "2026-10-29"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "ai",
+   "title_ru": "Diffusion Week 2026",
+   "organizer": "DLS (Deep Learning School)",
+   "summary_ru": "Серия онлайн-лекций о диффузионных моделях: основы, видеодиффузия, world models, интерпретируемость и ускорение. Спикеры из Kandinsky и AIRI.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-29",
+   "ends": "2026-11-07",
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "ru",
+   "eligibility": "Все желающие",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://dls.samcs.ru/diffusionweek",
+   "fit": 9,
+   "fit_reason": "Прямо по твоей теме — диффузионные модели и ML, онлайн-лекции.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c30",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": false,
+   "reason": "Сборы для школьников 7–11 классов",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": null,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c33",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture",
+    "meetup"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai",
+    "science"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ],
+   "starts": [
+    "2026-10-28T17:00"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "ai",
+   "title_ru": "Семинар AIRI: неожиданные способности LLM в химии",
+   "organizer": "Институт AIRI",
+   "summary_ru": "Научный семинар о способностях больших языковых моделей в химии. Можно прийти офлайн по регистрации или смотреть трансляцию.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-28T17:00",
+   "ends": null,
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Все желающие",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://airi.net/ru/events/neozhidannye-sposobnosti-llm-v-khimii",
+   "fit": 8,
+   "fit_reason": "LLM и ИИ-исследования — твоя тема, плюс научный формат.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c47",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "hackathon"
+   ],
+   "deadline": [
+    "2026-11-07"
+   ],
+   "ru_access": [
+    "unclear",
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "world"
+   ],
+   "city": [
+    null
+   ]
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "hackathon",
+   "topic": "ai",
+   "title_ru": "Redshifted Cortex — AI built by High Schoolers",
+   "organizer": "Redshifted (Devpost)",
+   "summary_ru": "Онлайн-хакатон по машинному обучению и ИИ на Devpost. Приём работ до 7 ноября, призового фонда нет.",
+   "deadline_text": "Nov 07, 2026",
+   "deadline": "2026-11-07",
+   "deadline_tz": null,
+   "deadline_kind": "exact",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "online",
+   "location": null,
+   "city": null,
+   "region": "world",
+   "eligibility": "Школьники (high schoolers)",
+   "ru_access": "unclear",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://redshifted-cortex.devpost.com/",
+   "fit": 3,
+   "fit_reason": "Тема ИИ подходит, но хакатон для школьников, а не студентов.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c62",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "meetup",
+    "lecture",
+    "talk"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "ai"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Москва"
+   ],
+   "starts": [
+    "2026-10-22T18:30",
+    "2026-10-22T18:00",
+    "2026-10-22"
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "meetup",
+   "topic": "ai",
+   "title_ru": "ИИшница: митап про ИИ-агентов",
+   "organizer": "AIRI и Сбер",
+   "summary_ru": "Офлайн-митап об ИИ-агентах в формате печа-куча с докладами из Сбера, MWS AI, Авито и AIRI. Можно подать заявку на выступление.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-22T18:30",
+   "ends": null,
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Все желающие",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://airi.net/ru/events/iishnitsa-skolko-nuzhno-agentov",
+   "fit": 9,
+   "fit_reason": "ИИ-агенты и ML — прямо твоя тема, плюс нетворкинг.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c63",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture",
+    "festival",
+    "talk"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "science"
+   ],
+   "region": [
+    "ru"
+   ]
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "science",
+   "title_ru": "Science Slam: научные битвы в Хабаровске, Москве и Перми",
+   "organizer": "Science Slam Russia",
+   "summary_ru": "Серия научно-популярных выступлений учёных в формате битвы. Темы от нейросетей и ИИ до истории и агрономии, вход по регистрации.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": null,
+   "ends": null,
+   "format": "offline",
+   "location": "Хабаровск, Москва, Пермь, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Все желающие",
+   "ru_access": "yes",
+   "cost": "бесплатно",
+   "reward": null,
+   "apply_url": "https://t.me/scienceslamrussia/3196",
+   "fit": 6,
+   "fit_reason": "Научпоп с частью про ИИ и нейросети, но темы смешанные.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c64",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "science",
+    "other"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Санкт-Петербург"
+   ],
+   "starts": [
+    "2026-11-14T19:00"
+   ]
+  },
+  "answer": {
+   "id": 1,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "science",
+   "title_ru": "Лекция «Ведьмы среди нас!» Константина Образцова",
+   "organizer": "Лекторий Medio Modo",
+   "summary_ru": "Научно-популярная лекция филолога и писателя об истории охоты на ведьм, её причинах и мифах. Можно прийти слушателем в Петербурге.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-11-14T19:00",
+   "ends": null,
+   "format": "offline",
+   "location": "Санкт-Петербург, Россия",
+   "city": "Санкт-Петербург",
+   "region": "ru",
+   "eligibility": "Все желающие, по билету",
+   "ru_access": "yes",
+   "cost": "по билету",
+   "reward": null,
+   "apply_url": "https://mediomodo.ru/obrazcov-spb",
+   "fit": 3,
+   "fit_reason": "История и филология — не твоя тема, но формат лекции подходит.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c65",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "science"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Москва"
+   ],
+   "starts": [
+    "2026-10-31T19:00"
+   ]
+  },
+  "answer": {
+   "id": 2,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "science",
+   "title_ru": "Лекция «Золотая маска в боспорском кургане» Александра Бутягина",
+   "organizer": "Лекторий Medio Modo",
+   "summary_ru": "Лекция археолога Эрмитажа о загадке золотой маски из керченского захоронения. Офлайн в Москве и онлайн-трансляция.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-31T19:00",
+   "ends": null,
+   "format": "hybrid",
+   "location": "Москва, Россия",
+   "city": "Москва",
+   "region": "ru",
+   "eligibility": "Все желающие, по билету",
+   "ru_access": "yes",
+   "cost": "по билету",
+   "reward": null,
+   "apply_url": "https://mediomodo.ru/butyagin-msk-zolotaya-maska",
+   "fit": 3,
+   "fit_reason": "Археология интересна как научпоп, но далека от ИИ и ML.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c66",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "science",
+    "other"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    "Красноярск"
+   ],
+   "starts": [
+    "2026-10-29T19:30"
+   ]
+  },
+  "answer": {
+   "id": 3,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "science",
+   "title_ru": "Лекция «Фауст 21 века: как не воспитать серийного убийцу»",
+   "organizer": "Лекторий Medio Modo",
+   "summary_ru": "Лекция психиатра и психотерапевта о формировании личности и отклонениях в развитии. Офлайн в Красноярске.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-29T19:30",
+   "ends": null,
+   "format": "offline",
+   "location": "Красноярск, Россия",
+   "city": "Красноярск",
+   "region": "ru",
+   "eligibility": "Все желающие, по билету",
+   "ru_access": "yes",
+   "cost": "по билету",
+   "reward": null,
+   "apply_url": "https://mediomodo.ru/faust-krasnoyarsk",
+   "fit": 2,
+   "fit_reason": "Психология и криминалистика не связаны с твоими интересами.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c67",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 4,
+   "is_opportunity": false,
+   "reason": "Подборка книг, не анонс события",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": null,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c68",
+  "label": {
+   "is_opportunity": true,
+   "opp_type": [
+    "lecture"
+   ],
+   "deadline": [
+    null
+   ],
+   "ru_access": [
+    "yes"
+   ],
+   "closed": false,
+   "topic": [
+    "other",
+    "science"
+   ],
+   "region": [
+    "ru"
+   ],
+   "city": [
+    null,
+    "Санкт-Петербург"
+   ],
+   "starts": [
+    "2026-10-29T19:00"
+   ]
+  },
+  "answer": {
+   "id": 5,
+   "is_opportunity": true,
+   "reason": null,
+   "opp_type": "lecture",
+   "topic": "other",
+   "title_ru": "Лекция «Эдвард Мунк: художник, изображавший невидимое»",
+   "organizer": "Планетарий 1",
+   "summary_ru": "Лекция об искусстве Эдварда Мунка и его картинах. Можно прийти слушателем по билету.",
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": "unknown",
+   "closed": false,
+   "starts": "2026-10-29T19:00",
+   "ends": null,
+   "format": "offline",
+   "location": "Санкт-Петербург, Россия",
+   "city": "Санкт-Петербург",
+   "region": "ru",
+   "eligibility": "Все желающие, по билету",
+   "ru_access": "yes",
+   "cost": "по билету",
+   "reward": null,
+   "apply_url": "https://munch.ticketscloud.org/",
+   "fit": 1,
+   "fit_reason": "Искусство не входит в твои интересы.",
+   "major": false,
+   "same_as": null
+  },
+  "missed": []
+ },
+ {
+  "id": "c69",
+  "label": {
+   "is_opportunity": false
+  },
+  "answer": {
+   "id": 6,
+   "is_opportunity": false,
+   "reason": "Концерт, не научное событие",
+   "opp_type": null,
+   "topic": null,
+   "title_ru": null,
+   "organizer": null,
+   "summary_ru": null,
+   "deadline_text": null,
+   "deadline": null,
+   "deadline_tz": null,
+   "deadline_kind": null,
+   "closed": null,
+   "starts": null,
+   "ends": null,
+   "format": null,
+   "location": null,
+   "city": null,
+   "region": null,
+   "eligibility": null,
+   "ru_access": null,
+   "cost": null,
+   "reward": null,
+   "apply_url": null,
+   "fit": null,
+   "fit_reason": null,
+   "major": null,
+   "same_as": null
+  },
+  "missed": []
+ }
+]

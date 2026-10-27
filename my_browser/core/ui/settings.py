@@ -2,6 +2,8 @@
 
 - «Профиль»: the text each opportunity's fit is read against (the radar's `opps_profile`; DEEper's /profile). A new
   one has the open opportunities read again within the budget (news/config.update()).
+- «Город»: where the user lives (`opps_city`, empty in the public repository): events there are the list's place
+  filter's first chip («СПб»), and a lecture, meetup or festival offline in another city is not shown.
 - «Что показывать»: the types the list shows (all are read; DEEper's /opptypes).
 - «Поиск по вебу»: the weekly search for what the sources missed, on or off.
 - «Источники»: the sources with their health, a new one added (a channel, a feed or a program's page; DEEper's
@@ -94,6 +96,27 @@ def settings_screen(first: dict | None = None):
             text = ui.textarea(value=settings.get("opps_profile", "")) \
                 .props('borderless dense dark autogrow input-style="max-height: 40vh; line-height: 1.45"').classes("field")
             kit.primary("Сохранить", save)
+        dialog.open()
+
+    def city_sheet() -> None:
+        settings = state["data"].get("settings") or {}
+        dialog, body = kit.sheet("Город")
+
+        async def save() -> None:
+            if error := await _put({"opps_city": field.value.strip()}):
+                kit.toast(error, "error")
+                return
+            dialog.close()
+            kit.toast("Город сохранён" if field.value.strip() else "Город убран", "ok")
+            await reload()
+
+        with body:
+            ui.label("Где ты живёшь. События там — в фильтре по месту первыми, а лекции, митапы и фестивали офлайн "
+                     "в других городах я не показываю.").classes("sub-text")
+            with ui.element("div").classes("pill inline"):
+                field = ui.input(value=settings.get("opps_city", ""), placeholder="Санкт-Петербург") \
+                    .props("borderless dark dense").classes("pill-input").on("keydown.enter", save)
+                kit.icon_button("check", "Сохранить", save).classes("send")
         dialog.open()
 
     def types_sheet() -> None:
@@ -200,6 +223,9 @@ def settings_screen(first: dict | None = None):
         with ui.element("div").classes("list"):
             kit.row("Профиль", "по нему модель оценивает, что тебе подходит",
                     value="свой" if settings.get("custom_profile") else "общий", chevron=True, on_click=profile_sheet)
+            kit.row("Город", "лекции в других городах не показываю" if settings.get("opps_city")
+                    else "укажи, чтобы видеть, что рядом", value=settings.get("city_short") or "не указан",
+                    chevron=True, on_click=city_sheet)
             kit.row("Что показывать", value="все" if len(types) == len(names) else f"{len(types)} из {len(names)}",
                     chevron=True, on_click=types_sheet)
             kit.row("Источники", f"{trouble} с ошибкой" if trouble else "", value=str(len(working)), chevron=True,

@@ -6,7 +6,10 @@ news part had a news lane too), so a database brought over from DEEper keeps its
 
 The profile, against which each opportunity's fit is scored, is the user's own text: the default here is
 deliberately neutral, since the repository is public, and the user writes theirs in «Настройки». Contacts never
-reach the prompt (clean_profile()). A new profile has the open opportunities read again (opps._waiting()).
+reach the prompt (clean_profile()). A new profile has the open opportunities read again (opps._waiting()). The
+city (opps_city) is empty by default for the same reason: an event there is the app's «СПб» (city_short()), and a
+lecture, meetup or festival offline in another city is not shown (opps_delivery.py). The model names each event's
+city and the code compares them (same_city()), so a new city needs no reading again.
 """
 
 import json
@@ -26,16 +29,31 @@ OPP_TYPES = {
     "hackathon": "хакатоны", "competition": "соревнования и олимпиады", "school": "школы и интенсивы",
     "internship": "стажировки", "fellowship": "исследовательские программы", "education": "программы с поступлением",
     "conference": "конференции, форумы и call for papers", "grant": "гранты и стипендии", "talk": "выступления",
-    "exam": "экзамены и сертификаты", "other": "другое",
+    "exam": "экзамены и сертификаты", "lecture": "лекции и семинары", "meetup": "митапы и встречи",
+    "festival": "фестивали и выставки", "other": "другое",
 }
+# Events one comes to, without a selection (27.10.2026: the user asked for lectures like MedioModo's and other events
+# not always about studies): their date matters, not a deadline, and one offline in another city is not shown.
+EVENT_TYPES = ("lecture", "meetup", "festival")
+FIRST_TYPES = ("hackathon", "competition", "school", "internship", "fellowship", "education", "conference", "grant",
+               "talk", "exam", "other")  # the types before EVENT_TYPES: a choice stored then gets them on (upgrade())
+TOPICS = {"ai": "ИИ", "tech": "техническое", "science": "наука", "other": "прочее"}  # the app's filter, in this order
+CITY = re.compile(r"^[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё .()-]*$")
+CITY_NAMES = {  # how a city is also written → its name as the model writes it (nominative, in Russian)
+    "спб": "Санкт-Петербург", "питер": "Санкт-Петербург", "петербург": "Санкт-Петербург", "ленинград": "Санкт-Петербург",
+    "saint petersburg": "Санкт-Петербург", "st petersburg": "Санкт-Петербург", "st. petersburg": "Санкт-Петербург",
+    "мск": "Москва", "moscow": "Москва", "екб": "Екатеринбург", "нск": "Новосибирск", "нижний": "Нижний Новгород",
+}
+CITY_SHORT = {"Санкт-Петербург": "СПб", "Нижний Новгород": "Н. Новгород", "Ростов-на-Дону": "Ростов",
+              "Екатеринбург": "Екб"}  # the app's filter, on a phone
 WEEKDAYS = {"mon": "понедельник", "tue": "вторник", "wed": "среда", "thu": "четверг", "fri": "пятница",
             "sat": "суббота", "sun": "воскресенье"}
 DAILY = "daily"  # opps_digest_day: the app's list updated every day (a weekly digest of stage O3 left new ones waiting)
 DEFAULT_PROFILE = (
     "Студент технического вуза в России, гражданин РФ. Интересы: искусственный интеллект, машинное обучение, анализ "
     "данных, программирование. Подходит: хакатоны и соревнования по ИИ и ML, школы, стажировки, исследовательские "
-    "программы, конференции с подачей студенческих работ, гранты для студентов. Не подходит: акселераторы, "
-    "стартап-студии, мероприятия без технической части.")
+    "программы, конференции с подачей студенческих работ, гранты для студентов, лекции и митапы о науке и "
+    "технологиях. Не подходит: акселераторы, стартап-студии.")
 PROFILE_CHARS = (20, 3000)
 
 # How each setting reads to the user in an error message.
@@ -44,6 +62,7 @@ LABELS = {
     "opps_digest_time": "время обновления списка", "opps_window_days": "окно, дней",
     "opps_major_window_days": "окно крупных возможностей, дней", "opps_search": "поиск по вебу",
     "opps_types": "типы возможностей", "opps_budget_month_rub": "бюджет на LLM в месяц, ₽", "opps_profile": "профиль",
+    "opps_city": "город",
 }
 
 
@@ -64,8 +83,9 @@ class Settings(BaseModel):
     opps_major_window_days: int = Field(183, ge=7, le=366)  # …an especially big opportunity this far
     opps_search: bool = True  # once a week the web is searched for what the sources missed (discover.py)
     opps_types: list[str] = list(OPP_TYPES)  # shown in the app; every type is collected and read
-    opps_budget_month_rub: float = Field(30, ge=0, le=300)
+    opps_budget_month_rub: float = Field(40, ge=0, le=300)  # 30 until 27.10.2026, when lectures came in
     opps_profile: str = DEFAULT_PROFILE
+    opps_city: str = ""  # where the user lives: the app's «СПб»; empty here, the repository is public
 
     @field_validator("timezone")
     @classmethod
@@ -95,6 +115,14 @@ class Settings(BaseModel):
         if unknown:
             raise ValueError(f"нет типа «{unknown[0]}», есть: {', '.join(OPP_TYPES)}")
         return [t for t in OPP_TYPES if t in values]
+
+    @field_validator("opps_city")
+    @classmethod
+    def _city(cls, value: str) -> str:
+        value = " ".join(value.split())
+        if len(value) > 60 or (value and not CITY.match(value)):
+            raise ValueError("нужно название города, например Санкт-Петербург")
+        return city_name(value) or ""
 
     @field_validator("opps_profile")
     @classmethod
@@ -126,6 +154,24 @@ def clean_profile(text: str) -> str:
     text = PHONE.sub(lambda m: "" if sum(c.isdigit() for c in m.group(0)) >= 10 else m.group(0), text)
     text = re.sub(r"\s+([,.;:])", r"\1", " ".join(text.split()))  # what a removed contact left: «пишите , ,»
     return re.sub(r"([,;:])(?:\s*[,;:])+", r"\1", text)
+
+
+def city_name(text: str | None) -> str | None:
+    """A city as one name, however it is written: «СПб», «г. Санкт-Петербург», «Санкт-Петербург, Россия» →
+    «Санкт-Петербург» (CITY_NAMES); None for none."""
+    name = re.sub(r"^(?:г\.|город)\s*", "", " ".join(str(text or "").split()), flags=re.IGNORECASE)
+    name = name.split(",")[0].strip()
+    return CITY_NAMES.get(name.lower().replace("ё", "е"), name) or None
+
+
+def same_city(event_city: str | None, user_city: str | None) -> bool:
+    one, other = city_name(event_city), city_name(user_city)
+    return bool(one and other) and one.lower().replace("ё", "е") == other.lower().replace("ё", "е")
+
+
+def city_short(name: str) -> str:
+    """«СПб» for Санкт-Петербург: the app's filter and captions."""
+    return CITY_SHORT.get(name, name)
 
 
 def _check_time(value: str) -> str:
@@ -191,6 +237,23 @@ def load() -> Settings:
         with db.transaction() as conn:
             conn.executemany("DELETE FROM settings WHERE key = ?", [(key,) for key in bad])
         return Settings(**{k: v for k, v in stored.items() if k not in bad})
+
+
+def upgrade() -> None:
+    """One-time changes of stored values when a default moves by the user's choice, once per database
+    (state.settings_upgrades), at the loop's start: the event types switched on in a stored choice of types, made before
+    they existed; the month's budget raised to 40 ₽ when less is stored (the user's choice of 27.10.2026)."""
+    done = db.get_state("settings_upgrades", [])
+    load()  # drops the stored values that no longer pass
+    stored, changes = _stored(), {}
+    if "event_types" not in done and "opps_types" in stored:
+        changes["opps_types"] = stored["opps_types"] + [t for t in OPP_TYPES if t not in FIRST_TYPES]
+    if "budget_40" not in done and stored.get("opps_budget_month_rub", 40) < 40:
+        changes["opps_budget_month_rub"] = 40
+    if changes:
+        update(changes)
+        logger.info("Settings: %s raised once to the new defaults", ", ".join(sorted(changes)))
+    db.set_state("settings_upgrades", sorted({*done, "event_types", "budget_40"}))
 
 
 def update(changes: dict) -> Settings:

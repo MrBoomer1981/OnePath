@@ -3,8 +3,9 @@
 The user's request of 26.10.2026 (in DEEper): announcements that no source carries (the VI Congress of Young
 Scientists was found by hand) are looked for on the web. Once a week (Monday at SEARCH_TIME, before the app's morning
 update), and at the first run after the deploy:
-1. Flash writes QUERIES search queries from the user's profile (without contacts), the types shown and the months
-   ahead, in Russian and English (QUERIES_PROMPT); each annual event the radar awaits and has not found this season
+1. Flash writes QUERIES search queries from the user's profile (without contacts), the types shown (lectures, meetups
+   and festivals aside: the search is for deadlines) and the months ahead, in Russian and English (QUERIES_PROMPT);
+   each annual event the radar awaits and has not found this season
    (annual.expected()) adds a query of its own, AWAITED_QUERIES at most.
 2. Each query goes to the web search (common.settings.WEB_RETRIEVER: Tavily on Railway, whose 1 000 requests a month
    DEEper's researches share, the local SearXNG otherwise), RESULTS_PER_QUERY results.
@@ -83,9 +84,9 @@ def _due(local: datetime) -> str | None:
 
 async def _queries(settings: config.Settings, local: datetime) -> list[str]:
     months = ", ".join(f"{MONTHS[(local.month - 1 + i) % 12]} {local.year + (local.month - 1 + i) // 12}" for i in range(6))
+    types = [t for t in settings.opps_types if t not in config.EVENT_TYPES]  # lectures come from their venues' channels
     prompt = QUERIES_PROMPT.format(today=f"{local:%d.%m.%Y}", profile=config.clean_profile(settings.opps_profile),
-                                   types=", ".join(config.OPP_TYPES[t] for t in settings.opps_types), n=QUERIES,
-                                   months=months)
+                                   types=", ".join(config.OPP_TYPES[t] for t in types), n=QUERIES, months=months)
     return [q for q in await llm.ask(settings, prompt, max_tokens=1500) if isinstance(q, str)][:QUERIES]
 
 

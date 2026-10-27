@@ -1,11 +1,12 @@
 """«Возможности» and «Мои» (/ and /mine, sections of the tab bar's page, tabs.py): the radar's opportunities.
 
-- «Возможности»: first «Скоро дедлайн», the user's own (tracked) whose deadline is at most two weeks away, in place
-  of DEEper's reminders in Telegram (OnePath has no bot); then the open ones as the morning update gives them
-  (`/opps/board`): due within three months, an especially big one within six, «Новые» (this morning's) first, «Ждём»
-  (big annual events not found yet), then the rest by how soon, with a filter by type, when the list was updated, and
-  how many lie further ahead. Each with its caption as the radar writes it (`meta`: no colored marks, the brandbook
-  has no green or red), why it fits, and an arrow to where to apply. A row opens its sheet: what the radar knows of it
+- «Возможности»: first «Скоро», the user's own (tracked) whose deadline is at most two weeks away and lectures,
+  meetups and festivals of «Мои» at most a week away, in place of DEEper's reminders in Telegram (OnePath has no bot);
+  then the open ones as the morning update gives them (`/opps/board`): due within three months, an especially big one
+  within six, «Новые» (this morning's) first, «Ждём» (big annual events not found yet), then the rest by how soon,
+  with filters by topic, area and type, when the list was updated, and how many lie further ahead. Each with its
+  caption as the radar writes it (`meta`: no colored marks, the brandbook has no green or red), why it fits, and an
+  arrow to where to apply. A row opens its sheet: what the radar knows of it
   (`details`), where to apply, «В мои», «Регистрация есть», «Исследовать» (DEEper's search screen with it as a topic,
   when RESEARCH_URL is set) and «Не моё».
 - «Мои»: the ones the user took: «Регистрации ещё нет» (tracked), «Регистрация есть» (applied), and the ones whose
@@ -13,6 +14,8 @@
 Both come from the radar's API (in-process unless NEWS_URL is set): the page fetches them before it is built
 (tabs.page), so they are there at the first paint; a status set in one section redraws both.
 """
+
+from collections import Counter
 
 from nicegui import ui
 
@@ -23,6 +26,9 @@ from my_browser.core.ui import kit
 MINE_LIMIT = 200
 PAST_SHOWN = 10  # «Мои» → «Прошли»: the latest ones
 TOGGLE = "no-caps rounded unelevated dense color=night text-color=paper toggle-color=bordo toggle-text-color=paper"
+# The filter's rows, each one line that scrolls sideways (a phone's width): the topic, the area (the user's city,
+# «СНГ», «мир»), the type; (the field it filters by, its first chip). The radar names topics and areas, in their order.
+AXES = (("topic", "все темы"), ("area", "везде"), ("opp_type", "все типы"))
 DONE = {"tracked": "Добавлено в «Мои»", "applied": "Отмечено: регистрация есть", "open": "Убрано из «Моих»",
         "hidden": "Скрыто: больше не покажу"}
 
@@ -77,7 +83,8 @@ def _opp_row(opp: dict, on_open, on_mark=None) -> None:
                 ui.label(note).classes("li-note")
         text.on("click", lambda: on_open(opp))
         if opp.get("apply"):
-            with ui.link(target=opp["apply"], new_tab=True).classes("li-src").props('aria-label="Подача"'):
+            label = "Страница события" if opp.get("is_event") else "Подача"
+            with ui.link(target=opp["apply"], new_tab=True).classes("li-src").props(f'aria-label="{label}"'):
                 ui.icon("open_in_new")
 
 
@@ -99,7 +106,7 @@ def _opp_sheet(opp: dict, act) -> None:
             ui.label(f"Почему тебе: {opp['fit_reason']}").classes("opp-why")
         if opp.get("apply"):  # a real link: a new tab opened from the server would be a blocked pop-up on a phone
             with ui.link(target=opp["apply"], new_tab=True).classes("link-btn"):
-                ui.label("Страница подачи")
+                ui.label("Страница события" if opp.get("is_event") else "Страница подачи")
                 ui.icon("open_in_new")
         with ui.element("div").classes("opp-actions"):  # above the facts: reachable without scrolling the sheet
             if status == "open":
@@ -128,10 +135,38 @@ def _text_button(text: str, on_click) -> None:
     button.on("click", on_click)
 
 
-def _opps_view(board: dict, kind: str, on_kind, on_open) -> None:
-    """«Скоро дедлайн», then the morning update's list: when it was made, the type filter, «Новые», the rest, and how
-    many lie further."""
-    _group("Скоро дедлайн", board.get("soon") or [], on_open)
+def _passes(item: dict, filters: dict, but: str = "") -> bool:
+    return all(not filters[axis] or item.get(axis) == filters[axis] for axis, _ in AXES if axis != but)
+
+
+def _names(board: dict, items: list[dict], axis: str) -> dict[str, str]:
+    """An axis' choices with their names, in order: the radar's for topics and areas, types by how many."""
+    if axis != "opp_type":
+        return {"topic": board.get("topics"), "area": board.get("areas")}[axis] or {}
+    names = {item["opp_type"]: item.get("type_short") or item["type_name"] for item in items}
+    return {key: names[key] for key, _ in Counter(item["opp_type"] for item in items).most_common()}
+
+
+def _filters(board: dict, items: list[dict], filters: dict, on_filter) -> None:
+    """A row of chips per axis with more than one choice: each chip counts what the other rows leave, and the chosen
+    one stays, at 0, to be taken back."""
+    with ui.element("div").classes("filters"):
+        for axis, everything in AXES:
+            counts = {key: sum(i.get(axis) == key and _passes(i, filters, but=axis) for i in items)
+                      for key in _names(board, items, axis)}
+            counts = {key: n for key, n in counts.items() if n or key == filters[axis]}
+            if len(counts) < 2 and not filters[axis]:
+                continue
+            names = _names(board, items, axis)
+            options = {"": everything, **{key: f"{names[key]} {n}" for key, n in counts.items()}}
+            ui.toggle(options, value=filters[axis], on_change=lambda e, axis=axis: on_filter(axis, e.value or "")) \
+                .props(TOGGLE).classes("seg chips")
+
+
+def _opps_view(board: dict, filters: dict, on_filter, on_open) -> None:
+    """«Скоро», then the morning update's list: when it was made, the filters, «Новые», the rest, and how many lie
+    further."""
+    _group("Скоро", board.get("soon") or [], on_open)
     items = board.get("items") or []
     if not items:
         with ui.element("div").classes("empty"):
@@ -143,16 +178,16 @@ def _opps_view(board: dict, kind: str, on_kind, on_open) -> None:
         return
     if board.get("updated"):  # when the next one comes is said by the empty list: one line on a phone
         ui.label(f"обновлено {board['updated']}").classes("li-sub")
-    counts: dict[str, list] = {}
-    for item in items:
-        counts.setdefault(item["opp_type"], [item.get("type_short") or item["type_name"], 0])[1] += 1
-    options = {"": f"все {len(items)}", **{key: f"{name} {n}" for key, (name, n) in sorted(counts.items(), key=lambda kv: -kv[1][1])}}
-    ui.toggle(options, value=kind if kind in options else "", on_change=lambda e: on_kind(e.value or "")) \
-        .props(TOGGLE).classes("seg wrap")
-    shown = [item for item in items if not kind or item["opp_type"] == kind]
+    for axis, _ in AXES:  # a choice the list no longer has (the morning update took its last one away) is let go
+        if filters[axis] and not any(i.get(axis) == filters[axis] for i in items):
+            filters[axis] = ""
+    _filters(board, items, filters, on_filter)
+    shown = [item for item in items if _passes(item, filters)]
     _group("Новые", [i for i in shown if i.get("new")], on_open)
-    _awaited(board, kind)  # right after the new ones: a big event not found yet is a miss to notice
+    _awaited(board, filters)  # right after the new ones: a big event not found yet is a miss to notice
     _group("Открытые", [i for i in shown if not i.get("new")], on_open)
+    if not shown:
+        ui.label("Под эти фильтры сейчас ничего нет.").classes("sub-text")
     _later(board)
 
 
@@ -164,11 +199,11 @@ def _group(label: str, items: list[dict], on_open) -> None:
                 _opp_row(item, on_open)
 
 
-def _awaited(board: dict, kind: str = "") -> None:
-    """Big annual events whose registration usually opens by now and which the radar has not found yet (of the type
-    filtered, if any): a tap opens DEEper's search with the event as a topic (else its official page), the arrow its
-    official page."""
-    events = [e for e in board.get("expected") or [] if not kind or e["opp_type"] == kind]
+def _awaited(board: dict, filters: dict | None = None) -> None:
+    """Big annual events whose registration usually opens by now and which the radar has not found yet (of the
+    filters chosen, if any): a tap opens DEEper's search with the event as a topic (else its official page), the arrow
+    its official page."""
+    events = [e for e in board.get("expected") or [] if not filters or _passes(e, filters)]
     if not events:
         return
     ui.label(f"Ждём · {len(events)}").classes("sheet-label")
@@ -201,8 +236,8 @@ def _mine_view(items: list[dict], on_open, on_mark) -> None:
         with ui.element("div").classes("empty"):
             kit.mascot("sleep", 170)
             ui.label("Здесь будут возможности, которые ты выберешь: открой любую во «Возможностях» и нажми «В мои». "
-                     "Зарегистрируешься — отметь кружком. За две недели до дедлайна она появится наверху "
-                     "«Возможностей».").classes("sub-text")
+                     "Зарегистрируешься — отметь кружком. За две недели до дедлайна (лекция — за неделю до дня) она "
+                     "появится наверху «Возможностей».").classes("sub-text")
         return
     current = [i for i in items if not i["over"]]
     past = sorted((i for i in items if i["over"]), key=lambda i: i.get("ends") or _event_day(i), reverse=True)
@@ -221,7 +256,7 @@ def _mine_view(items: list[dict], on_open, on_mark) -> None:
 def sections(first_board: dict | None = None, own: list[dict] | None = None) -> dict:
     """The builders of «Возможности» and «Мои» for the tab bar's page (tabs.py), sharing their state: each builds its
     section and returns what to call when it is shown again."""
-    state = {"kind": "", "board": first_board or {}, "mine": own or []}
+    state = {"filters": {axis: "" for axis, _ in AXES}, "board": first_board or {}, "mine": own or []}
     shown: dict[str, list] = {"board": [], "mine": []}
 
     def opps_key(items: list[dict]) -> list:
@@ -245,14 +280,14 @@ def sections(first_board: dict | None = None, own: list[dict] | None = None) -> 
     async def mark(opp: dict) -> None:
         await act(opp, "tracked" if opp["status"] == "applied" else "applied")
 
-    def pick_kind(kind: str) -> None:
-        state["kind"] = kind
+    def pick(axis: str, value: str) -> None:
+        state["filters"][axis] = value
         opps_view.refresh()
 
     @ui.refreshable
     def opps_view() -> None:
         shown["board"] = board_key(state["board"])
-        _opps_view(state["board"], state["kind"], pick_kind, open_sheet)
+        _opps_view(state["board"], state["filters"], pick, open_sheet)
 
     @ui.refreshable
     def mine_view() -> None:

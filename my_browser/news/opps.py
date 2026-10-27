@@ -1,5 +1,9 @@
 """Opportunities: what each story of the opps lane is, read by the LLM (Flash) within the lane's own budget.
 
+An opportunity is something to apply or register for with a selection, a contest or submissions, and since
+27.10.2026 also an event one comes to (config.EVENT_TYPES: a lecture, a meetup, a festival; the user's request, after
+MedioModo's lectures were missing), whose date matters rather than a deadline.
+
 1. Roundups are cut first (split()): a post gathering several announcements (a channel's «5 хакатонов недели», an
    aggregator's list, a weekly digest of programs) becomes one post per opportunity, each with its own link; the next
    merging run places them like any post. A roundup with nothing to apply to gives nothing.
@@ -8,17 +12,19 @@
    organizer, what it gives; the deadline as the source writes it and as a date; the event's dates, format, place, who
    may apply, whether a Russian citizen living in Russia may take part, cost, reward, where to apply; how well it fits
    the user's profile (config.clean_profile(): no contacts) and why; whether it is especially big (`major`: prepared
-   for months ahead, so the app shows it within its longer window). The same call names `same_as`: one of up to
+   for months ahead, so the app shows it within its longer window); its topic (config.TOPICS), region (Russia and the
+   CIS, or the world) and the city it takes place in, which the app's filter shows. The same call names `same_as`: one of up to
    SIMILAR_REFS opportunities closest by embeddings, when it is the same one told in other words (merging leaves
    retellings apart, dedup.OPPS_THRESHOLD); the story is then merged into it. An opportunity still ahead that was read
-   before `major` existed, or before the user wrote a new profile (`state.opps_profile_at`), is read again once,
-   without a «deadline moved» mark: its posts did not change.
+   before `major` or `topic` existed, or before the user wrote a new profile (`state.opps_profile_at`), is read again
+   once, without a «deadline moved» mark: its posts did not change.
 3. Dates are checked by the code, not trusted (deadline()): an ISO date or date and time, the time zone from the text,
    else Moscow for a Russian source and UTC for an international one (noted as assumed), the end of the day when no
    time is given. «до конца ноября» is `approximate`, its last day; «круглый год» is `rolling`, without a date.
 A story whose posts carry no sign of an announcement at all (SIGNAL: registration, applications, a deadline, a
-hackathon, an internship…) is not sent to the model: on the collection of 25.10.2026 that was a quarter of the
-stories (tech blog posts, greetings, lectures, results), and none of the labeled opportunities of eval/opps.
+hackathon, an internship, a lecture, tickets…) is not sent to the model: on the collection of 25.10.2026 that was a
+quarter of the stories (tech blog posts, greetings, lectures, results; lectures pass it since 27.10.2026), and none of
+the labeled opportunities of eval/opps.
 Pages, Devpost and awesome-mlss always go to the model.
 Not an opportunity: `dropped` with the reason; a deadline already past, or applications the text calls closed:
 `expired` (every run looks again); a duplicate: its story `merged`. A low fit or no access from Russia drops nothing,
@@ -51,6 +57,8 @@ SIMILAR_FLOOR = 0.55  # retellings of one hackathon were 0.74 apart on 25.10.202
 KINDS = ("exact", "approximate", "rolling", "unknown")
 FORMATS = ("online", "offline", "hybrid")
 ACCESS = ("yes", "no", "unclear")
+REGIONS = ("ru", "world")
+CLOCK = re.compile(r"T([01]\d|2[0-3]):([0-5]\d)")
 USER_STATUSES = ("tracked", "hidden", "applied")  # set by the user: extraction never changes them back
 MOSCOW, UTC = ZoneInfo("Europe/Moscow"), timezone.utc
 ZONES = {"aoe": timezone(timedelta(hours=-12)), "utc": UTC, "gmt": UTC, "z": UTC, "msk": MOSCOW, "мск": MOSCOW,
@@ -62,17 +70,19 @@ OFFSET = re.compile(r"^(?:utc|gmt)\s*([+-])\s*(\d{1,2})(?::?(\d{2}))?$")
 SIGNAL = re.compile(
     r"регистр|заявк|подать|подач|отбор|дедлайн|конкурс|хакатон|чемпионат|олимпиад|соревнован|стажир|стипенди|грант|"
     r"поступ|набор |приём|прием|интенсив|летн\w* школ|зимн\w* школ|кейс|call for|apply|applica|deadline|regist|submi|"
-    r"hackathon|competition|challenge|internship|fellowship|scholarship|grant|admission|school|cohort|enrol|prize|award",
+    r"hackathon|competition|challenge|internship|fellowship|scholarship|grant|admission|school|cohort|enrol|prize|award|"
+    r"лекци|семинар|митап|фестивал|выставк|билет|вход свобод|встреча с|встречаемся|дискусси|вебинар|слэм|"
+    r"lecture|seminar|meetup|festival|exhibition|workshop|webinar|slam",
     re.IGNORECASE)
 ALWAYS_READ = ("page", "devpost", "mlss")  # sources made of opportunities: never filtered
 
 SPLIT_PROMPT = """Ты разбираешь посты-подборки о возможностях для студентов: в одном посте или на одной странице собрано несколько анонсов. Сегодня {today}.
 
-Выпиши из каждой подборки каждую отдельную возможность, куда можно подать заявку или зарегистрироваться для участия с отбором, конкурсом или приёмом работ: хакатон, соревнование, олимпиада, кейс-чемпионат, школа или интенсив с отбором, стажировка, исследовательская программа, программа с поступлением, конференция или воркшоп с приёмом работ, форум или конгресс для студентов и молодых учёных с заявкой на участие, которую рассматривают или утверждают, грант, стипендия, конкурс, набор докладчиков, экзамен с регистрацией. Не выписывай новости, итоги и записи прошедших событий, мероприятия, куда приходят только зрителем или слушателем без отбора (посмотреть выступления, лекции, показы, слэмы), вакансии на постоянную работу, курсы и лекции без отбора, вебинары и митапы для слушателей, рекламу.
+Выпиши из каждой подборки каждую отдельную возможность: то, куда можно подать заявку или зарегистрироваться для участия с отбором, конкурсом или приёмом работ (хакатон, соревнование, олимпиада, кейс-чемпионат, школа или интенсив с отбором, стажировка, исследовательская программа, программа с поступлением, конференция или воркшоп с приёмом работ, форум или конгресс для студентов и молодых учёных с заявкой на участие, которую рассматривают или утверждают, грант, стипендия, конкурс, набор докладчиков, экзамен с регистрацией), и событие с датой, куда можно прийти или подключиться слушателем (лекция, семинар, научно-популярное выступление, встреча с учёным или автором, дискуссия, митап, научный слэм, конференция для слушателей, фестиваль, выставка). Не выписывай новости, итоги, записи и отчёты прошедших событий, вакансии на постоянную работу, курсы без отбора, рекламу, концерты, спектакли, кинопоказы, вечеринки, спортивные события, экскурсии.
 
 Для каждой возможности:
 - title: название, как в подборке;
-- text: 2–4 предложения из подборки об этой возможности — что это, кто проводит, сроки и дедлайн, формат, для кого, призы; только то, что написано, ничего не добавляй;
+- text: 2–4 предложения из подборки об этой возможности — что это, кто проводит, сроки и дедлайн, дата, время и место, формат, для кого, призы; только то, что написано, ничего не добавляй;
 - url: адрес этой возможности из текста подборки (адреса стоят в скобках после текста ссылки или в списке ссылок), если он там есть; иначе null.
 
 Ответь только JSON-массивом, по объекту на подборку, с тем же номером; если возможностей нет — пустой items:
@@ -80,14 +90,15 @@ SPLIT_PROMPT = """Ты разбираешь посты-подборки о во�
 
 {posts}"""
 
-EXTRACT_PROMPT = """Ты разбираешь анонсы возможностей для студента: хакатоны, соревнования, школы, стажировки, программы, гранты, конференции. Сегодня {today}. Ниже профиль студента и сюжеты: в каждом — посты разных источников об одном и том же.
+EXTRACT_PROMPT = """Ты разбираешь анонсы возможностей для студента: хакатоны, соревнования, школы, стажировки, программы, гранты, конференции, а также лекции, митапы и фестивали, куда можно прийти. Сегодня {today}. Ниже профиль студента и сюжеты: в каждом — посты разных источников об одном и том же.
 
 Профиль студента: {profile}
 
 Для каждого сюжета определи:
-- is_opportunity: true, если это анонс того, куда можно подать заявку или зарегистрироваться для участия с отбором, конкурсом или приёмом работ: хакатон, соревнование, олимпиада, кейс-чемпионат, школа или интенсив с отбором, стажировка, исследовательская программа, программа с поступлением, конференция или воркшоп с приёмом работ, форум или конгресс для студентов и молодых учёных с участием по заявке, которую рассматривают или утверждают (Конгресс молодых учёных, молодёжные форумы с отбором), грант, стипендия, конкурс проектов, набор докладчиков, экзамен с регистрацией. Страница программы, приём в которую сейчас закрыт или ещё не открыт (есть только форма «сообщить об открытии»), — тоже true. false — новость, итоги, мнение, реклама курса без отбора, лекция, вебинар, митап или шоу, куда приходят слушателем или зрителем без отбора (регистрация только чтобы попасть в зал), вакансия или найм опытных специалистов (middle, senior, в том числе ускоренный найм — fast track). Если false, остальные поля — null, кроме reason.
+- is_opportunity: true, если это анонс (1) того, куда можно подать заявку или зарегистрироваться для участия с отбором, конкурсом или приёмом работ: хакатон, соревнование, олимпиада, кейс-чемпионат, школа или интенсив с отбором, стажировка, исследовательская программа, программа с поступлением, конференция или воркшоп с приёмом работ, форум или конгресс для студентов и молодых учёных с участием по заявке, которую рассматривают или утверждают (Конгресс молодых учёных, молодёжные форумы с отбором), грант, стипендия, конкурс проектов, набор докладчиков, экзамен с регистрацией; или (2) события с датой, куда можно прийти или подключиться слушателем или зрителем, бесплатно или по билету: лекция или серия лекций, семинар, научно-популярное выступление, встреча с учёным или автором, дискуссия, митап, научный слэм, конференция для слушателей, фестиваль, выставка. Страница программы, приём в которую сейчас закрыт или ещё не открыт (есть только форма «сообщить об открытии»), — тоже true; анонс события, дата которого уже прошла, — тоже true: даты сверит код. false — новость, итоги, запись или отчёт о прошедшем событии, мнение, статья, подборка книг, реклама курса без отбора, учебный курс или сборы без отбора (занятия неделями, с заданиями), встреча или вебинар для родителей, концерт, спектакль, кинопоказ, вечеринка, спортивное событие, экскурсия, вакансия или найм опытных специалистов (middle, senior, в том числе ускоренный найм — fast track). Если false, остальные поля — null, кроме reason.
 - reason: если false — почему, до 8 слов; иначе null.
-- opp_type: hackathon (хакатон), competition (соревнование по данным, олимпиада, контест, кейс-чемпионат), school (летняя или зимняя школа, интенсив с отбором), internship (стажировка, студенческая программа компании), fellowship (исследовательская программа: MATS и подобные), education (поступление: ШАД, магистратура, курс с отбором), conference (конференция, конгресс или форум с заявкой на участие, воркшоп, call for papers), grant (грант, стипендия, конкурс проектов), talk (выступление: Science Slam, набор докладчиков), exam (экзамен, сертификат), other.
+- opp_type: hackathon (хакатон), competition (соревнование по данным, олимпиада, контест, кейс-чемпионат), school (летняя или зимняя школа, интенсив с отбором), internship (стажировка, студенческая программа компании), fellowship (исследовательская программа: MATS и подобные), education (поступление: ШАД, магистратура, курс с отбором), conference (конференция, конгресс или форум — с заявкой на участие или для слушателей, воркшоп, call for papers), grant (грант, стипендия, конкурс проектов), talk (выступить самому: набор докладчиков, участие в Science Slam), exam (экзамен, сертификат), lecture (лекция, семинар, научно-популярное выступление, встреча с учёным или автором, дискуссия, научный слэм для зрителей), meetup (митап, встреча сообщества, нетворкинг, ярмарка вакансий, день открытых дверей), festival (фестиваль, выставка, научный праздник), other.
+- topic: тема — ai (искусственный интеллект, машинное обучение, анализ данных, AI safety), tech (программирование, IT, инженерия, роботы, электроника, кибербезопасность), science (естественные и гуманитарные науки, медицина, психология, история, научпоп), other (бизнес, кейсы, менеджмент, дизайн, искусство, культура, общество, социальные проекты, спорт).
 - title_ru: название по-русски до 80 знаков; имена собственные (MATS, Yandex Cup) — как в оригинале.
 - organizer: кто проводит.
 - summary_ru: что это и что даёт участнику, одно-два предложения по-русски.
@@ -95,22 +106,24 @@ EXTRACT_PROMPT = """Ты разбираешь анонсы возможност�
 - deadline: тот же дедлайн в ISO — "2026-11-01" или с временем "2026-11-01T23:59"; null, если даты нет. Конец срока приёма работ («Submission period: Oct 1 - Nov 12», «приём работ до 12 ноября») — тоже дедлайн. Если указан только месяц («до конца ноября») — последний день месяца. Год, если не указан, — ближайший будущий от сегодняшней даты. Если дедлайна подачи нет, а есть только даты самого события — null.
 - deadline_tz: часовой пояс дедлайна, если он указан в тексте ("Europe/Moscow", "UTC", "AoE", "PT"); иначе null.
 - deadline_kind: exact (точная дата), approximate (только месяц или «примерно»), rolling (приём круглый год или до заполнения мест), unknown (дедлайн не указан).
-- closed: true, только если в тексте прямо сказано, что приём заявок закрыт или завершён («applications are closed», «регистрация завершена»); дату дедлайна в прошлом сверит код, это не повод для true. Иначе false.
-- starts, ends: даты самого события в ISO, если указаны; иначе null.
-- format: online, offline или hybrid; null, если не сказано.
+- closed: true, только если в тексте прямо сказано, что приём заявок закрыт или завершён («applications are closed», «регистрация завершена», «билеты проданы»); дату дедлайна в прошлом сверит код, это не повод для true. Иначе false.
+- starts, ends: даты самого события в ISO, если указаны; иначе null. Если указано время начала — starts с ним: "2026-11-14T19:00".
+- format: online, offline или hybrid (офлайн с онлайн-трансляцией — hybrid); null, если не сказано.
 - location: город и страна, если офлайн; иначе null.
-- eligibility: кто может подать, коротко (студенты, возраст, страна, уровень).
+- city: город, где проходит офлайн-часть, по-русски, в именительном падеже, полным названием («Санкт-Петербург», «Москва», «Лондон»); null, если только онлайн или город не назван.
+- region: ru — проходит в России или другой стране СНГ, или онлайн для русскоязычных; world — за рубежом или онлайн для всего мира.
+- eligibility: кто может подать или прийти, коротко (студенты, возраст, страна, уровень).
 - ru_access: может ли участвовать гражданин РФ, живущий в России: yes — российская возможность или явно открыта всем странам без оговорок; no — Россия или её граждане исключены, или только для граждан или жителей других стран; unclear — не сказано, или есть оговорка о странах под санкциями.
 - cost: бесплатно или цена участия; null, если не сказано.
 - reward: призы, стипендия или оплата; null, если нет.
-- apply_url: адрес подачи заявки или официальная страница из адресов сюжета; null, если их нет.
-- fit: насколько это подходит профилю студента, от 0 до 10. 9–10 — точно его тема и формат; 6–8 — хорошо подходит; 3–5 — отчасти; 0–2 — не его профиль. Доступность из России в fit не учитывай: для неё есть ru_access.
+- apply_url: адрес подачи заявки, регистрации или билетов, или официальная страница из адресов сюжета; null, если их нет.
+- fit: насколько это подходит профилю студента, от 0 до 10. 9–10 — точно его тема и формат; 6–8 — хорошо подходит; 3–5 — отчасти; 0–2 — не его профиль. Лекции, митапы и фестивали оценивай по его интересам, в том числе вне учёбы, если профиль их называет. Доступность из России в fit не учитывай: для неё есть ru_access.
 - fit_reason: почему такой fit, до 15 слов, по-русски, обращаясь на «ты».
-- major: true, если это особо крупная возможность, к которой готовятся заранее: международного или всероссийского масштаба, от известного организатора (крупная компания, ведущий университет, известная программа), с большим призовым фондом, стипендией или оплатой, или с отбором в несколько этапов (эссе, рекомендации, тестовое задание, собеседование). Например: MATS, ШАД, Yandex Cup, ICPC, летние школы ML с отбором, стажировки больших компаний. Обычный хакатон выходного дня, конкурс одного вуза или города, разовый воркшоп — false.
+- major: true, если это особо крупная возможность, к которой готовятся заранее: международного или всероссийского масштаба, от известного организатора (крупная компания, ведущий университет, известная программа), с большим призовым фондом, стипендией или оплатой, или с отбором в несколько этапов (эссе, рекомендации, тестовое задание, собеседование). Например: MATS, ШАД, Yandex Cup, ICPC, летние школы ML с отбором, стажировки больших компаний. Обычный хакатон выходного дня, конкурс одного вуза или города, разовый воркшоп, лекция, митап — false.
 - same_as: если сюжет — та же самая возможность (тот же хакатон, та же программа того же года), что одна из «Уже в радаре» под ним, — её номер, например "S41"; если та же, что сюжет этой пачки с меньшим id, — этот id; иначе null.
 
 Ответь только JSON-массивом, по объекту на сюжет, с тем же id:
-[{{"id": 1, "is_opportunity": true, "reason": null, "opp_type": "hackathon", "title_ru": "...", "organizer": "...", "summary_ru": "...", "deadline_text": "...", "deadline": "2026-11-01", "deadline_tz": null, "deadline_kind": "exact", "closed": false, "starts": null, "ends": null, "format": "online", "location": null, "eligibility": "...", "ru_access": "yes", "cost": "бесплатно", "reward": null, "apply_url": "https://...", "fit": 7, "fit_reason": "...", "major": false, "same_as": null}}]
+[{{"id": 1, "is_opportunity": true, "reason": null, "opp_type": "hackathon", "topic": "ai", "title_ru": "...", "organizer": "...", "summary_ru": "...", "deadline_text": "...", "deadline": "2026-11-01", "deadline_tz": null, "deadline_kind": "exact", "closed": false, "starts": null, "ends": null, "format": "online", "location": null, "city": null, "region": "ru", "eligibility": "...", "ru_access": "yes", "cost": "бесплатно", "reward": null, "apply_url": "https://...", "fit": 7, "fit_reason": "...", "major": false, "same_as": null}}]
 
 {stories}"""
 
@@ -166,6 +179,12 @@ def _day(value) -> str | None:
         return date.fromisoformat(text[:10]).isoformat() if text else None
     except ValueError:
         return None
+
+
+def _clock(value) -> str | None:
+    """The time of an event's start («19:00») when the model gave one with its date, or None."""
+    match = CLOCK.search(str(value or ""))
+    return f"{match.group(1)}:{match.group(2)}" if match else None
 
 
 def _text(value, limit: int) -> str | None:
@@ -232,13 +251,13 @@ async def split(settings: config.Settings) -> int:
 
 def _waiting(conn, profile_at: float) -> list[dict]:
     """Stories never read, or grown since they were (`grown`), and opportunities still ahead that were read before
-    `major` existed or before the profile changed (at `profile_at`)."""
+    `major` or `topic` existed or before the profile changed (at `profile_at`)."""
     return [dict(row) for row in conn.execute(
         "SELECT s.*, o.status AS opp_status, o.deadline_at AS old_deadline_at, o.deadline AS old_deadline, "
         "(o.story_id IS NULL OR s.last_updated > o.checked_at) AS grown "
         "FROM stories s LEFT JOIN opportunities o ON o.story_id = s.id "
         "WHERE s.lane = 'opps' AND s.status != 'merged' AND (o.story_id IS NULL OR s.last_updated > o.checked_at "
-        "OR (o.status IN ('open', 'tracked', 'applied') AND (o.major IS NULL OR o.checked_at < ?))) "
+        "OR (o.status IN ('open', 'tracked', 'applied') AND (o.major IS NULL OR o.topic IS NULL OR o.checked_at < ?))) "
         "ORDER BY s.last_updated DESC LIMIT ?", (profile_at, MAX_PER_RUN))]
 
 
@@ -355,7 +374,7 @@ async def extract(settings: config.Settings) -> dict:
                 targets[n + 1] = story["id"]
                 counts["read"] += 1
                 counts[status if status in counts else "open"] += 1
-                if change and story["grown"]:  # read again only for `major` or the profile: the same posts, no news
+                if change and story["grown"]:  # read again only for `major`, `topic` or the profile: the same posts
                     moved.append(change)
             conn.executemany("UPDATE opportunities SET deadline_moved_from = ?, deadline_moved_at = ? WHERE story_id = ?",
                              [(old, time.time(), story_id) for story_id, old, _ in moved])
@@ -390,6 +409,8 @@ def apply(conn, story: dict, answer: dict, lang: str, now: float | None = None, 
     elif started and kept is None:  # no deadline, and the event has begun: too late to apply
         status, drop = "expired", "событие уже началось"
     opp_type = answer.get("opp_type") if answer.get("opp_type") in config.OPP_TYPES else "other"
+    topic = answer.get("topic") if answer.get("topic") in config.TOPICS else "other"  # never NULL: it would be read again
+    region = answer.get("region") if answer.get("region") in REGIONS else "ru" if lang == "ru" else "world"
     try:
         fit = max(0, min(10, int(answer.get("fit") or 0)))
     except (TypeError, ValueError):
@@ -397,22 +418,24 @@ def apply(conn, story: dict, answer: dict, lang: str, now: float | None = None, 
     conn.execute(
         "INSERT INTO opportunities (story_id, opp_type, title_ru, organizer, summary_ru, deadline, deadline_at, deadline_kind, "
         "deadline_text, tz_assumed, starts, ends, format, location, eligibility, ru_access, cost, reward, apply_url, fit, "
-        "fit_reason, major, status, drop_reason, checked_at) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
+        "fit_reason, major, status, drop_reason, checked_at, topic, region, city, start_time) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
         "ON CONFLICT (story_id) DO UPDATE SET opp_type = excluded.opp_type, title_ru = excluded.title_ru, "
         "organizer = excluded.organizer, summary_ru = excluded.summary_ru, deadline = excluded.deadline, "
         "deadline_at = excluded.deadline_at, deadline_kind = excluded.deadline_kind, deadline_text = excluded.deadline_text, "
         "tz_assumed = excluded.tz_assumed, starts = excluded.starts, ends = excluded.ends, format = excluded.format, "
         "location = excluded.location, eligibility = excluded.eligibility, ru_access = excluded.ru_access, cost = excluded.cost, "
         "reward = excluded.reward, apply_url = excluded.apply_url, fit = excluded.fit, fit_reason = excluded.fit_reason, "
-        "major = excluded.major, status = excluded.status, drop_reason = excluded.drop_reason, checked_at = excluded.checked_at",
+        "major = excluded.major, status = excluded.status, drop_reason = excluded.drop_reason, checked_at = excluded.checked_at, "
+        "topic = excluded.topic, region = excluded.region, city = excluded.city, start_time = excluded.start_time",
         (story["id"], opp_type, _text(answer.get("title_ru"), 200) or story.get("title"), _text(answer.get("organizer"), 200),
          _text(answer.get("summary_ru"), 600), iso, at, kind, _text(answer.get("deadline_text"), 200), int(assumed),
          starts, _day(answer.get("ends")),
          answer.get("format") if answer.get("format") in FORMATS else None, _text(answer.get("location"), 200),
          _text(answer.get("eligibility"), 300), answer.get("ru_access") if answer.get("ru_access") in ACCESS else "unclear",
          _text(answer.get("cost"), 120), _text(answer.get("reward"), 300), _url(answer.get("apply_url")), fit,
-         _text(answer.get("fit_reason"), 200), int(answer.get("major") is True), status, drop, now))
+         _text(answer.get("fit_reason"), 200), int(answer.get("major") is True), status, drop, now, topic, region,
+         config.city_name(_text(answer.get("city"), 80)), _clock(answer.get("starts")) if starts else None))
     old = story.get("old_deadline_at")
     if story.get("opp_status") == "tracked" and old and at and abs(at - old) > 86400:
         return status, (story["id"], story.get("old_deadline"), iso)

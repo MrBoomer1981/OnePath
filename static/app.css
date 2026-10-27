@@ -269,6 +269,11 @@ body.kb-open .pill { bottom: calc(var(--kb, 0px) + 10px); }
 .seg .q-btn { flex: 1; min-height: 40px; border-radius: 999px !important; font-size: 15px; }
 .seg.wrap { flex-wrap: wrap; border-radius: 20px; }
 .seg.wrap .q-btn { flex: 1 1 auto; }
+/* «Возможности»: the filter's rows (topic, place, type), each one line that scrolls sideways on a phone */
+.filters { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.seg.chips { overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+.seg.chips::-webkit-scrollbar { display: none; }
+.seg.chips .q-btn { flex: none; min-height: 36px; padding: 0 14px; font-size: 14px; }
 .question { font-size: 16px; font-weight: 500; margin-top: 4px; }
 
 /* «Поиск» */

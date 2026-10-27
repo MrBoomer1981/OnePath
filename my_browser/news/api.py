@@ -207,7 +207,9 @@ def post_dedup() -> dict:
 
 @app.get("/settings")
 async def get_settings() -> dict:
-    return {**config.load().model_dump(), "opp_type_names": config.OPP_TYPES, "weekday_names": config.WEEKDAYS,
+    settings = config.load()
+    return {**settings.model_dump(), "opp_type_names": config.OPP_TYPES, "weekday_names": config.WEEKDAYS,
+            "topic_names": config.TOPICS, "city_short": config.city_short(settings.opps_city),
             "custom_profile": config.is_set("opps_profile")}
 
 

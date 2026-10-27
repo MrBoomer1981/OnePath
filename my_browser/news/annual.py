@@ -32,6 +32,9 @@ class Annual:
     months: tuple[int, ...]  # when its registration usually opens
     url: str  # the official page, or "" when it could not be checked
     pattern: str  # case-insensitive, over the opportunity's title, organizer and summary
+    topic: str  # config.TOPICS, region ru | world and the city where it is held, if one: the app's filter
+    region: str = "ru"
+    city: str = ""
 
     def matches(self, text: str) -> bool:
         return re.search(self.pattern, text, re.IGNORECASE) is not None
@@ -39,35 +42,35 @@ class Annual:
 
 EVENTS = (
     Annual("congress", "Конгресс молодых учёных", "conference", (9,), "https://конгресс.наука.рф/",
-           r"конгресс\w*\s+молод\w*\s+уч[её]н(?![^.]{0,40}итмо)|congress of young scientists"),
+           r"конгресс\w*\s+молод\w*\s+уч[её]н(?![^.]{0,40}итмо)|congress of young scientists", "science"),
     Annual("kmu-itmo", "Конгресс молодых учёных ИТМО", "conference", (12,), "https://kmu.itmo.ru/",
-           r"кму\s+итмо|конгресс\w*\s+молод\w*\s+уч[её]н\w*\s+(?:университета\s+)?итмо"),
-    Annual("yandex-cup", "Yandex Cup", "competition", (6,), "https://yandex.ru/cup", r"yandex\s*cup"),
+           r"кму\s+итмо|конгресс\w*\s+молод\w*\s+уч[её]н\w*\s+(?:университета\s+)?итмо", "science", "ru", "Санкт-Петербург"),
+    Annual("yandex-cup", "Yandex Cup", "competition", (6,), "https://yandex.ru/cup", r"yandex\s*cup", "tech"),
     Annual("aij-contest", "AIJ Contest (AI Journey)", "competition", (8,), "https://aij.ru/contest",
-           r"aij\s*contest|ai\s*journey\s*contest"),
+           r"aij\s*contest|ai\s*journey\s*contest", "ai"),
     Annual("ya-profi", "Олимпиада «Я — профессионал»", "competition", (9,), "https://yandex.ru/profi/",
-           r"я\s*[—–-]\s*профессионал"),
-    Annual("icpc", "ICPC: отборы студенческих команд", "competition", (9,), "https://nerc.itmo.ru/", r"\bicpc\b|\bnerc\b"),
-    Annual("potanin", "Стипендиальная программа Фонда Потанина", "grant", (10,), "https://fondpotanin.ru/", r"потанин"),
+           r"я\s*[—–-]\s*профессионал", "tech"),
+    Annual("icpc", "ICPC: отборы студенческих команд", "competition", (9,), "https://nerc.itmo.ru/", r"\bicpc\b|\bnerc\b", "tech"),
+    Annual("potanin", "Стипендиальная программа Фонда Потанина", "grant", (10,), "https://fondpotanin.ru/", r"потанин", "other"),
     Annual("rosmolodez-grants", "Росмолодёжь.Гранты: конкурс молодёжных проектов", "grant", (2, 8), "https://myrosmol.ru/",
-           r"росмолод\w*\.?\s*гранты|конкурс\w*\s+молод[её]жн\w*\s+проект"),
+           r"росмолод\w*\.?\s*гранты|конкурс\w*\s+молод[её]жн\w*\s+проект", "other"),
     Annual("shad", "Поступление в ШАД", "education", (4,), "https://shad.yandex.ru/",
-           r"\bшад\b|школ\w*\s+анализа\s+данных|school of data analysis"),
-    Annual("dls", "Deep Learning School", "education", (1, 8), "https://dls.samcs.ru/", r"deep\s+learning\s+school|\bdls\b"),
+           r"\bшад\b|школ\w*\s+анализа\s+данных|school of data analysis", "ai"),
+    Annual("dls", "Deep Learning School", "education", (1, 8), "https://dls.samcs.ru/", r"deep\s+learning\s+school|\bdls\b", "ai"),
     Annual("yandex-intern", "Летние стажировки Яндекса", "internship", (2,), "https://yandex.ru/yaintern",
-           r"стажир\w*[^.]{0,40}яндекс|яндекс[^.]{0,40}стажир|yandex[^.]{0,30}intern"),
-    Annual("safeboard", "Kaspersky SafeBoard", "internship", (2, 8), "https://safeboard.kaspersky.ru/", r"safeboard"),
-    Annual("eeml", "EEML: летняя школа", "school", (2,), "https://www.eeml.eu/", r"\beeml\b"),
+           r"стажир\w*[^.]{0,40}яндекс|яндекс[^.]{0,40}стажир|yandex[^.]{0,30}intern", "tech"),
+    Annual("safeboard", "Kaspersky SafeBoard", "internship", (2, 8), "https://safeboard.kaspersky.ru/", r"safeboard", "tech"),
+    Annual("eeml", "EEML: летняя школа", "school", (2,), "https://www.eeml.eu/", r"\beeml\b", "ai", "world"),
     Annual("m2l", "M2L: летняя школа", "school", (2,), "https://www.m2lschool.org/",
-           r"\bm2l\b|mediterranean machine learning"),
-    Annual("smiles", "SMILES: летняя школа Сколтеха", "school", (4,), "https://smiles.skoltech.ru/", r"\bsmiles\b"),
+           r"\bm2l\b|mediterranean machine learning", "ai", "world"),
+    Annual("smiles", "SMILES: летняя школа Сколтеха", "school", (4,), "https://smiles.skoltech.ru/", r"\bsmiles\b", "ai"),
     Annual("airi-school", "Летняя школа AIRI", "school", (4,), "https://airi.net/ru/summer-school",
-           r"летн\w*\s+школ\w*[^.]{0,30}airi|airi[^.]{0,30}летн\w*\s+школ|airi summer school"),
-    Annual("mats", "MATS", "fellowship", (1, 8), "https://www.matsprogram.org/", r"\bmats\b"),
+           r"летн\w*\s+школ\w*[^.]{0,30}airi|airi[^.]{0,30}летн\w*\s+школ|airi summer school", "ai"),
+    Annual("mats", "MATS", "fellowship", (1, 8), "https://www.matsprogram.org/", r"\bmats\b", "ai", "world"),
     Annual("leaders", "Лидеры цифровой трансформации", "hackathon", (4,), "",
-           r"лидер\w*\s+цифров\w*\s+трансформац"),
+           r"лидер\w*\s+цифров\w*\s+трансформац", "tech"),
     Annual("dialogue", "Диалог: конференция по компьютерной лингвистике", "conference", (1,), "https://dialogue-conf.org/",
-           r"dialogue\s+(?:conference|20\d\d)|конференци\w*\s+[«\"]?диалог"),
+           r"dialogue\s+(?:conference|20\d\d)|конференци\w*\s+[«\"]?диалог", "ai"),
 )
 
 
@@ -85,7 +88,8 @@ def season(event: Annual, today: date) -> date | None:
 
 def expected(now: float | None = None) -> list[dict]:
     """The events whose season is on and which the radar has not found yet, the most recently opened first: `key`,
-    `name`, `opp_type`, `url`, `when` («обычно открывается в сентябре»)."""
+    `name`, `opp_type`, `topic`, `area` (as opps_delivery.area() has it), `url`, `when` («обычно открывается в
+    сентябре»)."""
     settings = config.load()
     zone = ZoneInfo(settings.timezone)
     now = now or time.time()
@@ -102,6 +106,8 @@ def expected(now: float | None = None) -> list[dict]:
             continue
         since = datetime(start.year, start.month, 1, tzinfo=zone).timestamp() - FOUND_MARGIN_DAYS * 86400
         if not any(seen >= since and event.matches(text) for seen, text in found):
-            waiting.append({"key": event.key, "name": event.name, "opp_type": event.opp_type, "url": event.url,
+            area = "city" if config.same_city(event.city, settings.opps_city) else event.region
+            waiting.append({"key": event.key, "name": event.name, "opp_type": event.opp_type, "topic": event.topic,
+                            "area": area, "url": event.url,
                             "when": f"обычно открывается в {MONTHS_IN[start.month - 1]}", "start": start.isoformat()})
     return sorted(waiting, key=lambda e: e["start"], reverse=True)
