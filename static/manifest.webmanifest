@@ -1,7 +1,7 @@
 {
   "name": "OnePath",
   "short_name": "OnePath",
-  "description": "Исследования: отчёт на 5–7 минут и продолжения после него · made by aven",
+  "description": "Возможности с дедлайнами: хакатоны, школы, стажировки, гранты · made by aven",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#14100E",

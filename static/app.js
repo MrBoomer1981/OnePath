@@ -44,12 +44,11 @@ if (window.navigation) {
 addEventListener('pageshow', settled);  // a page restored by «Назад» from the browser's cache
 document.addEventListener('visibilitychange', () => { if (document.hidden) settled(); });
 
-// The tab bar's four sections are one page (core/ui/tabs.py): a tap shows another section right here, at once and
+// The tab bar's three sections are one page (core/ui/tabs.py): a tap shows another section right here, at once and
 // with an animation (app.css), keeping the address, «Назад» and each section's scroll position; the server only
-// redraws what changed since (tab_shown). A tap on the current section scrolls it to the top. Addresses with a
-// query (/?topic=… from a follow-up) still load a page.
+// redraws what changed since (tab_shown). A tap on the current section scrolls it to the top.
 (() => {
-  const SECTIONS = {'/': 'search', '/radar': 'radar', '/library': 'library', '/focus': 'focus'};
+  const SECTIONS = {'/': 'opps', '/mine': 'mine', '/settings': 'settings'};
   const scrolls = {};
   const shownTab = () => { const on = document.querySelector('.tab-screen.on'); return on && on.dataset.tab; };
   const show = tab => {
@@ -96,122 +95,3 @@ if (window.visualViewport) {
   vv.addEventListener('resize', update);
   vv.addEventListener('scroll', update);
 }
-
-// Job page: the report is ready. A reader still near the top just gets it; one down in the draft gets a bar that
-// opens it at the section being read (?at=i), so the place is not lost.
-window.deeperReady = url => {
-  const bar = document.querySelector('.ready-bar');
-  if (scrollY < 120 || !bar) { location.href = url; return; }
-  bar.classList.add('on');
-  bar.onclick = () => {
-    let at = 0;
-    document.querySelectorAll('.report.draft h2').forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .3) at = i; });
-    location.href = `${url}?at=${at}`;
-  };
-};
-// Report: ?at=i opens it at its i-th section.
-if (/^\/report\//.test(location.pathname)) {
-  const at = new URLSearchParams(location.search).get('at');
-  // after the fonts, once the text has its height, and again a moment later: the page may still settle
-  const go = () => { const el = document.querySelectorAll('.report.main h2')[Number(at)]; if (el) el.scrollIntoView({block: 'start'}); };
-  if (at && /^\d+$/.test(at)) whenPresent('.report.main h2', () => document.fonts.ready.then(() => { go(); setTimeout(go, 400); }));
-}
-
-// Report: «3 / 9 ▾» follows the scroll; deeperScrollTo(i) goes to the i-th section, deeperScrollTo('#id') to an anchor.
-window.deeperScrollTo = target => {
-  const el = typeof target === 'number' ? document.querySelectorAll('.report.main h2')[target] : document.querySelector(target);
-  if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
-};
-// The current section is the last heading above a line at 30% of the screen. The headings' positions are
-// measured once and again only when the text changes size (fonts, the window), so a scroll frame only compares
-// numbers: no layout work while scrolling, and a jump across several sections still lands on the right one.
-whenPresent('.report.main h2', () => {
-  const label = document.querySelector('.toc-label');
-  const report = document.querySelector('.report.main');
-  const headings = [...report.querySelectorAll('h2')];
-  if (!label) return;
-  let tops = [], frame = 0;
-  const show = () => {
-    frame = 0;
-    const line = scrollY + innerHeight * 0.3;
-    let current = 0;
-    while (current + 1 < tops.length && tops[current + 1] < line) current++;
-    const text = `${current + 1} / ${headings.length} ▾`;
-    if (label.textContent !== text) label.textContent = text;
-  };
-  const measure = () => { tops = headings.map(h => h.getBoundingClientRect().top + scrollY); show(); };
-  addEventListener('scroll', () => { if (!frame) frame = requestAnimationFrame(show); }, {passive: true});
-  new ResizeObserver(measure).observe(report);
-  addEventListener('resize', measure);
-  measure();
-});
-
-// Job page: the percent counts up to each new value with the bar under it (.6 s) instead of jumping. The
-// server's text is the value; the steps are written into the same text node, which Vue keeps updating.
-whenPresent('.pct', el => {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  let shown = Number(el.textContent) || 0, written = el.textContent, frame = 0;
-  const put = value => { written = String(value); if (el.firstChild) el.firstChild.nodeValue = written; };
-  new MutationObserver(() => {
-    const text = el.textContent, target = Number(text);
-    if (text === written) return;  // a step of ours
-    if (!text || !Number.isFinite(target)) { written = text; return; }
-    const from = shown, start = performance.now();
-    cancelAnimationFrame(frame);
-    put(from);
-    const step = now => {
-      const t = Math.min(1, (now - start) / 600);
-      shown = Math.round(from + (target - from) * (1 - Math.pow(1 - t, 3)));
-      put(shown);
-      if (t < 1) frame = requestAnimationFrame(step);
-    };
-    frame = requestAnimationFrame(step);
-  }).observe(el, {characterData: true, childList: true, subtree: true});
-});
-
-// Report: a toolbar for selected text — save, ask, dig deeper (DESIGN_HANDOFF.md §3.5); the page handles 'deeper_selection'.
-(() => {
-  let bar = null, picked = null, timer = 0;
-  const touch = matchMedia('(pointer: coarse)').matches;
-  const make = () => {
-    bar = document.createElement('div');
-    bar.className = 'sel-bar' + (touch ? ' docked' : '');
-    for (const [action, label] of [['save', 'Сохранить'], ['ask', 'Спросить'], ['dig', 'Глубже']]) {
-      const b = document.createElement('button');
-      b.type = 'button'; b.textContent = label;
-      b.addEventListener('mousedown', e => e.preventDefault());  // keep the selection
-      b.addEventListener('click', () => {
-        if (picked && window.emitEvent) emitEvent('deeper_selection', {action, ...picked});
-        hide(); document.getSelection().removeAllRanges();
-      });
-      bar.appendChild(b);
-    }
-    document.body.appendChild(bar);
-  };
-  const hide = () => { if (bar) bar.classList.remove('on'); picked = null; };
-  const sectionOf = node => {
-    let el = node.nodeType === 1 ? node : node.parentElement;
-    while (el && el.parentElement && !el.parentElement.classList.contains('main')) el = el.parentElement;
-    for (; el; el = el.previousElementSibling) if (el.tagName === 'H2') return el.textContent.trim();
-    return '';
-  };
-  const update = () => {
-    const sel = document.getSelection();
-    const report = document.querySelector('.report.main');
-    if (!report || !sel || !sel.rangeCount || !report.contains(sel.anchorNode)) return hide();
-    const copy = sel.getRangeAt(0).cloneContents();
-    copy.querySelectorAll('sup').forEach(s => s.remove());  // citation numbers and fact-check marks
-    const text = copy.textContent.replace(/\s+/g, ' ').replace(/ ([.,;:!?])/g, '$1').trim();
-    if (text.length < 3) return hide();
-    if (!bar) make();
-    picked = {text: text.slice(0, 2000), section: sectionOf(sel.anchorNode)};
-    if (!touch) {
-      const r = sel.getRangeAt(0).getBoundingClientRect();
-      bar.style.left = Math.max(12, Math.min(innerWidth - 300, r.left + r.width / 2 - 140)) + 'px';
-      bar.style.top = Math.max(12, r.top - 56) + 'px';
-    }
-    bar.classList.add('on');
-  };
-  document.addEventListener('selectionchange', () => { clearTimeout(timer); timer = setTimeout(update, 220); });
-  addEventListener('scroll', () => { if (!touch) hide(); }, {passive: true});
-})();

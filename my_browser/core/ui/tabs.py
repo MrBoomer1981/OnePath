@@ -1,32 +1,33 @@
-"""The tab bar's four sections, «Поиск», «Радар», «Библиотека» and «Фокус», as one page.
+"""The tab bar's three sections, «Возможности», «Мои» and «Настройки», as one page.
 
-All four are built at once, and app.js switches between them in the browser: at once and with an animation,
-keeping the address (/, /radar, /library, /focus), «Назад» and each section's scroll position. A page per
-section cost a round trip to the server and a whole new page at every tap, 0.6–0.9 s from Russia through the
-proxy, and the transitions between pages, where the browser has them at all, only began after it.
+All three are built at once, and app.js switches between them in the browser: at once and with an animation,
+keeping the address (/, /mine, /settings), «Назад» and each section's scroll position. A page per section cost
+DEEper a round trip to the server and a whole new page at every tap, 0.6–0.9 s from Russia through the proxy.
 
 Opening an address of a section (a link, a refresh, the installed app's start) builds the whole page with that
-section shown. When a section is shown again, the server redraws what may have changed since (tab_shown): new
-reports and researches in «Библиотека», new topics in «Радар». «Поиск» follows the defaults «Фокус» changes.
+section shown. When a section is shown again, the server redraws what may have changed since (tab_shown): a status
+set, the morning update, a source added. The page is async: it fetches the radar's list, the user's own ones and
+the settings first, so every section has them at the first paint.
 """
 
+import asyncio
 import inspect
 
 from nicegui import ui
 
-from my_browser.core.ui import focus, kit, library, radar, search
+from my_browser.core.ui import kit, opps, settings
 
-SECTIONS = ("search", "radar", "library", "focus")
+SECTIONS = ("opps", "mine", "settings")
+WAIT_SEC = 1.5  # NiceGUI gives an async page 3 s; without the radar by then the sections get it when shown
 
 
-async def page(active: str, *, topic: str = "", mode: str = "", parent: int | None = None, tab: str = "reports", q: str = "") -> None:
+async def page(active: str) -> None:
+    try:
+        board, own, data = await asyncio.wait_for(asyncio.gather(opps.board(), opps.mine(), settings.load()), WAIT_SEC)
+    except asyncio.TimeoutError:
+        board, own, data = {}, [], {}
     kit.shell(kit.TAB_TITLES[active], active=active)
-    builders = {
-        "search": lambda: search.search_screen(topic, mode, parent),
-        "radar": radar.radar_screen,
-        "library": lambda: library.library_screen(tab, q),
-        "focus": focus.focus_screen,
-    }
+    builders = {**opps.sections(board, own), "settings": lambda: settings.settings_screen(data)}
     on_show = {}
     for key in SECTIONS:
         with ui.element("section").classes("tab-screen" + (" on" if key == active else "")).props(f'data-tab="{key}"'):
@@ -42,20 +43,15 @@ async def page(active: str, *, topic: str = "", mode: str = "", parent: int | No
 
 
 @ui.page("/")
-async def search_page(topic: str = "", mode: str = "", parent: int | None = None) -> None:
-    await page("search", topic=topic, mode=mode, parent=parent)
+async def opps_page() -> None:
+    await page("opps")
 
 
-@ui.page("/radar")
-async def radar_page() -> None:
-    await page("radar")
+@ui.page("/mine")
+async def mine_page() -> None:
+    await page("mine")
 
 
-@ui.page("/library")
-async def library_page(tab: str = "reports", q: str = "") -> None:
-    await page("library", tab=tab, q=q)
-
-
-@ui.page("/focus")
-async def focus_page() -> None:
-    await page("focus")
+@ui.page("/settings")
+async def settings_page() -> None:
+    await page("settings")

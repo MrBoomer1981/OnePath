@@ -1,4 +1,4 @@
-"""Cut NiceGUI's Material Icons font down to the icons DEEper shows: static/fonts/icons.woff2.
+"""Cut NiceGUI's Material Icons font down to the icons OnePath shows: static/fonts/icons.woff2.
 
     uv run dev/icons.py           # after the code names an icon it did not use before
     uv run dev/icons.py --check   # exits 1, naming them, when the code uses an icon the cut font lacks
@@ -7,7 +7,7 @@ The full font is 129 KB, the biggest file of a first visit, for a few dozen of i
 ligature: the browser draws the word «open_in_new» as one glyph, so a name missing from the cut font shows up as
 that word. The names come from the web app's code (every quoted string in my_browser/core and static/app.js that
 names an icon, and `icon=` in props) and from Quasar's own icon set, which NiceGUI's components use (the select's
-arrow, the input's clear button, notifications). core/web.py declares the font as «DEEper Icons» and preloads it;
+arrow, the input's clear button, notifications). core/web.py declares the font as «DEEper Icons» (the name kept from DEEper) and preloads it;
 app.css points Quasar's .material-icons class at it.
 """
 

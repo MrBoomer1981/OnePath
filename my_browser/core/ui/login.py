@@ -33,7 +33,7 @@ def login_page(redirect_to: str = "/") -> RedirectResponse | None:
     with kit.screen("no-nav", "login"):
         with ui.element("div").classes("logo-row"):
             kit.graffiti("crown", "logo-crown")
-            ui.html('DEE<span class="amber">per</span>', sanitize=False).classes("logo")
+            ui.html('One<span class="amber">Path</span>', sanitize=False).classes("logo")
         kit.mascot("hello", 110)
         if not kit.PASSWORD:
             ui.label("На сервере не задан APP_PASSWORD — задайте его в переменных окружения.").classes("sub-text")

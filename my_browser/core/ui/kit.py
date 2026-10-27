@@ -1,25 +1,20 @@
 """What every screen shares: navigation, bottom sheets, list rows, the mascot, the graffiti layer and the
-user's own settings (kept per browser in app.storage.user). Styles are in static/app.css.
+user's own settings of the page (kept per browser in app.storage.user). Styles are in static/app.css.
 
 Brand (AVEN, see DESIGN_HANDOFF.md): night #14100E background, paper #F2EBE1 text, bordo #7A2A35 only as a
 fill, one amber #E8A24A action per screen; white only in the graffiti layer, which is decoration
-(aria-hidden, no pointer events) and can be switched off in «Фокус».
+(aria-hidden, no pointer events) and can be switched off in «Настройки».
 """
 
 import functools
 import html
-import json
 import os
 import re
-import weakref
-from datetime import datetime
 from urllib.parse import urlencode, urlparse
 
-import markdown2
 from nicegui import app, ui
 
-from my_browser.common.settings import DEFAULT_MODE, DEFAULT_SOURCES, DEFAULT_WRITER, FACTCHECK_MODES, ROOT
-from my_browser.core import jobs, service
+from my_browser.common.settings import RESEARCH_URL, ROOT
 
 # Railway sets PORT: listen on every interface and require APP_PASSWORD. Locally the app listens on
 # 127.0.0.1; PUBLIC=0 keeps it there on another PORT too (a second copy, e.g. another session's check).
@@ -27,71 +22,31 @@ PUBLIC = os.environ.get("PUBLIC", "1" if "PORT" in os.environ else "0") != "0"
 PASSWORD = os.environ.get("APP_PASSWORD", "")
 AUTH = PUBLIC or bool(PASSWORD)
 
-MODES = {"quick": "Обзор", "detailed": "Подробно", "deep": "Глубоко"}
-MODE_NAMES = {"quick": "обзор", "detailed": "подробный", "deep": "глубокий"}
-MODE_HINTS = {
-    "quick": "≈ 2 мин · 5–7 минут чтения: главное, 3–4 раздела, чего пока не знаем",
-    "detailed": "≈ 5–7 мин · до 5000 слов, около 20 минут чтения: введение, разделы по подтемам, заключение",
-    "deep": "дольше всех · рекурсивный поиск вширь и вглубь, затем один отчёт",
-}
-READ_HINTS = {"quick": "5–7 мин", "detailed": "≈ 20 мин", "deep": "≈ 20 мин"}  # reading time of a report not written yet
-# What a research costs when the queue has no finished one made the same way (jobs.typical_cost), off-peak.
-PRICE_GUESS = {("quick", "pro"): 2.5, ("quick", "flash"): 1.0, ("detailed", "pro"): 11.0, ("detailed", "flash"): 4.0,
-               ("deep", "pro"): 12.0, ("deep", "flash"): 4.0}
-SOURCE_LABELS = {"web": "Веб", "academic": "Наука", "all": "Всё"}
-WRITER_LABELS = {"pro": "Pro", "flash": "Flash"}
-WRITER_HINTS = {"pro": "текст пишет DeepSeek V4 Pro — сильнее, дороже ≈ 3×", "flash": "текст пишет DeepSeek Flash — быстрее и дешевле"}
-WRITER_OF_MODEL = {"deepseek-v4-pro": "pro", "deepseek-flash": "flash"}
 BRAND_COLORS = dict(
     primary="#7A2A35", secondary="#F2EBE1", accent="#E8A24A", dark="#1D1916", dark_page="#14100E",
     positive="#7A2A35", negative="#7A2A35", info="#7A2A35", warning="#E8A24A",
     night="#14100E", paper="#F2EBE1", bordo="#7A2A35", amber="#E8A24A",
 )
 NAV = [  # (section, route, Material icon, label for screen readers)
-    ("search", "/", "search", "Поиск"),
-    ("radar", "/radar", "radar", "Радар"),
-    ("library", "/library", "bookmark_border", "Библиотека"),
-    ("focus", "/focus", "tune", "Фокус"),
+    ("opps", "/", "radar", "Возможности"),
+    ("mine", "/mine", "bookmark_border", "Мои"),
+    ("settings", "/settings", "tune", "Настройки"),
 ]
-TAB_TITLES = {"search": "OnePath", "radar": "Радар — OnePath", "library": "Библиотека — OnePath", "focus": "Фокус — OnePath"}
-# 2 (25.10.2026): the 5–7 minute overview became the default; a mode chosen before is dropped once, and a preset
-# whose mode is the detailed report becomes «Мой».
-PREFS_VERSION = 2
-DEFAULT_PREFS = {
-    "mode": DEFAULT_MODE, "sources": DEFAULT_SOURCES, "writer": DEFAULT_WRITER,
-    "factcheck": None,  # None: as the mode has it (common.settings.FACTCHECK_MODES)
-    "graffiti": True, "preset": "mine", "profile": "", "name": "",
-}
+TAB_TITLES = {"opps": "OnePath", "mine": "Мои — OnePath", "settings": "Настройки — OnePath"}
+DEFAULT_PREFS = {"graffiti": True}
 
 
 def prefs() -> dict:
-    """The user's defaults from «Фокус», per browser (app.storage.user lives on the reports volume)."""
-    stored = app.storage.user.get("prefs", {})
-    if stored.get("version", 1) < PREFS_VERSION:
-        stored = {key: value for key, value in stored.items() if key != "mode"} | {"version": PREFS_VERSION}
-        if stored.get("preset") in ("scholar", "analyst"):
-            stored["preset"] = "mine"
-        app.storage.user["prefs"] = stored
-    return {**DEFAULT_PREFS, **stored}
-
-
-# The four sections of the tab bar are one page (tabs.py): «Поиск», built once, has to follow what «Фокус» changes.
-_prefs_listeners: "weakref.WeakKeyDictionary" = weakref.WeakKeyDictionary()  # client -> callbacks
-
-
-def on_prefs_change(callback) -> None:
-    """Call `callback` when this page changes the user's defaults (save_prefs)."""
-    _prefs_listeners.setdefault(ui.context.client, []).append(callback)
+    """The user's settings of the page, per browser (app.storage.user lives on the volume): the graffiti layer."""
+    return {**DEFAULT_PREFS, **app.storage.user.get("prefs", {})}
 
 
 def save_prefs(**values) -> None:
     app.storage.user["prefs"] = {**app.storage.user.get("prefs", {}), **values}
-    for callback in _prefs_listeners.get(ui.context.client, []):
-        callback()
 
 
 def shell(title: str, active: str | None = None) -> None:
-    """Title, brand colors and the graffiti switch for every screen; the navigation for the four sections.
+    """Title, brand colors and the graffiti switch for every screen; the navigation for the three sections.
 
     The navigation is a bar at the bottom on phones and a column of icons on the left from 1024 px.
     """
@@ -110,25 +65,6 @@ def shell(title: str, active: str | None = None) -> None:
                     .props(f'aria-label="{label}" data-tab="{key}" data-title="{TAB_TITLES[key]}"{current}'):
                 ui.icon(icon)
                 ui.element("span").classes("dot")
-    watch_jobs()
-
-
-def watch_jobs() -> None:
-    """Say when a research started from any screen is ready, while the app is open."""
-    seen = {"active": {j["id"] for j in jobs.active()}}
-
-    def check() -> None:
-        now = {j["id"] for j in jobs.active()}
-        for job_id in seen["active"] - now:
-            job = jobs.get(job_id)
-            if job and job["status"] == "done":
-                ui.notify(f"Отчёт готов: {job['query']}", type="positive", position="top", timeout=8000,
-                          actions=[{"label": "Открыть", "color": "amber", ":handler": f"() => location.href = '/report/{job['report_id']}'"}])
-                ui.run_javascript("if (window.Notification && Notification.permission === 'granted') "
-                                  f"new Notification('OnePath: отчёт готов', {{body: {json.dumps(job['query'])}}})")
-        seen["active"] = now
-
-    ui.timer(3.0, check)
 
 
 def screen(*classes: str) -> ui.element:
@@ -239,21 +175,6 @@ def text_tabs(options: dict[str, str], value: str, on_change) -> ui.element:
     return tabs
 
 
-@functools.lru_cache(maxsize=32)
-def _markdown_html(text: str) -> str:
-    return markdown2.markdown(text, extras=["fenced-code-blocks", "tables"])
-
-
-def markdown(text: str) -> ui.html:
-    """Markdown turned into HTML on the server and shown at once, sanitized in the browser (DOMPurify) like ui.markdown.
-
-    ui.markdown renders an empty block and fills it only after fetching its code-highlighting stylesheet, which
-    takes a round trip to the server: on a phone, everything below a report showed up at the top for a moment,
-    overlapping, and then jumped down.
-    """
-    return ui.html(_markdown_html(text)).classes("nicegui-markdown")
-
-
 @functools.cache
 def _mascot_svg(state: str) -> str:
     return (ROOT / "static" / "mascot" / f"dip-{state}.svg").read_text("utf-8")
@@ -290,50 +211,14 @@ def toast(message: str, kind: str = "info") -> None:
               type={"info": "info", "ok": "positive", "warn": "warning", "error": "negative"}[kind])
 
 
-def mmss(seconds: float) -> str:
-    seconds = round(seconds)
-    return f"{seconds // 60}:{seconds % 60:02d}"
-
-
 def number(n: int) -> str:
-    return f"{n:,}".replace(",", " ")
+    return f"{n:,}".replace(",", " ")
 
 
 def domain(url: str) -> str:
     return (urlparse(url).hostname or url).removeprefix("www.")
 
 
-def day(created: str) -> str:
-    return f"{datetime.fromisoformat(created):%d.%m}"
-
-
-def reading(minutes: int) -> str:
-    return f"≈\u00a0{minutes}\u00a0мин чтения"
-
-
-def price(mode: str, writer: str, factcheck: bool) -> str:
-    """«≈ 2,4 ₽»: the median of the last researches made the same way, else PRICE_GUESS; "" when unknown."""
-    rub = jobs.typical_cost(mode, writer, factcheck) or PRICE_GUESS.get((mode, writer))
-    return f"≈\u00a0{rub:.1f}\u00a0₽".replace(".", ",") if rub else ""
-
-
-def followup_sub(kind_label: str) -> str:
-    """A follow-up's caption: its kind, how long its report will read and what it will cost, as «Фокус» makes it."""
-    p = prefs()
-    checked = p["mode"] in FACTCHECK_MODES if p["factcheck"] is None else p["factcheck"]
-    return " · ".join(part for part in (kind_label, READ_HINTS.get(p["mode"], ""), price(p["mode"], p["writer"], checked)) if part)
-
-
-def start_followup(query: str, parent_id: int, route_step: int | None = None) -> None:
-    """One tap on a follow-up: the research is queued at once, made as «Фокус» says, and held back jobs.HOLD_SEC
-    for «Отменить» on its screen, which opens."""
-    p = prefs()
-    job = service.submit(query, p["mode"], p["sources"], p["writer"], parent_id=parent_id, factcheck=p["factcheck"],
-                         route_step=route_step, hold=jobs.HOLD_SEC, profile=p["profile"])
-    ui.navigate.to(f"/job/{job['id']}")
-
-
-def follow_up_url(topic: str, mode: str | None = None, parent: int | None = None) -> str:
-    """The search screen pre-filled with a topic (and the report it continues)."""
-    params = {"topic": topic} | ({"mode": mode} if mode else {}) | ({"parent": parent} if parent else {})
-    return "/?" + urlencode(params)
+def research_url(topic: str) -> str | None:
+    """DEEper's search screen with a topic, a 5–7 minute overview (its address: RESEARCH_URL); None without DEEper."""
+    return f"{RESEARCH_URL}/?{urlencode({'topic': topic, 'mode': 'quick'})}" if RESEARCH_URL else None

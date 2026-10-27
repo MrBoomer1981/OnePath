@@ -1,0 +1,201 @@
+"""The radar's state: one SQLite file next to the app's other state (news.sqlite, on the Railway volume).
+
+- sources: what to read. Each has an owner, the organization behind it: several channels of one company are one
+  owner, so a story counts independent sources, not channels.
+- items: the posts read from them, one row per post and source.
+- stories: posts about the same opportunity, merged (dedup.py).
+- opportunities: what the LLM read in each story (opps.py): type, deadline, conditions, fit, the user's status.
+- settings: the user's settings (config.py); state: what the loop remembers; opps_spend: LLM cost per day.
+
+The file and its columns are DEEper's (its news part read AI news too): `lane` is `opps` on every row OnePath writes,
+and a database brought over from DEEper on 27.10.2026 kept its rows and ids. A few posts of that database repeat AI
+news (DEEper copied a news story that announced an opportunity into the lane): their sources, of lane `news`, stay
+switched off, so those posts keep their source.
+"""
+
+import json
+import sqlite3
+import threading
+import time
+from contextlib import contextmanager
+from pathlib import Path
+
+from my_browser.common.settings import REPORTS_DIR
+
+DB_PATH = REPORTS_DIR / "news.sqlite"
+
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS sources (
+    id INTEGER PRIMARY KEY,
+    kind TEXT NOT NULL,              -- rss | telegram | page | devpost | mlss | search
+    url TEXT NOT NULL,               -- feed or API address, the channel's name, or a page to watch
+    name TEXT NOT NULL,
+    lane TEXT DEFAULT 'opps',        -- opps (news: DEEper's AI news, only in a database brought over from it)
+    category TEXT,                   -- aggregator | company | university | program | conference | community
+    lang TEXT,                       -- en | ru
+    owner TEXT NOT NULL,             -- who stands behind it; channels of one owner count as one source
+    is_primary INTEGER DEFAULT 0,    -- first-hand (DEEper's news sources)
+    ai_filter INTEGER DEFAULT 0,     -- DEEper's general news feeds: only posts about AI were kept
+    interval INTEGER DEFAULT 30,     -- minutes between polls
+    weight REAL DEFAULT 1.0,
+    enabled INTEGER DEFAULT 1,
+    added REAL,
+    polled REAL, last_ok REAL, last_error TEXT, fails INTEGER DEFAULT 0,
+    etag TEXT, modified TEXT,        -- conditional GET: an unchanged feed answers 304
+    page_hash TEXT,                  -- a watched page: the fingerprint of its main text at the last poll,
+    page_text TEXT,                  --   and the text, to tell what changed at the next one
+    UNIQUE (kind, url)
+);
+CREATE TABLE IF NOT EXISTS items (
+    id INTEGER PRIMARY KEY,
+    source_id INTEGER NOT NULL,
+    external_id TEXT NOT NULL,
+    url TEXT, title TEXT, text TEXT,
+    links TEXT,                      -- JSON list of the addresses the post links to: a shared link means the same story
+    published REAL,                  -- the source's date, or when the post was first seen
+    seen REAL NOT NULL,
+    lang TEXT,
+    lane TEXT DEFAULT 'opps',        -- its source's lane
+    backfill INTEGER DEFAULT 0,      -- an old post found on a source's first poll: known, never read
+    digest INTEGER DEFAULT 0,        -- several announcements in one post (a roundup): cut into parts, not merged
+    split_at REAL,                   -- when a roundup was cut into one post per opportunity (opps.split)
+    copied_from INTEGER,             -- the post this one repeats (a roundup's part; in DEEper also a news story's)
+    embedding BLOB,
+    story_id INTEGER,
+    UNIQUE (source_id, external_id)
+);
+CREATE INDEX IF NOT EXISTS items_published ON items (published);
+CREATE INDEX IF NOT EXISTS items_story ON items (story_id);
+CREATE TABLE IF NOT EXISTS stories (
+    id INTEGER PRIMARY KEY,
+    lane TEXT DEFAULT 'opps',        -- its posts' lane
+    first_seen REAL, last_updated REAL,
+    title TEXT,                      -- the best post's title (dedup.py); the opportunity's own is opportunities.title_ru
+    topic TEXT, importance INTEGER, is_ai INTEGER, summary_ru TEXT, reason TEXT,  -- DEEper's news scoring, unused here
+    has_primary INTEGER DEFAULT 0,
+    source_count INTEGER DEFAULT 0,  -- independent sources: distinct owners
+    status TEXT DEFAULT 'new',       -- new | merged (into another story: llm.merge_into)
+    drop_reason TEXT, sent_at REAL,
+    title_ru TEXT, primary_url TEXT,
+    scored_count INTEGER, scored_at REAL, update_sent INTEGER DEFAULT 0, sent_count INTEGER  -- DEEper's news, unused
+);
+CREATE INDEX IF NOT EXISTS stories_first_seen ON stories (first_seen);
+CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS state (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS opportunities (
+    story_id INTEGER PRIMARY KEY,    -- a story of the opps lane
+    opp_type TEXT,                   -- config.OPP_TYPES
+    title_ru TEXT, organizer TEXT,
+    summary_ru TEXT,                 -- what it is and what it gives, one or two sentences
+    deadline TEXT,                   -- ISO date and time with the time zone, or NULL
+    deadline_at REAL,                -- the same in seconds since the epoch, for ordering and reminders
+    deadline_kind TEXT,              -- exact | approximate | rolling | unknown
+    deadline_text TEXT,              -- as the source writes it
+    tz_assumed INTEGER DEFAULT 0,    -- the text named no time zone: Moscow's for a Russian source, else UTC
+    starts TEXT, ends TEXT,          -- the event's dates, if any
+    format TEXT,                     -- online | offline | hybrid
+    location TEXT,
+    eligibility TEXT,                -- who may apply, briefly
+    ru_access TEXT,                  -- yes | no | unclear: may a Russian citizen living in Russia take part
+    cost TEXT, reward TEXT,
+    apply_url TEXT,                  -- where to apply, or the official page
+    fit INTEGER, fit_reason TEXT,    -- 0-10 against the profile, and why in one line
+    status TEXT DEFAULT 'open',      -- open | tracked | hidden | applied | expired | dropped
+    drop_reason TEXT,
+    checked_at REAL,                 -- when the fields were last extracted
+    sent_at REAL,                    -- when it reached the user: the app's morning update (in DEEper until 26.10.2026
+                                     -- a Telegram digest)
+    major INTEGER,                   -- especially big (prepared for months ahead): the app shows it within the longer window;
+                                     -- NULL: read before the field existed, so read again
+    deadline_moved_from TEXT,        -- a tracked one's deadline before a new post moved it (ISO), and when that was read:
+    deadline_moved_at REAL           --   the app says so in «Скоро дедлайн», «Мои» and the sheet
+);
+CREATE TABLE IF NOT EXISTS opps_spend (day TEXT PRIMARY KEY, rub REAL DEFAULT 0, calls INTEGER DEFAULT 0);
+"""
+# Columns newer than a table in an older news.sqlite: {table: {column: type}}, added on first use.
+ADDED_COLUMNS: dict[str, dict[str, str]] = {
+    "sources": {"lane": "TEXT DEFAULT 'opps'", "page_hash": "TEXT", "page_text": "TEXT"},
+    "items": {"digest": "INTEGER DEFAULT 0", "lane": "TEXT DEFAULT 'opps'", "split_at": "REAL", "copied_from": "INTEGER"},
+    "stories": {"title_ru": "TEXT", "primary_url": "TEXT", "scored_count": "INTEGER", "scored_at": "REAL",
+                "update_sent": "INTEGER DEFAULT 0", "sent_count": "INTEGER", "lane": "TEXT DEFAULT 'opps'"},
+    "opportunities": {"tz_assumed": "INTEGER DEFAULT 0", "major": "INTEGER", "deadline_moved_from": "TEXT",
+                      "deadline_moved_at": "REAL"},
+}
+
+# Run once when a column is added to an older file: posts stored before digests were recognized get the flag.
+ON_ADD = {("items", "digest"): "UPDATE items SET digest = 1 WHERE json_array_length(COALESCE(links, '[]')) >= 4 "
+                               "AND source_id IN (SELECT id FROM sources WHERE kind = 'telegram')"}
+
+_write = threading.Lock()  # the loop's thread, the API and the pages write from different threads
+_ready = False
+
+
+def _prepare(db: sqlite3.Connection) -> None:
+    global _ready
+    if _ready:
+        return
+    db.execute("PRAGMA journal_mode=WAL")  # the pages read while the loop writes
+    db.executescript(SCHEMA)
+    for table, columns in ADDED_COLUMNS.items():
+        present = {row[1] for row in db.execute(f"PRAGMA table_info({table})")}
+        for column, kind in columns.items():
+            if column not in present:
+                db.execute(f"ALTER TABLE {table} ADD COLUMN {column} {kind}")
+                if (table, column) in ON_ADD:
+                    db.execute(ON_ADD[(table, column)])
+    db.commit()
+    _ready = True
+
+
+@contextmanager
+def connect():
+    """A connection for reading; the schema is created on first use."""
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    db = sqlite3.connect(DB_PATH, timeout=10)
+    db.row_factory = sqlite3.Row
+    try:
+        _prepare(db)
+        yield db
+    finally:
+        db.close()
+
+
+@contextmanager
+def transaction():
+    """A connection for writing, committed at the end; one writer at a time in this process."""
+    with _write, connect() as db:
+        yield db
+        db.commit()
+
+
+BACKUPS = REPORTS_DIR / "backups"
+KEEP_BACKUPS = 7
+
+
+def backup() -> Path:
+    """Today's copy of news.sqlite in REPORTS_DIR/backups, made by SQLite while the loop may write; the last
+    KEEP_BACKUPS are kept. They are on the same volume: a copy against a broken file or a bad change, not against
+    losing the volume."""
+    BACKUPS.mkdir(parents=True, exist_ok=True)
+    target = BACKUPS / f"news-{time.strftime('%Y-%m-%d')}.sqlite"
+    with connect() as source:
+        copy = sqlite3.connect(target)
+        try:
+            source.backup(copy)
+        finally:
+            copy.close()
+    for old in sorted(BACKUPS.glob("news-*.sqlite"))[:-KEEP_BACKUPS]:
+        old.unlink()
+    return target
+
+
+def get_state(key: str, default=None):
+    with connect() as db:
+        row = db.execute("SELECT value FROM state WHERE key = ?", (key,)).fetchone()
+    return json.loads(row["value"]) if row else default
+
+
+def set_state(key: str, value) -> None:
+    with transaction() as db:
+        db.execute("INSERT INTO state (key, value) VALUES (?, ?) ON CONFLICT (key) DO UPDATE SET value = excluded.value",
+                   (key, json.dumps(value, ensure_ascii=False)))

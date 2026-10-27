@@ -1,10 +1,9 @@
 """Real cost of LLM calls, from the token usage DeepSeek reports.
 
 Importing this module wraps gpt-researcher's GenericLLMProvider.get_chat_response, so every call
-adds its tokens to the Meter active in the current context (a ContextVar: set by a research run
-in its worker thread, or around a single Q&A call). Streamed calls report usage only with
-"stream_usage" in config.json's LLM_KWARGS; calls that bypass get_chat_response (gpt-researcher's
-subtopic planning chain) are not counted, so totals are a slight underestimate.
+adds its tokens to the Meter active in the current context (a ContextVar: set around
+each of the radar's LLM calls, news/llm.py). Every call of the radar goes through it (gpt-researcher's
+create_chat_completion), so the lane's spend is what DeepSeek bills, at its prices.
 """
 
 import contextvars
@@ -78,14 +77,6 @@ class Meter:
     def rub(self, fetch: bool = False) -> float:
         return self.usd * usd_rub(fetch)
 
-    def merge(self, rows: dict) -> None:
-        """Add another part's usage (its Meter.by_model), e.g. the search part's source rating."""
-        for model, other in rows.items():
-            row = self.by_model.setdefault(model, {"calls": 0, "input": 0, "cached": 0, "output": 0, "usd": 0.0})
-            for key in row:
-                row[key] += other.get(key, 0)
-            self.usd += other.get("usd", 0.0)
-
     def summary(self, fetch: bool = True) -> dict:
         rate = usd_rub(fetch)
         return {"usd": round(self.usd, 5), "rub": round(self.usd * rate, 2), "usd_rub": rate,
@@ -94,7 +85,7 @@ class Meter:
 
 @contextmanager
 def metered():
-    """A fresh Meter for LLM calls outside a research run: a question, a clarification, follow-ups."""
+    """A fresh Meter for one LLM call or a few (the radar meters each call)."""
     meter = Meter()
     token = current.set(meter)
     try:

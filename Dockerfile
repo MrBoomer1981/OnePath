@@ -1,9 +1,8 @@
-# Image for the web app (core, worker and search in one process) on Railway or any Docker host.
+# Image for the web app and the radar's loop on Railway (or any Docker host).
 FROM python:3.12-slim
 
-# WeasyPrint (PDF) needs pango/harfbuzz; DejaVu covers Cyrillic; libmagic for document loaders.
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core libmagic1 \
+# libmagic for gpt-researcher's document loaders, which the radar's LLM calls import with it.
+RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv

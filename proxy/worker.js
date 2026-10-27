@@ -1,4 +1,4 @@
-// OnePath's address for networks where Railway does not open.
+// DEEper's address for networks where Railway does not open.
 //
 // From Russian networks Railway's edge address (69.46.46.46: every *.up.railway.app site and railway.com
 // itself) does not open, whatever the domain name, while Cloudflare does. This Worker passes every request

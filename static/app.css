@@ -237,7 +237,7 @@ body.graffiti-off .graffiti { display: none !important; }
         max-width: 688px; margin: 0 auto; box-sizing: border-box; display: flex; align-items: flex-end; gap: 2px;
         background: var(--night-2); border-radius: var(--radius-pill); padding: 6px 6px 6px 20px; box-shadow: 0 10px 32px rgba(0,0,0,.45); }
 .pill.bottom { bottom: calc(env(safe-area-inset-bottom) + 14px); }
-.pill.inline { position: static; box-shadow: none; padding-left: 18px; background: var(--night); }
+.pill.inline { position: static; width: 100%; box-shadow: none; padding-left: 18px; background: var(--night); }
 .pill-input { flex: 1; min-width: 0; align-self: center; }
 .pill-input .q-field__control, .pill-input .q-field__native { min-height: 0 !important; height: auto; padding: 0 !important; }
 .pill-input .q-field__control:before, .pill-input .q-field__control:after { display: none; }

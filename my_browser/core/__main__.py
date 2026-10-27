@@ -1,4 +1,4 @@
-"""Run core alone (web app + API): uv run python -m my_browser.core. The worker runs as its own process then."""
+"""Run core alone (the web app): uv run python -m my_browser.core. The news part then runs as its own process (NEWS_URL)."""
 
 from my_browser.core import web
 

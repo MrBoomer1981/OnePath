@@ -1,6 +1,6 @@
 """Hand freed memory back to the system after heavy work.
 
-CPython frees objects, but glibc's malloc keeps the freed pages for later, so after a research
+CPython frees objects, but glibc's malloc keeps the freed pages for later, so after a collection of the sources
 the process stays at its peak: on Railway it climbed to about 1 GB within hours of a deploy and stayed there
 (25.10.2026). On Linux, threads that read page-sized texts and dropped them left a process at 1.2 GB; malloc_trim(0)
 brought it to 15 MB. Without glibc (macOS) trimming is a no-op.
@@ -24,7 +24,7 @@ def trim() -> None:
 
 
 def release() -> None:
-    """After a research: collect cyclic garbage (parse trees are full of cycles), then trim.
+    """After a collection or a reading run: collect cyclic garbage (parse trees are full of cycles), then trim.
     The collection holds the GIL for a moment (about 50 ms with every part loaded), so not after every small step."""
     gc.collect()
     trim()

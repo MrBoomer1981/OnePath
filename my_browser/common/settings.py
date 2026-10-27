@@ -1,9 +1,9 @@
-"""Settings shared by every part: paths, research options, and how the parts reach each other.
+"""Settings shared by every part: paths, the web search, and how the parts reach each other.
 
-OnePath runs as three parts: core (web UI, API, report library, job queue), worker (research engine and
-LLM helpers) and search (source selection and page reading). Each can run as its own process. Unset *_URL
-variables mean the all-in-one process (Railway, `uv run app.py`): core serves HTTP, worker and search are called
-in-process through their ASGI apps, the worker's job loop reaches core over localhost.
+OnePath runs as two parts: core (the web UI) and news (the opportunities radar: sources, posts, reading them with
+the LLM, the morning update, and its loop; the part keeps DEEper's name, see the root CLAUDE.md). Each can run as its
+own process. An unset NEWS_URL means the all-in-one process (Railway, `uv run app.py`): core serves HTTP and calls
+news in-process through its ASGI app.
 """
 
 import logging
@@ -18,46 +18,25 @@ CONFIG_PATH = ROOT / "config.json"
 
 load_dotenv(ROOT / ".env")
 
-REPORTS_DIR = Path(os.environ.get("REPORTS_DIR") or ROOT / "reports")  # eval sets its own
+REPORTS_DIR = Path(os.environ.get("REPORTS_DIR") or ROOT / "reports")  # the app's state: news.sqlite, logins
 
-# Web search backend: the local SearXNG when SEARX_URL is set; otherwise Tavily if its key
-# is present (Railway has no SearXNG, and engines block datacenter IPs more often).
-# WEB_RETRIEVER overrides the choice.
+# The weekly web search for opportunities (news/discover.py): the local SearXNG when SEARX_URL is set; otherwise
+# Tavily if its key is present (Railway has no SearXNG). WEB_RETRIEVER overrides the choice.
 WEB_RETRIEVER = os.environ.get("WEB_RETRIEVER") or (
     "tavily" if os.environ.get("TAVILY_API_KEY") and not os.environ.get("SEARX_URL") else "searx"
 )
 
-# semantic_scholar is left out: without an API key it answers 429 most of the time.
-SOURCES = {
-    "web": WEB_RETRIEVER,
-    "academic": "arxiv,openalex",
-    "all": f"{WEB_RETRIEVER},arxiv,openalex",
-}
-DEFAULT_SOURCES = "all"
-
-# Model that writes the report text (SMART_LLM); search, planning and source rating stay on FAST/STRATEGIC.
-WRITERS = {"pro": "deepseek:deepseek-v4-pro", "flash": "deepseek:deepseek-flash"}
-DEFAULT_WRITER = "pro"
-
-MODES = {
-    "quick": "обзор на 5–7 минут чтения: главное, 3–4 раздела, чего пока не знаем (по умолчанию)",
-    "detailed": "подробный отчёт: введение, разделы по подтемам, заключение (самый длинный)",
-    "deep": "глубокое исследование: рекурсивный поиск вширь и вглубь, затем один отчёт",
-}
-# The 5–7 minute report: the research is a single pass (gpt-researcher's research_report), the text is short.
-DEFAULT_MODE = "quick"
-# Modes whose reports are fact-checked unless the user switches it off (worker/factcheck.py): every mode since
-# the short report became the default (25.10.2026).
-FACTCHECK_MODES = ("quick", "detailed", "deep")
+# DEEper, the user's research app: «Исследовать» on an opportunity opens its search screen with the opportunity as
+# the topic. Its address stays out of this public repository (a Railway variable); unset, the button is not shown.
+RESEARCH_URL = os.environ.get("RESEARCH_URL", "").rstrip("/")
 
 PORT = int(os.environ.get("PORT", 8501))  # 8080 is the local SearXNG
 CORE_URL = os.environ.get("CORE_URL") or f"http://127.0.0.1:{PORT}"
-WORKER_URL = os.environ.get("WORKER_URL")  # unset: in-process
-SEARCH_URL = os.environ.get("SEARCH_URL")  # unset: in-process
+NEWS_URL = os.environ.get("NEWS_URL")  # unset: in-process
 
 
 def service_token() -> str:
-    """Shared secret of the parts' APIs: SERVICE_TOKEN, else a file next to the reports (one machine)."""
+    """Shared secret of the parts' APIs: SERVICE_TOKEN, else a file next to the app's state (one machine)."""
     if token := os.environ.get("SERVICE_TOKEN"):
         return token
     path = REPORTS_DIR / ".service_token"
@@ -68,6 +47,6 @@ def service_token() -> str:
 
 
 def configure_logging() -> None:
-    """INFO for our parts; httpx logs every request at INFO, and the worker polls core every few seconds."""
+    """INFO for our parts; httpx logs every request at INFO, and the loop polls dozens of sources."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     logging.getLogger("httpx").setLevel(logging.WARNING)
